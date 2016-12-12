@@ -1,0 +1,4 @@
+1.0.1: First version of scoutnetcalendar
+1.0.2:
+    - Add database and create Calendars
+    - create_calendars_table.php

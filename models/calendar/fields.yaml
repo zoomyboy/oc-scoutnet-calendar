@@ -1,0 +1,8 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    scoutnet_id:
+        label: Calendar-Scoutnet-ID
+        type: number

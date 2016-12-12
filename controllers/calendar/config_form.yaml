@@ -1,0 +1,30 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Calendar
+
+# Model Form Field configuration
+form: $/zoomyboy/scoutnetcalendar/models/calendar/fields.yaml
+
+# Model Class name
+modelClass: Zoomyboy\Scoutnetcalendar\Models\Calendar
+
+# Default redirect location
+defaultRedirect: zoomyboy/scoutnetcalendar/calendar
+
+# Create page
+create:
+    title: Create 
+    redirect: zoomyboy/scoutnetcalendar/calendar/update/:id
+    redirectClose: zoomyboy/scoutnetcalendar/calendar
+    flashSave: Calendar has been created!
+
+# Update page
+update:
+    title: Edit
+    redirect: zoomyboy/scoutnetcalendar/calendar
+    redirectClose: zoomyboy/scoutnetcalendar/calendar
+    flashSave: Caalendar has been updated
+    flashDelete: Calendar has been deleted

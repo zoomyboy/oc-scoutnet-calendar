@@ -1,0 +1,8 @@
+fields:
+    layout:
+        label: "Default Layout"
+        type: dropdown
+        options: 
+            default: Default
+            dpsg: DPSG
+

@@ -1,0 +1,14 @@
+{
+    "name": "zoomyboy/oc-scoutnetcalendar-plugin",
+    "description": "This Plugin adds features to display a Scoutnet Calendar on a page easily.",
+    "type": "project",
+    "require": {
+        "nesbot/carbon": "^1.21"
+    },
+    "authors": [
+        {
+            "name": "Zoomyboy",
+            "email": "pille@zoomyboy.de"
+        }
+    ]
+}

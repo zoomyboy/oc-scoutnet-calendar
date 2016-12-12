@@ -1,0 +1,9 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    scoutnet_id:
+        label: Scoutnet-Kalender-ID 
+    name: 
+        label: Name    

@@ -1,0 +1,17 @@
+<div class="scoutnetcalendar">
+	<div class="events group-{{ __SELF__.calendar().getId() }}">
+	{% for event in __SELF__.events() %} 
+		<div class="event event-{{ event.id }}">
+			<div class="event-whenshort">
+				<div class="hole hole-left"></div>
+				<div class="hole hole-right"></div>
+				{{ event.whenShort }}
+			</div>
+			<div class="event-body">
+				<div class="event-title">{{ event.title }}</div>
+				{% if(event.location) %}<div class="event-location"><span class="location-prefix event-prefix">Ort: </span>{{ event.location }}</div>{% endif %}
+			</div>
+		</div>
+	{% endfor %}
+	</div>
+</div>
