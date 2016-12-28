@@ -6,7 +6,7 @@ use \Cms\Classes\ComponentBase;
 use Zoomyboy\Scoutnetcalendar\Models\Calendar;
 use Zoomyboy\Scoutnetcalendar\Classes\ScoutnetSync;
 
-class Single extends ComponentBase {
+class ScoutnetcalendarSingle extends ComponentBase {
 	private $calendar = false;
 
 	public function componentDetails() {
@@ -36,7 +36,7 @@ class Single extends ComponentBase {
 		$calendar = $this->getCalendarInstance();
 		return $calendar->events()
 			->ofYear($this->getYear())
-			->theFirst($this->property('maxEntries'))
+			->theFirst($this->property('maxEvents'))
 			->get();
 	}
 

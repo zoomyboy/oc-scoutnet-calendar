@@ -53,7 +53,7 @@ class Plugin extends PluginBase
     public function registerComponents()
     {
         return [
-            'Zoomyboy\Scoutnetcalendar\Components\Single' => 'scoutnetcalendar_single',
+            'Zoomyboy\Scoutnetcalendar\Components\ScoutnetcalendarSingle' => 'scoutnetcalendar_single',
         ];
     }
 
