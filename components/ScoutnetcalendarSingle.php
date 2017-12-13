@@ -8,6 +8,7 @@ use Zoomyboy\Scoutnetcalendar\Classes\ScoutnetSync;
 
 class ScoutnetcalendarSingle extends ComponentBase {
 	private $calendar = false;
+	public $calendarYear;
 
 	public function componentDetails() {
 		return [
@@ -42,7 +43,7 @@ class ScoutnetcalendarSingle extends ComponentBase {
 
 	public function onRun() {
 		$this->page['calendar'] = $this->getCalendarInstance();
-		$this->page['calendarYear'] = $this->getYear();
+		$this->page['calendarYear'] = $this->calendarYear = $this->getYear();
 	}
 
 	public function defineProperties() {
