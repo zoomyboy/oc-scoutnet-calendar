@@ -57,6 +57,13 @@ class Plugin extends PluginBase
         ];
     }
 
+    public function registerPageSnippets()
+    {
+        return [
+            'Zoomyboy\Scoutnetcalendar\Components\ScoutnetcalendarSingle' => 'scoutnetcalendar_single',
+        ];
+    }
+
     /**
      * Registers any back-end permissions used by this plugin.
      *
