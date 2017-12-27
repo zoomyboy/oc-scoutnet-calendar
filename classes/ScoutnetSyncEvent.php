@@ -52,7 +52,8 @@ class ScoutnetSyncEvent {
 	}
 
 	private function isOnlyOneDay() {
-		return Carbon::parse($this->event->start_date)
+		return is_null($this->event->end_date) 
+			|| Carbon::parse($this->event->start_date)
 			->eq(Carbon::parse($this->event->end_date));
 	}
 }
