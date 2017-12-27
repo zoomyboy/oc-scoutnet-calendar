@@ -10,7 +10,7 @@ class ScoutnetSyncEvent {
 	private $shortFormat = '%d %b %y';
 
 	private $props = [
-		'title', 'whenShort', 'location'
+		'title', 'whenShort', 'location', 'targetgroup', 'url', 'urlText'
 	];
 
 	public function __construct($event) {
@@ -19,6 +19,18 @@ class ScoutnetSyncEvent {
 
 	public function getTitleAttribute() {
 		return $this->event->title;
+	}
+
+	public function getTargetgroupAttribute() {
+		return $this->event->target_group;
+	}
+
+	public function getUrlAttribute() {
+		return $this->event->url;
+	}
+
+	public function getUrlTextAttribute() {
+		return $this->event->url_text;
 	}
 
 	/**
