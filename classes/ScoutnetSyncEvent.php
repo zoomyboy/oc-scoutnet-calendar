@@ -7,7 +7,7 @@ use Carbon\Carbon;
 class ScoutnetSyncEvent {
 	private $event;
 
-	private $shortFormat = '%d %b';
+	private $shortFormat = '%d %b %y';
 
 	private $props = [
 		'title', 'whenShort', 'location'

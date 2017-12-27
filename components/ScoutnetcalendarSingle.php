@@ -37,10 +37,15 @@ class ScoutnetcalendarSingle extends ComponentBase {
 
 	public function events() {
 		$calendar = $this->getCalendarInstance();
-		return $calendar->events()
+		$events = $calendar->events()
 			->ofYears($this->getYears())
-			->theFirst($this->property('maxEvents'))
-			->get();
+			->theFirst($this->property('maxEvents'));
+
+		if ($this->property('onlyFuture')) {
+			$events = $events->onlyFuture();
+		}
+
+		return $events->get();
 	}
 
 	public function onRun() {
@@ -72,11 +77,10 @@ class ScoutnetcalendarSingle extends ComponentBase {
 				'description' => 'Are the years relative to the current (e.g. 0 would be the current year)',
 				'type' => 'checkbox'
 			],
-			'maxEvents' => [
-				'title' => 'Max Events',
-				'description' => 'Show not more than the given amount',
-				'type' => 'string',
-				'default' => '-1'
+			'onlyFuture' => [
+				'title' => 'Only future events',
+				'description' => 'Show only events that happen in the future',
+				'type' => 'checkbox',
 			]
 		];
 	}

@@ -9,6 +9,7 @@ class ScoutnetSyncEvents {
 	private $dates = [];
 	private $onlyFirst = -1;
 	private $onlyLast = -1;
+	private $isFuture;
 
 	public function __construct($scoutnet) {
 		$this->sn = $scoutnet;
@@ -33,6 +34,12 @@ class ScoutnetSyncEvents {
 		return $this;
 	}
 
+	public function onlyFuture() {
+		$this->isFuture = true;
+
+		return $this;
+	}
+
 	public function theFirst($first) {
 		$this->onlyFirst = $first;
 
@@ -49,11 +56,21 @@ class ScoutnetSyncEvents {
 		$query = [];
 
 		foreach ($this->dates as $range) {
-			$query[] = "start_date >= '".$range[0]."'"
-				." AND start_date <= '".$range[1]."'";
+			$thisQuery = [];
+
+			if ($range[0] !== false) {
+				$thisQuery[] = "start_date >= '".$range[0]."'";
+			}
+			if ($range[1] !== false) {
+				$thisQuery[] = "start_date <= '".$range[1]."'";
+			}
+
+			$query[] = implode(' AND ', $thisQuery);
 		}
 
-		return implode (' OR ', $query);
+		return 
+			(count($query) ? '('.implode (' OR ', $query).')' : '')
+			.($this->isFuture ? " AND start_date >= '".date('Y-m-d')."'" : '');
 	}
 
 	private function applyFirstAndLast($events) {
