@@ -6,8 +6,7 @@ use Carbon\Carbon;
 
 class ScoutnetSyncEvents {
 	private $sn;
-	private $startMin;
-	private $startMax;
+	private $dates = [];
 	private $onlyFirst = -1;
 	private $onlyLast = -1;
 
@@ -16,25 +15,22 @@ class ScoutnetSyncEvents {
 	}
 	
 	public function ofCurrentYear() {
-		$this->startMin = Carbon::now()->startOfYear()->format('Y-m-d');
-		$this->startMax = Carbon::now()->endOfYear()->format('Y-m-d');
+		$this->ofYears([date('Y')]);
 
 		return $this;
 	}
 
-	public function ofYear($year) {
-		$this->startMin = Carbon::createFromDate($year, 1,1)->startOfYear()->format('Y-m-d');
-		$this->startMax = Carbon::createFromDate($year, 1,1)->endOfYear()->format('Y-m-d');
+	public function ofYears($years) {
+		$dates = array_map(function($year) {
+			return [
+				Carbon::createFromDate($year, 1,1)->startOfYear()->format('Y-m-d'),
+				Carbon::createFromDate($year, 1,1)->endOfYear()->format('Y-m-d')
+			];
+		}, $years);
+
+		$this->dates = array_merge($this->dates, $dates);
 
 		return $this;
-	}
-
-	public function onlyFuture() {
-
-	}
-
-	public function onlyPast() {
-
 	}
 
 	public function theFirst($first) {
@@ -52,15 +48,12 @@ class ScoutnetSyncEvents {
 	private function buildQuery() {
 		$query = [];
 
-		if ($this->startMin) {
-			$query[] = "start_date >= '".$this->startMin."'";
+		foreach ($this->dates as $range) {
+			$query[] = "start_date >= '".$range[0]."'"
+				." AND start_date <= '".$range[1]."'";
 		}
 
-		if ($this->startMax) {
-			$query[] = "start_date <= '".$this->startMax."'";
-		}
-
-		return implode (' AND ', $query);
+		return implode (' OR ', $query);
 	}
 
 	private function applyFirstAndLast($events) {
