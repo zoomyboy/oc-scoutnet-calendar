@@ -7,7 +7,7 @@ use Carbon\Carbon;
 class ScoutnetSyncEvent {
 	private $event;
 
-	private $shortFormat = 'd M';
+	private $shortFormat = '%d %b';
 
 	private $props = [
 		'title', 'whenShort', 'location'
@@ -21,10 +21,18 @@ class ScoutnetSyncEvent {
 		return $this->event->title;
 	}
 
+	/**
+	 * Localization of month string is broken due to an issue in
+	 * october. The Carbon package doesnt recognize the app.locale
+	 * setting, so we set this manually and doesnt use carbon at all...
+	 */
 	public function getWhenShortAttribute() {
-		$string = Carbon::parse($this->event->start_date)->format($this->shortFormat);
+		setlocale(LC_TIME, 'de_DE.UTF-8');
+
+		$string = strftime($this->shortFormat, Carbon::parse($this->event->start_date)->timestamp);
+
 		if (!$this->isOnlyOneDay()) {
-			$string .= ' - '.Carbon::parse($this->event->end_date)->format($this->shortFormat);
+			$string .= ' - '.strftime($this->shortFormat, Carbon::parse($this->event->end_date)->timestamp);
 		}
 
 		return $string;
