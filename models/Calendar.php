@@ -1,8 +1,8 @@
-<?php namespace Zoomyboy\Scoutnetcalendar\Models;
+<?php namespace Zoomyboy\Scoutnet\Models;
 
 use Model;
-use Zoomyboy\Scoutnetcalendar\Classes\ScoutnetSync;
-use Zoomyboy\Scoutnetcalendar\Exceptions\CalendarNotFoundException;
+use Zoomyboy\Scoutnet\Classes\ScoutnetSync;
+use Zoomyboy\Scoutnet\Exceptions\CalendarNotFoundException;
 /**
  * Calendar Model
  */
@@ -12,7 +12,7 @@ class Calendar extends Model
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'zoomyboy_scoutnetcalendar_calendars';
+    public $table = 'zoomyboy_scoutnet_calendars';
 
     /**
      * @var array Guarded fields

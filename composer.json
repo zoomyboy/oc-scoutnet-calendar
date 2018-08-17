@@ -1,6 +1,6 @@
 {
-    "name": "zoomyboy/oc-scoutnetcalendar-plugin",
-    "description": "This Plugin adds features to display a Scoutnet Calendar on a page easily.",
+    "name": "zoomyboy/oc-scoutnet-plugin",
+    "description": "This Plugin adds features to integrate Scoutnet features in October CMS",
     "type": "project",
     "require": {
         "nesbot/carbon": "^1.21"

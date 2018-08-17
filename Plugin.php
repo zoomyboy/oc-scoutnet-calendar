@@ -1,12 +1,12 @@
-<?php namespace Zoomyboy\Scoutnetcalendar;
+<?php namespace Zoomyboy\Scoutnet;
 
 use Backend;
 use System\Classes\PluginBase;
-use Zoomyboy\Scoutnetcalendar\Models\Settings;
+use Zoomyboy\Scoutnet\Models\Settings;
 
 
 /**
- * scoutnetcalendar Plugin Information File
+ * scoutnet Plugin Information File
  */
 class Plugin extends PluginBase
 {
@@ -19,8 +19,8 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name'        => 'scoutnetcalendar',
-            'description' => 'This Plugin adds features to display a Scoutnet Calendar on a page easily.',
+            'name'        => 'scoutnet',
+            'description' => 'This Plugin adds features to integrate Scoutnet features in October CMS',
             'author'      => 'zoomyboy',
             'icon'        => 'icon-calendar'
         ];
@@ -53,14 +53,14 @@ class Plugin extends PluginBase
     public function registerComponents()
     {
         return [
-            'Zoomyboy\Scoutnetcalendar\Components\ScoutnetcalendarSingle' => 'scoutnetcalendar_single',
+            'Zoomyboy\Scoutnet\Components\SingleCalendar' => 'singleCalendar',
         ];
     }
 
     public function registerPageSnippets()
     {
         return [
-            'Zoomyboy\Scoutnetcalendar\Components\ScoutnetcalendarSingle' => 'scoutnetcalendar_single',
+            'Zoomyboy\Scoutnet\Components\SingleCalendar' => 'singleCalendar',
         ];
     }
 
@@ -72,13 +72,13 @@ class Plugin extends PluginBase
     public function registerPermissions()
     {
         return [
-            'zoomyboy.scoutnetcalendar.settings' => [
-                'tab' => 'Scoutnet-Calendar',
-                'label' => 'Einstellungen verwalten'
+            'zoomyboy.scoutnet.settings' => [
+                'tab' => 'General',
+                'label' => 'Edit settings'
             ],
-			'zoomyboy.scoutnetcalendar.calendar' => [
-				'tab' => 'Scoutnet-Calendar',
-				'label' => 'Calendar-Overview'
+			'zoomyboy.scoutnet.calendar' => [
+				'tab' => 'Calendar',
+				'label' => 'Calendar Overview'
 			],
         ];
     }
@@ -91,18 +91,18 @@ class Plugin extends PluginBase
     public function registerNavigation()
     {
         return [
-            'scoutnetcalendar' => [
-                'label'       => 'Scoutnet-Calendar',
-                'url'         => Backend::url('zoomyboy/scoutnetcalendar/calendar'),
+            'scoutnet' => [
+                'label'       => 'Scoutnet',
+                'url'         => Backend::url('zoomyboy/scoutnet/calendar/index'),
                 'icon'        => 'icon-calendar',
-                'permissions' => ['zoomyboy.scoutnetcalendar.*'],
+                'permissions' => ['zoomyboy.scoutnet.*'],
                 'order'       => 500,
 				'sideMenu' => [
 					'calendar' => [
 						'label' => 'Calendars',
 						'icon' => 'icon-calendar',
-						'url' => Backend::url('zoomyboy/scoutnetcalendar/calendar'),
-						'permissions' => ['zoomyboy.scoutnetcalendar.calendar']
+						'url' => Backend::url('zoomyboy/scoutnet/calendar/index'),
+						'permissions' => ['zoomyboy.scoutnet.calendar']
 					]
 				]
             ],
@@ -112,14 +112,14 @@ class Plugin extends PluginBase
 	public function registerSettings() {
 		return [
 			'settings' => [
-				'label'       => 'Scoutnet-Calendar',
-				'description' => 'Manage Global Settings for Scoutnet-Calendar',
+				'label'       => 'Scoutnet',
+				'description' => 'Manage Global Settings for Scoutnet',
 				'category'    => 'Plugins',
 				'icon'        => 'icon-calendar',
-				'class'       => 'Zoomyboy\Scoutnetcalendar\Models\Settings',
+				'class'       => 'Zoomyboy\Scoutnet\Models\Settings',
 				'order'       => 500,
 				'keywords'    => 'security location',
-				'permissions' => ['zoomybo0y.scoutnetcalendar.settings']
+				'permissions' => ['zoomyboy.scoutnet.settings']
 			]
 		];
 	}

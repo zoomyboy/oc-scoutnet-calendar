@@ -1,13 +1,13 @@
 <?php
 
-namespace Zoomyboy\Scoutnetcalendar\Components;
+namespace Zoomyboy\Scoutnet\Components;
 
 use \Cms\Classes\ComponentBase;
-use Zoomyboy\Scoutnetcalendar\Models\Calendar;
-use Zoomyboy\Scoutnetcalendar\Classes\ScoutnetSync;
+use Zoomyboy\Scoutnet\Models\Calendar;
+use Zoomyboy\Scoutnet\Classes\ScoutnetSync;
 use Carbon\Carbon;
 
-class ScoutnetcalendarSingle extends ComponentBase {
+class SingleCalendar extends ComponentBase {
 	private $calendar = false;
 	public $calendarYear;
 	public $yearList;
@@ -29,7 +29,7 @@ class ScoutnetcalendarSingle extends ComponentBase {
 		}
 		return false;
 	}
-		
+
 
 	public function calendar() {
 		return $this->getCalendarInstance();
@@ -94,7 +94,7 @@ class ScoutnetcalendarSingle extends ComponentBase {
 			return array_unique(array_map(function($year) {
 				$year = trim($year);
 				$first = substr($year, 0, 1);
-				
+
 				if (is_numeric($first)) {
 					return Carbon::now()->addYears($year)->format('Y');
 				}

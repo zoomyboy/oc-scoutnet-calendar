@@ -3,16 +3,16 @@
 # ===================================
 
 # Model List Column configuration
-list: $/zoomyboy/scoutnetcalendar/models/calendar/columns.yaml
+list: $/zoomyboy/scoutnet/models/calendar/columns.yaml
 
 # Model Class name
-modelClass: Zoomyboy\Scoutnetcalendar\Models\Calendar
+modelClass: Zoomyboy\Scoutnet\Models\Calendar
 
 # List Title
 title: Manage Calendars
 
 # Link URL for each record
-recordUrl: zoomyboy/scoutnetcalendar/calendar/update/:id
+recordUrl: zoomyboy/scoutnet/calendar/update/:id
 
 # Message to display if the list is empty
 noRecordsMessage: backend::lang.list.no_records

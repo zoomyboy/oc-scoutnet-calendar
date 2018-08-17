@@ -1,0 +1,39 @@
+<?php if ($items): ?>
+    <ol>
+        <?php foreach ($items as $calendar): ?>
+            <?php
+                $name = $calendar->name;
+                $dataId = $this->dataIdPrefix.'-'.$calendar->id;
+                $searchMode = strlen($this->getSearchTerm()) > 0;
+                $cbId = 'cb'.md5($calendar->name);
+            ?>
+            <li
+                data-group-id="<?= e($calendar->name) ?>"
+                data-item-path="<?= e($calendar->name) ?>"
+                <?php if ($searchMode): ?>data-no-drag-mode<?php endif ?>
+                data-id="<?= e($calendar->id) ?>"
+            >
+                <div>
+                    <a href="#">
+                        <?= e($calendar->name) ?>
+                        <span class="comment"><?= e($calendar->scoutnet_id) ?></span>
+                    </a>
+
+                    <input type="hidden" name="object[s<?= e($calendar->id) ?>]" value="0"/>
+                    <div class="checkbox custom-checkbox nolabel">
+                        <input
+                            id="<?= $cbId ?>"
+                            type="checkbox"
+                            name="object[s<?= e($calendar->id) ?>]"
+                            <?= $this->isItemSelected($calendar->id) ? 'checked' : null ?>
+                            data-request="<?= $this->getEventHandler('onSelect') ?>"
+                            value="1">
+                        <label for="<?= $cbId ?>">Select</label>
+                    </div>
+                </div>
+            </li>
+        <?php endforeach ?>
+    </ol>
+<?php else: ?>
+    <p class="no-data">Keine Einträge</p>
+<?php endif ?>

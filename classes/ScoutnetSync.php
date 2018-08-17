@@ -1,9 +1,9 @@
 <?php
 
-namespace Zoomyboy\Scoutnetcalendar\Classes;
+namespace Zoomyboy\Scoutnet\Classes;
 
-use Zoomyboy\Scoutnetcalendar\Models\Calendar;
-use Zoomyboy\Scoutnetcalendar\Exceptions\CalendarNotFoundException;
+use Zoomyboy\Scoutnet\Models\Calendar;
+use Zoomyboy\Scoutnet\Exceptions\CalendarNotFoundException;
 
 class ScoutnetSync {
 	private $calendarId;
@@ -12,7 +12,7 @@ class ScoutnetSync {
 	public function __construct($calendarId) {
 		try {
 			$this->calendarId = $calendarId;
-			require_once(plugins_path() . '/zoomyboy/scoutnetcalendar/vendor/scoutnet-api-client-php/src/scoutnet.php');
+			require_once(plugins_path() . '/zoomyboy/scoutnet/vendor/scoutnet-api-client-php/src/scoutnet.php');
 			$this->sn = scoutnet()->group($calendarId);
 		} catch(\SN_Exception_EndUser $e) {
 			if (str_contains($e->getMessage(), 'Es gibt kein group')) {

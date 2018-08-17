@@ -1,5 +1,5 @@
 <?php
 
-namespace Zoomyboy\Scoutnetcalendar\Exceptions;
+namespace Zoomyboy\Scoutnet\Exceptions;
 
 class CalendarNotFoundException extends \Exception {}

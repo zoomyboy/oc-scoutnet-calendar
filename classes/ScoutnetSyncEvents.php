@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoomyboy\Scoutnetcalendar\Classes;
+namespace Zoomyboy\Scoutnet\Classes;
 
 use Carbon\Carbon;
 
@@ -14,7 +14,7 @@ class ScoutnetSyncEvents {
 	public function __construct($scoutnet) {
 		$this->sn = $scoutnet;
 	}
-	
+
 	public function ofCurrentYear() {
 		$this->ofYears([date('Y')]);
 
@@ -68,7 +68,7 @@ class ScoutnetSyncEvents {
 			$query[] = implode(' AND ', $thisQuery);
 		}
 
-		return 
+		return
 			(count($query) ? '('.implode (' OR ', $query).')' : '')
 			.($this->isFuture ? " AND start_date >= '".date('Y-m-d')."'" : '');
 	}

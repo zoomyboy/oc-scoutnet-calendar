@@ -1,6 +1,6 @@
 <?php
 
-namespace Zoomyboy\Scoutnetcalendar\Classes;
+namespace Zoomyboy\Scoutnet\Classes;
 
 use Carbon\Carbon;
 
@@ -64,7 +64,7 @@ class ScoutnetSyncEvent {
 	}
 
 	private function isOnlyOneDay() {
-		return is_null($this->event->end_date) 
+		return is_null($this->event->end_date)
 			|| Carbon::parse($this->event->start_date)
 			->eq(Carbon::parse($this->event->end_date));
 	}

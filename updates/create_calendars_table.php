@@ -1,4 +1,4 @@
-<?php namespace Zoomyboy\Scoutnetcalendar\Updates;
+<?php namespace Zoomyboy\Scoutnet\Updates;
 
 use Schema;
 use October\Rain\Database\Schema\Blueprint;
@@ -8,7 +8,7 @@ class CreateCalendarsTable extends Migration
 {
     public function up()
     {
-        Schema::create('zoomyboy_scoutnetcalendar_calendars', function(Blueprint $table) {
+        Schema::create('zoomyboy_scoutnet_calendars', function(Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
 			$table->string('name');
@@ -19,6 +19,6 @@ class CreateCalendarsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('zoomyboy_scoutnetcalendar_calendars');
+        Schema::dropIfExists('zoomyboy_scoutnet_calendars');
     }
 }
