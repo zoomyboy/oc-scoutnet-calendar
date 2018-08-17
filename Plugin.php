@@ -20,7 +20,7 @@ class Plugin extends PluginBase
     {
         return [
             'name'        => 'scoutnet',
-            'description' => 'This Plugin adds features to integrate Scoutnet features in October CMS',
+            'description' => 'zoomyboy.scoutnet::global.description',
             'author'      => 'zoomyboy',
             'icon'        => 'icon-calendar'
         ];
@@ -73,13 +73,13 @@ class Plugin extends PluginBase
     {
         return [
             'zoomyboy.scoutnet.settings' => [
-                'tab' => 'General',
-                'label' => 'Edit settings'
+                'tab' => 'Scoutnet',
+                'label' => 'zoomyboy.scoutnet::lang.permissions.settings'
             ],
-			'zoomyboy.scoutnet.calendar' => [
-				'tab' => 'Calendar',
-				'label' => 'Calendar Overview'
-			],
+            'zoomyboy.scoutnet.calendar' => [
+                'tab' => 'Scoutnet',
+                'label' => 'zoomyboy.scoutnet::lang.permissions.calendar'
+            ]
         ];
     }
 
@@ -92,14 +92,14 @@ class Plugin extends PluginBase
     {
         return [
             'scoutnet' => [
-                'label'       => 'Scoutnet',
+                'label'       => 'zoomyboy.scoutnet::menu.scoutnet',
                 'url'         => Backend::url('zoomyboy/scoutnet/calendar/index'),
                 'icon'        => 'icon-calendar',
                 'permissions' => ['zoomyboy.scoutnet.*'],
                 'order'       => 500,
 				'sideMenu' => [
 					'calendar' => [
-						'label' => 'Calendars',
+						'label' => 'zoomyboy.scoutnet::menu.calendar',
 						'icon' => 'icon-calendar',
 						'url' => Backend::url('zoomyboy/scoutnet/calendar/index'),
 						'permissions' => ['zoomyboy.scoutnet.calendar']
@@ -113,12 +113,12 @@ class Plugin extends PluginBase
 		return [
 			'settings' => [
 				'label'       => 'Scoutnet',
-				'description' => 'Manage Global Settings for Scoutnet',
+				'description' => 'zoomyboy.scoutnet::settings.description',
 				'category'    => 'Plugins',
 				'icon'        => 'icon-calendar',
 				'class'       => 'Zoomyboy\Scoutnet\Models\Settings',
 				'order'       => 500,
-				'keywords'    => 'security location',
+				'keywords'    => 'calendar scoutnet scout',
 				'permissions' => ['zoomyboy.scoutnet.settings']
 			]
 		];
