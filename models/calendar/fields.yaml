@@ -3,12 +3,12 @@
 # ===================================
 
 fields:
-    title:
+    scoutnet_id:
         span: left
-        label: rainlab.pages::lang.editor.title
-        placeholder: rainlab.pages::lang.editor.new_title
-        attributes:
-            default-focus: 1
+        type: dropdown
+        options:
+        label: zoomyboy.scoutnet::lang.form.scoutnetIdLabel
+        placeholder: zoomyboy.scoutnet::lang.form.scoutnetIdPlaceholder
 
     viewBag[url]:
         span: right

@@ -71,7 +71,7 @@ class Calendar extends Controller
         $this->vars['mode'] = 'adding';
 
         $result = [
-            'tabTitle' => 'Neuer Kalender',
+            'tabTitle' => trans('zoomyboy.scoutnet::lang.newCalendar'),
             'tab'      => $this->formRender()
         ];
 

@@ -6,5 +6,10 @@ return [
         'calendar' => 'Kalender verwalten'
     ],
     'scoutnet' => 'Scoutnet',
-    'calendar' => 'Kalender'
+    'calendar' => 'Kalender',
+    'newCalendar' => 'Neuer Kalender',
+    'form' => [
+        'scoutnetIdLabel' => 'Scoutnet-ID',
+        'scoutnetIdPlaceholder' => 'Entfernten Scoutnet-Kalender auswählen'
+    ]
 ];
