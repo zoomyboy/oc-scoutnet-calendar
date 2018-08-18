@@ -11,20 +11,13 @@ form: $/zoomyboy/scoutnet/models/calendar/fields.yaml
 # Model Class name
 modelClass: Zoomyboy\Scoutnet\Models\Calendar
 
-# Default redirect location
-defaultRedirect: zoomyboy/scoutnet/calendar
-
 # Create page
 create:
     title: Create
-    redirect: zoomyboy/scoutnet/calendar/update/:id
-    redirectClose: zoomyboy/scoutnet/calendar
     flashSave: Calendar has been created!
 
 # Update page
 update:
     title: Edit
     redirect: zoomyboy/scoutnet/calendar
-    redirectClose: zoomyboy/scoutnet/calendar
-    flashSave: Caalendar has been updated
     flashDelete: Calendar has been deleted

@@ -15,7 +15,7 @@
     CalendarPage.prototype.constructor = CalendarPage
 
     CalendarPage.prototype.init = function() {
-        this.$masterTabs = $('#pages-master-tabs')
+        this.$masterTabs = $('#calendar-master-tabs')
         this.$sidePanel = $('#calendar-side-panel')
         this.$pageTree = $('[data-control=treeview]', this.$sidePanel)
         this.masterTabsObj = this.$masterTabs.data('oc.tab')
