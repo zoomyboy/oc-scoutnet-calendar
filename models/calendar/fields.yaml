@@ -5,7 +5,6 @@
 fields:
     scoutnet_id:
         span: left
-        type: dropdown
         options:
         label: zoomyboy.scoutnet::lang.form.scoutnetIdLabel
         placeholder: zoomyboy.scoutnet::lang.form.scoutnetIdPlaceholder

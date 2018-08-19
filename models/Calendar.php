@@ -45,11 +45,6 @@ class Calendar extends Model
 		return self::get()->pluck('name', 'id')->toArray();
 	}
 
-    public function getScoutnetIdOptions() {
-        return [
-        ];
-    }
-
 	public function beforeSave() {
 		try {
 			if (self::exists($this->scoutnet_id)) {
