@@ -2,3 +2,14 @@
 1.0.2:
     - Add database and create Calendars
     - create_calendars_table.php
+1.0.3:
+    - Create Events
+    - create_events_table.php
+1.0.4:
+    - Create Keywords
+    - create_keywords_table.php
+    - create_event_keyword_table.php
+1.0.5:
+    - Create Tags
+    - create_tags_table.php
+    - create_keyword_tag_table.php

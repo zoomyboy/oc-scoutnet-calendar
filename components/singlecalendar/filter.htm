@@ -1,0 +1,88 @@
+{% put openSidebar %}
+<div class="tw-flex tw-rounded-sm tw-border tw-border-primary tw-items-center tw-p-1 lg:tw-hidden tw-cursor-pointer" data-open-sidebar>
+    <svg  class="tw-fill-current tw-mr-2 tw-w-4 tw-h-4 tw-opacity-25" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/></svg>
+    <div class="tw-text-xs tw-whitespace-no-wrap tw-font-thin ">
+        Suchen
+    </div>
+</div>
+{% endput %}
+<form action="#">
+    <input type="hidden" name="filter[init]" value="true">
+
+    <!-- Kalender -->
+    <div class="tw-p-2 tw-bg-grey-lighter">
+        <label for="allCalendars" class="
+            checkbox-red tw-flex tw-justify-between tw-items-center tw-cursor-pointer
+            tw-tracking-wide tw-text-sm tw-font-semibold tw-text-grey-dark
+            tw-uppercase
+            tw-my-0
+            "
+        >
+            <input type="checkbox" name="filter[allCalendars]"
+                data-trigger=".calendarCheckbox"
+                data-trigger-action="clone"
+                id="allCalendars"
+            >
+            <span>
+                Kalender anzeigen
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
+            </span>
+        </label>
+    </div>
+    <div class="tw-p-2">
+        {% for calendar in calendars %}
+            <label for="calendar-{{ calendar.id }}" class="checkbox-red tw-flex tw-justify-between tw-items-center tw-cursor-pointer">
+                <input type="checkbox" name="filter[calendars][]" value="{{ calendar.id }}"
+                    id="calendar-{{ calendar.id }}"
+                    data-request="onFilter"
+                    data-request-update="'{{ __SELF__ }}::events': '#event-container'"
+                    class="calendarCheckbox"
+
+                    {% if calendar.id in filter.calendars %} checked {% endif %}
+                >
+                <span class="tw-pr-7 tw-text-sm tw-font-hairline">
+                    {{ calendar.name }}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
+                </span>
+            </label>
+        {% endfor %}
+    </div>
+
+    <!-- Kategorien -->
+    <div class="tw-p-2 tw-bg-grey-lighter">
+        <label for="allCategories" class="
+            checkbox-red tw-flex tw-justify-between tw-items-center tw-cursor-pointer
+            tw-tracking-wide tw-text-sm tw-font-semibold tw-text-grey-dark
+            tw-uppercase
+            tw-my-0
+            "
+        >
+            <input type="checkbox" name="filter[allCategories]"
+                data-trigger=".categoryCheckbox"
+                data-trigger-action="clone"
+                id="allCategories"
+            >
+            <span>
+                Kategorien
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
+            </span>
+        </label>
+    </div>
+    <div class="tw-p-2">
+        {% for category in categories %}
+            <label for="category-{{ category.id }}" class="checkbox-red tw-flex tw-justify-between tw-items-center tw-cursor-pointer">
+                <input type="checkbox" name="filter[categories][]" value="{{ category.id }}"
+                    id="category-{{ category.id }}"
+                    data-request="onFilter"
+                    class="categoryCheckbox"
+                    data-request-update="'{{ __SELF__ }}::events': '#event-container'"
+                    {% if category.id in filter.categories %} checked {% endif %}
+                >
+                <span class="tw-pr-7 tw-text-sm tw-font-hairline">
+                    {{ category.title }}
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
+                </span>
+            </label>
+        {% endfor %}
+    </div>
+</form>

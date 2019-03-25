@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Tag
+
+# Model Form Field configuration
+form: $/zoomyboy/scoutnet/models/tag/fields.yaml
+
+# Model Class name
+modelClass: Zoomyboy\Scoutnet\Models\Tag
+
+# Default redirect location
+defaultRedirect: zoomyboy/scoutnet/tag
+
+# Create page
+create:
+    title: Create Tag
+    redirect: zoomyboy/scoutnet/tag/update/:id
+    redirectClose: zoomyboy/scoutnet/tag
+
+# Update page
+update:
+    title: Edit Tag
+    redirect: zoomyboy/scoutnet/tag
+    redirectClose: zoomyboy/scoutnet/tag
+
+# Preview page
+preview:
+    title: Preview Tag

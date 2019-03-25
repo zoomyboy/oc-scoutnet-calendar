@@ -1,12 +1,14 @@
 <?php namespace Zoomyboy\Scoutnet\Controllers;
 
-use BackendMenu;
 use Lang;
 use Input;
+use Request;
+use BackendMenu;
 use Backend\Classes\Controller;
-use Zoomyboy\Scoutnet\Models\Calendar as CalendarModel;
+use Zoomyboy\Scoutnet\Models\Event;
 use Zoomyboy\Scoutnet\Classes\ScoutnetSync;
 use Zoomyboy\Scoutnet\Widgets\CalendarList;
+use Zoomyboy\Scoutnet\Models\Calendar as CalendarModel;
 
 /**
  * Calendar Back-end Controller
@@ -19,6 +21,7 @@ class Calendar extends Controller
     ];
 
     public $formConfig = 'config_form.yaml';
+
     public $listConfig = 'config_list.yaml';
 
     public function __construct()
@@ -63,18 +66,5 @@ class Calendar extends Controller
             'deleted' => $indexes->toArray(),
             'error'   => null
         ];
-    }
-
-    public function onCreateObject() {
-        $this->create();
-
-        $this->vars['mode'] = 'adding';
-
-        $result = [
-            'tabTitle' => trans('zoomyboy.scoutnet::lang.newCalendar'),
-            'tab'      => $this->formRender()
-        ];
-
-        return $result;
     }
 }

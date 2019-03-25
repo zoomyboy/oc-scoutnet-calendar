@@ -1,0 +1,14 @@
+# ===================================
+#  Reorder Behavior Config
+# ===================================
+
+# Reorder Title
+title: Reorder Categories
+
+# Attribute name
+nameFrom: title
+
+# Model Class name
+modelClass: Zoomyboy\Scoutnet\Models\Keyword
+
+

@@ -1,0 +1,20 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Event
+
+# Model Form Field configuration
+form: $/zoomyboy/scoutnet/models/event/fields.yaml
+
+# Model Class name
+modelClass: Zoomyboy\Scoutnet\Models\Event
+
+# Create page
+create:
+    title: Create
+
+# Update page
+update:
+    title: Edit

@@ -1,17 +1,7 @@
-<div class="scoutnetcalendar">
-	<div class="events columns is-multiline group-{{ __SELF__.calendar().getId() }}">
-	{% for event in __SELF__.events() %} 
-		<div class="event column is-4 event-{{ event.id }}">
-			<div class="box">
-				<div class="event-whenshort subtitle is-4 has-text-primary">
-					{{ event.whenShort }}
-				</div>
-				<div class="event-body">
-					<div class="event-title subtitle is-6">{{ event.title }}</div>
-					{% if(event.location) %}<div class="event-location"><span class="location-prefix event-prefix">Ort: </span>{{ event.location }}</div>{% endif %}
-				</div>
-			</div>
-		</div>
-	{% endfor %}
-	</div>
+{% put sidebar %}
+    {% partial __SELF__.alias ~ '::filter.htm' %}
+{% endput %}
+
+<div class="scoutnetcalendar" id="event-container">
+    {% partial __SELF__.alias ~ '::events.htm' events=events %}
 </div>

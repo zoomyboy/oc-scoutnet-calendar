@@ -1,0 +1,28 @@
+<?php foreach ($events as $event): ?>
+    <?php
+        $cbId = 'cb'.md5($event->name);
+    ?>
+    <li
+        data-status="collapsed"
+        data-id="event-<?php echo $event->id; ?>"
+        data-group-id="event-<?php echo $event->id; ?>"
+        <?php if ($searchMode): ?>data-no-drag-mode<?php endif ?>
+    >
+        <div>
+            <a href="#">
+                <?= e($event->title) ?>
+                <span class="comment"><?= e($event->starts_at) ?></span>
+            </a>
+
+            <div class="checkbox custom-checkbox nolabel">
+                <input
+                    id="event<?= $event->id ?>"
+                    type="checkbox"
+                    name="events[]"
+                    value="<?= $event->id ?>"
+                    value="1">
+                <label for="event<?= $event->id ?>">Select</label>
+            </div>
+        </div>
+    </li>
+<?php endforeach ?>

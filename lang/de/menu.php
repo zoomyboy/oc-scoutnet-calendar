@@ -2,5 +2,7 @@
 
 return [
     'scoutnet' => 'Scoutnet',
-    'calendar' => 'Kalender'
+    'calendar' => 'Kalender',
+    'keyword' => 'Stichwörter',
+    'tag' => 'Tags',
 ];

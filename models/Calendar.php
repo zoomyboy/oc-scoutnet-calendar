@@ -1,6 +1,8 @@
 <?php namespace Zoomyboy\Scoutnet\Models;
 
 use Model;
+use Zoomyboy\Scoutnet\Models\Event;
+use October\Rain\Database\Traits\Sortable;
 use Zoomyboy\Scoutnet\Classes\ScoutnetSync;
 use Zoomyboy\Scoutnet\Exceptions\CalendarNotFoundException;
 /**
@@ -8,6 +10,7 @@ use Zoomyboy\Scoutnet\Exceptions\CalendarNotFoundException;
  */
 class Calendar extends Model
 {
+    use Sortable;
 
     /**
      * @var string The database table used by the model.
@@ -28,7 +31,9 @@ class Calendar extends Model
      * @var array Relations
      */
     public $hasOne = [];
-    public $hasMany = [];
+    public $hasMany = [
+        'localevents' => [Event::class]
+    ];
     public $belongsTo = [];
     public $belongsToMany = [];
     public $morphTo = [];

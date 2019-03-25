@@ -13,17 +13,24 @@ class CalendarList extends WidgetBase {
     public $deleteConfirmation = 'rainlab.pages::lang.page.delete_confirmation';
 
     public function render() {
+        $this->vars['modelType'] = null;
+        $this->vars['modelId'] = null;
+
         return $this->makePartial('body', [
             'data' => $this->getData()
         ]);
     }
 
     public function getData() {
+        $query = Calendar::with(['localevents' => function($e) {
+            return $e->orderBy('starts_at', 'DESC');
+        }]);
+
         if ($this->getSearchTerm()) {
-            return Calendar::where('name', 'LIKE', '%'.$this->getSearchTerm().'%')->get();
+            $query->where('name', 'LIKE', '%'.$this->getSearchTerm().'%');
         }
 
-        return Calendar::get();
+        return $query->get();
     }
 
     public function onSearch() {
@@ -43,8 +50,27 @@ class CalendarList extends WidgetBase {
 
     public function onUpdate()
     {
-        $this->extendSelection();
+        $this->vars['modelType'] = Input::get('modelType');
+        $this->vars['modelId'] = Input::get('modelId');
 
         return $this->updateList();
+    }
+
+    /**
+     * Reorder calendar items
+     */
+    public function onReorder()
+    {
+        $structure = collect(json_decode(Input::get('structure'), true))
+            ->keys()
+            ->map(function($calendar) {
+                return str_replace('calendar-', '', $calendar);
+            });
+
+        $calendar = new Calendar();
+        $calendar->setSortableOrder(
+            $structure->toArray(),
+            range(1, $calendar->newQuery()->get()->count())
+        );
     }
 }

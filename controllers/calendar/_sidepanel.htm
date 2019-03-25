@@ -1,7 +1,11 @@
-<div class="layout control-scrollpanel" id="calendar-side-panel">
+<div class="layout control-scrollpanel" id="scoutnet-side-panel">
     <div class="layout-cell">
         <div class="layout-relative fix-button-container">
-            <form class="layout" data-content-id="calendar" data-object-type="calendar" onsubmit="return false">
+            <form class="layout" data-content-id="calendar" onsubmit="return false" data-type-icon="oc-calendar"
+                data-create-event-url="<?= Backend::url('zoomyboy/scoutnet/event/index') ?>"
+                data-edit-event-url="<?= Backend::url('zoomyboy/scoutnet/event/index') ?>"
+                data-delete-event-url="<?= Backend::url('zoomyboy/scoutnet/event/index') ?>"
+            >
                 <?= $this->widget->calendarList->render() ?>
             </form>
         </div>

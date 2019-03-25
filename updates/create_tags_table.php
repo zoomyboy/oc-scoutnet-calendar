@@ -4,22 +4,20 @@ use Schema;
 use October\Rain\Database\Schema\Blueprint;
 use October\Rain\Database\Updates\Migration;
 
-class CreateCalendarsTable extends Migration
+class CreateTagsTable extends Migration
 {
     public function up()
     {
-        Schema::create('zoomyboy_scoutnet_calendars', function(Blueprint $table) {
+        Schema::create('zoomyboy_scoutnet_tags', function(Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-			$table->string('name');
-            $table->integer('sort_order');
-			$table->integer('scoutnet_id')->unique();
+            $table->string('title');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('zoomyboy_scoutnet_calendars');
+        Schema::dropIfExists('zoomyboy_scoutnet_tags');
     }
 }

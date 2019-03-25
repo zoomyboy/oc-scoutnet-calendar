@@ -1,0 +1,81 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    title:
+        span: left
+        options:
+        label: zoomyboy.scoutnet::lang.form.titleLabel
+        placeholder: zoomyboy.scoutnet::lang.form.titlePlaceholder
+        required: true
+
+    location:
+        span: right
+        placeholder: zoomyboy.scoutnet::lang.form.locationPlaceholder
+        label: zoomyboy.scoutnet::lang.form.locationPlaceholder
+
+    toolbar:
+        type: partial
+        path: page_toolbar
+        cssClass: collapse-visible
+
+tabs:
+    fields:
+        starts_at:
+            tab: zoomyboy.scoutnet::lang.tabs.time
+            span: left
+            label: zoomyboy.scoutnet::lang.form.startsAt
+            type: datepicker
+            required: true
+
+        ends_at:
+            tab: zoomyboy.scoutnet::lang.tabs.time
+            span: right
+            label: zoomyboy.scoutnet::lang.form.endsAt
+            type: datepicker
+
+        organizer:
+            tab: zoomyboy.scoutnet::lang.tabs.info
+            span: left
+            label: zoomyboy.scoutnet::lang.form.organizer
+            type: text
+
+        target:
+            tab: zoomyboy.scoutnet::lang.tabs.info
+            span: right
+            label: zoomyboy.scoutnet::lang.form.target
+
+        url:
+            tab: zoomyboy.scoutnet::lang.tabs.info
+            span: left
+            label: zoomyboy.scoutnet::lang.form.url
+
+        url_text:
+            tab: zoomyboy.scoutnet::lang.tabs.info
+            span: right
+            label: zoomyboy.scoutnet::lang.form.urlText
+
+        calendar:
+            tab: zoomyboy.scoutnet::lang.tabs.info
+            span: right
+            label: Kalender
+            type: relation
+            placeholder: Bitte einen Kalender auswählen
+            cssClass: 'hidden'
+
+        images:
+            tab: zoomyboy.scoutnet::lang.tabs.images
+            label: zoomyboy.scoutnet::lang.form.images
+            type: fileupload
+            mode: image
+
+
+secondaryTabs:
+    stretch: true
+    fields:
+        description:
+            tab: rainlab.pages::lang.editor.content
+            type: richeditor
+            stretch: true
+            size: huge
