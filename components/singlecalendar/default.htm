@@ -2,6 +2,12 @@
     {% partial __SELF__.alias ~ '::filter.htm' %}
 {% endput %}
 
+{% put openSidebar %}
+<div id="calendar-actions">
+{% partial __SELF__.alias ~ '::actions.htm' %}
+</div>
+{% endput %}
+
 <div class="scoutnetcalendar" id="event-container">
     {% partial __SELF__.alias ~ '::events.htm' events=events %}
 </div>
