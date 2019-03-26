@@ -2,132 +2,79 @@
 
 namespace Zoomyboy\Scoutnet\Components;
 
+use Input;
+use Carbon\Carbon;
 use \Cms\Classes\ComponentBase;
+use Zoomyboy\Scoutnet\Models\Tag;
+use Zoomyboy\Scoutnet\Models\Event;
+use Zoomyboy\Scoutnet\Models\Keyword;
 use Zoomyboy\Scoutnet\Models\Calendar;
 use Zoomyboy\Scoutnet\Classes\ScoutnetSync;
-use Carbon\Carbon;
 
 class SingleCalendar extends ComponentBase {
-	private $calendar = false;
-	public $calendarYear;
-	public $yearList;
+    private $calendar = false;
+    public $calendarYear;
+    public $yearList;
+    public $months = ['', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
 
-	public function componentDetails() {
-		return [
-			'name' => "Single",
-			'description' => "Display a single Calendar"
-		];
-	}
+    public function defaultFilter() {
+        return [
+            'calendars' => [3],
+            'categories' => []
+        ];
+    }
 
-	public function getCalendarInstance() {
-		if ($this->calendar !== false) {
-			return $this->calendar;
-		}
-		if ($this->property('calendarId')) {
-			$id = Calendar::find($this->property('calendarId'))->scoutnet_id;
-			return ScoutnetSync::fromGroup($id);
-		}
-		return false;
-	}
+    public function componentDetails() {
+        return [
+            'name' => "Single",
+            'description' => "Display a single Calendar"
+        ];
+    }
 
+    public function events($filter = null) {
+        $filter = $filter ?: $this->defaultFilter();
 
-	public function calendar() {
-		return $this->getCalendarInstance();
-	}
+        $query = (new Event())->newQuery()
+            ->with(['keywords'])
+            ->select('title', 'organizer', 'starts_at', 'ends_at', 'location', 'target', 'id')
+            ->selectRaw('(SELECT GROUP_CONCAT(zoomyboy_scoutnet_keywords.title SEPARATOR \', \') from zoomyboy_scoutnet_keywords WHERE zoomyboy_scoutnet_keywords.id IN (SELECT zoomyboy_scoutnet_event_keyword.keyword_id FROM zoomyboy_scoutnet_event_keyword WHERE zoomyboy_scoutnet_event_keyword.event_id=zoomyboy_scoutnet_events.id)) AS keywordList')
+            ->orderBy('starts_at');
 
-	public function events() {
-		$calendar = $this->getCalendarInstance();
-		$events = $calendar->events()
-			->ofYears($this->getYears())
-			->theFirst($this->property('maxEvents'));
+        if (!empty($filter['calendars'])) {
+            $query->whereIn('calendar_id', $filter['calendars']);
+        }
 
-		if ($this->property('onlyFuture')) {
-			$events = $events->onlyFuture();
-		}
+        if (!empty($filter['categories'])) {
+            $query->whereHas('keywords', function($k) use ($filter) {
+                return $k->whereHas('tags', function($t) use ($filter) {
+                    return $t->whereIn('id', $filter['categories']);
+                });
+            });
+        }
 
-		return $events->get();
-	}
+        return $query->get()->groupBy(function($e) {
+            return $this->months[Carbon::parse($e->starts_at)->format('n')]
+            .' '.Carbon::parse($e->starts_at)->format('Y');
+        });
+    }
 
-	public function onRun() {
-		$this->yearList = implode(', ', $this->getYears());
-	}
+    public function onRun() {
+        $this->page['calendars'] = Calendar::orderBy('name')->get();
+        $this->page['categories'] = Tag::orderBy('title')->get();
+        $this->page['events'] = $this->events();
+        $this->page['filter'] = $this->defaultFilter();
+    }
 
-	public function onRender() {
-		$this->page['calendar'] = $this->getCalendarInstance();
-		$this->page['calendarYear'] = $this->getYears();
-	}
+    public function onFilter() {
+        return [
+            $this->alias.'::events' => $this->renderPartial($this->alias.'::events', [
+                'events' => $this->events(Input::get('filter'))
+            ])
+        ];
+    }
 
-	public function defineProperties() {
-		return [
-			'calendarId' => [
-				'title' => 'Calendar',
-				'description' => 'Select the calendar to display',
-				'required' => true,
-				'type' => 'dropdown',
-				'placeholder' => 'Select...',
-				'options' => Calendar::getSelectArray()
-			],
-			'years' => [
-				'title' => 'Years',
-				'description' => 'Enter the year(s) for the events, optional divided by "|"',
-				'type' => 'string'
-			],
-			'relative' => [
-				'title' => 'Relative Years',
-				'description' => 'Are the years relative to the current (e.g. 0 would be the current year)',
-				'type' => 'checkbox'
-			],
-			'onlyFuture' => [
-				'title' => 'Only future events',
-				'description' => 'Show only events that happen in the future',
-				'type' => 'checkbox',
-			]
-		];
-	}
-
-	private function getYears() {
-		if (!trim($this->property('years'))) {
-			return [];
-		}
-
-		if ($this->property('relative')) {
-			return array_unique(array_map(function($year) {
-				$year = trim($year);
-				$first = substr($year, 0, 1);
-
-				if (is_numeric($first)) {
-					return Carbon::now()->addYears($year)->format('Y');
-				}
-
-				if ($first == '+') {
-					return Carbon::now()->addYears(substr($year, 1))->format('Y');
-				}
-
-				if ($first == '-') {
-					return Carbon::now()->subYears(substr($year, 1))->format('Y');
-				}
-			}, explode('|', $this->property('years'))));
-		} else {
-			return array_filter(explode('|', $this->property('years')), function($year) {
-				return is_numeric($year) && is_numeric(substr($year, 0, 1)) && $year > 0;
-			});
-		}
-
-		$currentYear = date('Y');
-		$prop = $this->property('year');
-
-		if ($prop == '') {
-			return $currentYear;
-		}
-
-		if (substr($prop, 0, 1) == '-') {
-			return $currentYear - abs($prop);
-		}
-		if (substr($prop, 0, 1) == '+') {
-			return $currentYear + abs($prop);
-		}
-
-		return $prop;
-	}
+    public function defineProperties() {
+        return [];
+    }
 }
 

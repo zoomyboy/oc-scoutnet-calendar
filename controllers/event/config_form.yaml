@@ -2,11 +2,8 @@
 #  Form Behavior Config
 # ===================================
 
-# Record name
-name: Calendar
-
 # Model Form Field configuration
-form: $/zoomyboy/scoutnet/models/calendar/fields.yaml
+form: $/zoomyboy/scoutnet/models/event/fields.yaml
 
 # Model Class name
-modelClass: Zoomyboy\Scoutnet\Models\Calendar
+modelClass: Zoomyboy\Scoutnet\Models\Event

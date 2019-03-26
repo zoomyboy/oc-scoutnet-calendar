@@ -1,20 +1,17 @@
 <?php namespace Zoomyboy\Scoutnet\Models;
 
 use Model;
-use Zoomyboy\Scoutnet\Models\Event;
-use October\Rain\Database\Traits\Sortable;
+use Zoomyboy\Scoutnet\Models\Keyword;
 
 /**
- * Calendar Model
+ * Tag Model
  */
-class Calendar extends Model
+class Tag extends Model
 {
-    use Sortable;
-
     /**
      * @var string The database table used by the model.
      */
-    public $table = 'zoomyboy_scoutnet_calendars';
+    public $table = 'zoomyboy_scoutnet_tags';
 
     /**
      * @var array Guarded fields
@@ -24,17 +21,17 @@ class Calendar extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = ['scoutnet_id', 'name'];
+    protected $fillable = ['title'];
 
     /**
      * @var array Relations
      */
     public $hasOne = [];
-    public $hasMany = [
-        'events' => [Event::class]
-    ];
+    public $hasMany = [];
     public $belongsTo = [];
-    public $belongsToMany = [];
+    public $belongsToMany = [
+        'keywords' => [Keyword::class, 'table' => 'zoomyboy_scoutnet_keyword_tag']
+    ];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];

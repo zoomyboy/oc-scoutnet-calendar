@@ -2,21 +2,20 @@
     <ol>
         <?php foreach ($items as $calendar): ?>
             <?php
-                $name = $calendar->name;
-                $dataId = $this->dataIdPrefix.'-'.$calendar->id;
                 $searchMode = strlen($this->getSearchTerm()) > 0;
                 $cbId = 'cb'.md5($calendar->name);
             ?>
             <li
-                data-group-id="<?= e($calendar->name) ?>"
-                data-item-path="<?= e($calendar->name) ?>"
+                class="<?= $calendar->events->count() ? 'has-subitems' : null ?>"
+                data-status="<?= isset($modelType) && $modelType == 'event' && isset($modelId) && $calendar->events->where('id', $modelId)->count() ? 'expanded' : 'collapsed' ?>"
+                data-id="calendar-<?php echo $calendar->id; ?>"
+                data-group-id="calendar-<?php echo $calendar->id; ?>"
                 <?php if ($searchMode): ?>data-no-drag-mode<?php endif ?>
-                data-id="<?= e($calendar->id) ?>"
             >
                 <div>
                     <a href="#">
                         <?= e($calendar->name) ?>
-                        <span class="comment"><?= e($calendar->scoutnet_id) ?></span>
+                        <span class="comment">ID: <?= e($calendar->scoutnet_id) ?></span>
                     </a>
 
                     <input type="hidden" name="object[s<?= e($calendar->id) ?>]" value="0"/>
@@ -30,10 +29,33 @@
                             value="1">
                         <label for="<?= $cbId ?>">Select</label>
                     </div>
+
+                    <ul class="submenu">
+                        <li>
+                            <a
+                                href="#"
+                                data-control="create-event"
+                                data-parent="calendar-<?php echo $calendar->id; ?>"
+                            >
+                                <i class="icon-plus"></i>
+                                <?= \Lang::get('zoomyboy.scoutnet::lang.form.addEvent') ?>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
+
+                <ol
+                    <?php if(!(isset($modelType) && $modelType == 'event' && isset($modelId) && $calendar->events->where('id', $modelId)->count() ? 'expanded' : 'collapsed')): ?>
+                        style="overflow: visible; display: none; height: auto;"
+                    <?php endif; ?>
+                >
+                    <?php if ($events = $calendar->events): ?>
+                        <?= $this->makePartial('eventList', ['events' => $events, 'searchMode' => $searchMode]) ?>
+                    <?php endif ?>
+                </ol>
             </li>
         <?php endforeach ?>
     </ol>
 <?php else: ?>
-    <p class="no-data">Keine Einträge</p>
+    <p class="no-data"><?= \Lang::get('zoomyboy.scoutnet::lang.form.noContent') ?></p>
 <?php endif ?>

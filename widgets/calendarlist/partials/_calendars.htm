@@ -2,9 +2,11 @@
     <div class="control-scrollbar" data-control="scrollbar">
         <div class="control-treeview"
             data-control="treeview"
-            data-group-status-handler="<?= $this->getEventHandler('onSetCollapseStatus') ?>"
             data-reorder-handler="<?= $this->getEventHandler('onReorder') ?>"
             id="<?= $this->getId('calendar-list') ?>"
+            <?php if(isset($modelType) && isset($modelId)): ?>
+                data-oc.active-item="<?= $modelType ?>-<?= $modelId ?>"
+            <?php endif; ?>
         >
             <?= $this->makePartial('items', ['items' => $data]) ?>
         </div>

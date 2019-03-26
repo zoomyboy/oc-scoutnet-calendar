@@ -4,6 +4,7 @@
         <!-- Control Panel -->
         <div class="toolbar-item" data-calculate-width>
             <div class="btn-group">
+                <!-- @todo button-events in js schreiben, um Termin einzufügen -->
                 <button type="button" class="btn btn-default oc-icon-plus last"
                     data-request="onCreateObject"
                     data-request-success="
@@ -30,7 +31,7 @@
                 name="search"
                 value="<?= e($this->getSearchTerm()) ?>"
                 class="form-control icon search" autocomplete="off"
-                placeholder="<?= e(trans('rainlab.pages::lang.sidebar.search')) ?>"
+                placeholder="<?= e(trans('zoomyboy.scoutnet::lang.form.searchPlaceholder')) ?>"
                 data-track-input
                 data-load-indicator
                 data-load-indicator-opaque

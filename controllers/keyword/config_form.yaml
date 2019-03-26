@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Keyword
+
+# Model Form Field configuration
+form: $/zoomyboy/scoutnet/models/keyword/fields.yaml
+
+# Model Class name
+modelClass: Zoomyboy\Scoutnet\Models\Keyword
+
+# Default redirect location
+defaultRedirect: zoomyboy/scoutnet/keyword
+
+# Create page
+create:
+    title: Create Keyword
+    redirect: zoomyboy/scoutnet/keyword/update/:id
+    redirectClose: zoomyboy/scoutnet/keyword
+
+# Update page
+update:
+    title: Edit Keyword
+    redirect: zoomyboy/scoutnet/keyword
+    redirectClose: zoomyboy/scoutnet/keyword
+
+# Preview page
+preview:
+    title: Preview Keyword

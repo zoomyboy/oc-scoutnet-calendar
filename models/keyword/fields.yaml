@@ -1,0 +1,16 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
+fields:
+    title:
+        label: zoomyboy.scoutnet::lang.form.title
+    scoutnet_id:
+        label: Scoutnet ID
+        disabled: true
+    tags:
+        type: taglist
+        mode: relation
+        nameFrom: title
+        label: zoomyboy.scoutnet::lang.form.tags
+

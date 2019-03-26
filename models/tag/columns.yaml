@@ -1,0 +1,11 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
+columns:
+    title:
+        label: zoomyboy.scoutnet::lang.form.title
+        searchable: true
+    tags:
+        type: partial
+        path: ~/plugins/zoomyboy/scoutnet/models/tag/keywords_column.htm

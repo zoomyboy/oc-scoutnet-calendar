@@ -3,7 +3,7 @@
 # ===================================
 
 # Model List Column configuration
-list: $/zoomyboy/scoutnet/models/calendar/columns.yaml
+list: $/zoomyboy/scoutnet/models/event/columns.yaml
 
 # Model Class name
-modelClass: Zoomyboy\Scoutnet\Models\Calendar
+modelClass: Zoomyboy\Scoutnet\Models\Event

@@ -1,6 +1,6 @@
 <?php Block::put('breadcrumb') ?>
     <ul>
-        <li><a href="<?= Backend::url('zoomyboy/scoutnetcalendar/calendar') ?>">Calendar</a></li>
+        <li><a href="<?= Backend::url('zoomyboy/scoutnet/tag') ?>">Tag</a></li>
         <li><?= e($this->pageTitle) ?></li>
     </ul>
 <?php Block::endPut() ?>
@@ -20,7 +20,7 @@
                     data-request="onSave"
                     data-request-data="redirect:0"
                     data-hotkey="ctrl+s, cmd+s"
-                    data-load-indicator="Saving Calendar..."
+                    data-load-indicator="Saving Tag..."
                     class="btn btn-primary">
                     <u>S</u>ave
                 </button>
@@ -29,7 +29,7 @@
                     data-request="onSave"
                     data-request-data="close:1"
                     data-hotkey="ctrl+enter, cmd+enter"
-                    data-load-indicator="Saving Calendar..."
+                    data-load-indicator="Saving Tag..."
                     class="btn btn-default">
                     Save and Close
                 </button>
@@ -37,11 +37,11 @@
                     type="button"
                     class="oc-icon-trash-o btn-icon danger pull-right"
                     data-request="onDelete"
-                    data-load-indicator="Deleting Calendar..."
-                    data-request-confirm="Delete this calendar?">
+                    data-load-indicator="Deleting Tag..."
+                    data-request-confirm="Delete this tag?">
                 </button>
                 <span class="btn-text">
-                    or <a href="<?= Backend::url('zoomyboy/scoutnetcalendar/calendar') ?>">Cancel</a>
+                    or <a href="<?= Backend::url('zoomyboy/scoutnet/tag') ?>">Cancel</a>
                 </span>
             </div>
         </div>
@@ -51,6 +51,6 @@
 <?php else: ?>
 
     <p class="flash-message static error"><?= e($this->fatalError) ?></p>
-    <p><a href="<?= Backend::url('zoomyboy/scoutnetcalendar/calendar') ?>" class="btn btn-default">Return to calendar list</a></p>
+    <p><a href="<?= Backend::url('zoomyboy/scoutnet/tag') ?>" class="btn btn-default">Return to tag list</a></p>
 
 <?php endif ?>

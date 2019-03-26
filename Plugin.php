@@ -33,7 +33,10 @@ class Plugin extends PluginBase
      */
     public function register()
     {
-
+        $this->registerConsoleCommand(
+            'zoomyboy.scoutnetsync',
+            \Zoomyboy\Scoutnet\Console\ScoutnetSync::class
+        );
     }
 
     /**
@@ -79,6 +82,14 @@ class Plugin extends PluginBase
             'zoomyboy.scoutnet.calendar' => [
                 'tab' => 'Scoutnet',
                 'label' => 'zoomyboy.scoutnet::lang.permissions.calendar'
+            ],
+            'zoomyboy.scoutnet.keyword' => [
+                'tab' => 'Scoutnet',
+                'label' => 'zoomyboy.scoutnet::lang.permissions.keyword'
+            ],
+            'zoomyboy.scoutnet.tag' => [
+                'tab' => 'Scoutnet',
+                'label' => 'zoomyboy.scoutnet::lang.permissions.tag'
             ]
         ];
     }
@@ -97,30 +108,45 @@ class Plugin extends PluginBase
                 'icon'        => 'icon-calendar',
                 'permissions' => ['zoomyboy.scoutnet.*'],
                 'order'       => 500,
-				'sideMenu' => [
-					'calendar' => [
-						'label' => 'zoomyboy.scoutnet::menu.calendar',
-						'icon' => 'icon-calendar',
-						'url' => Backend::url('zoomyboy/scoutnet/calendar/index'),
-						'permissions' => ['zoomyboy.scoutnet.calendar']
-					]
-				]
+                'sideMenu' => [
+                    'calendar' => [
+                        'label' => 'zoomyboy.scoutnet::menu.calendar',
+                        'icon' => 'icon-calendar',
+                        'url' => Backend::url('zoomyboy/scoutnet/calendar/index'),
+                        'permissions' => ['zoomyboy.scoutnet.calendar'],
+                        'attributes'  => ['data-menu-item' => 'calendar'],
+                    ],
+                    'keyword' => [
+                        'label' => 'zoomyboy.scoutnet::menu.keyword',
+                        'icon' => 'icon-tag',
+                        'url' => Backend::url('zoomyboy/scoutnet/keyword/index'),
+                        'permissions' => ['zoomyboy.scoutnet.calendar'],
+                        'attributes'  => ['data-no-side-panel' => true],
+                    ],
+                    'tag' => [
+                        'label' => 'zoomyboy.scoutnet::menu.tag',
+                        'icon' => 'icon-tag',
+                        'url' => Backend::url('zoomyboy/scoutnet/tag/index'),
+                        'permissions' => ['zoomyboy.scoutnet.tag'],
+                        'attributes'  => ['data-no-side-panel' => true],
+                    ]
+                ]
             ],
         ];
     }
 
-	public function registerSettings() {
-		return [
-			'settings' => [
-				'label'       => 'Scoutnet',
-				'description' => 'zoomyboy.scoutnet::settings.description',
-				'category'    => 'Plugins',
-				'icon'        => 'icon-calendar',
-				'class'       => 'Zoomyboy\Scoutnet\Models\Settings',
-				'order'       => 500,
-				'keywords'    => 'calendar scoutnet scout',
-				'permissions' => ['zoomyboy.scoutnet.settings']
-			]
-		];
-	}
+    public function registerSettings() {
+        return [
+            'settings' => [
+                'label'       => 'Scoutnet',
+                'description' => 'zoomyboy.scoutnet::settings.description',
+                'category'    => 'Plugins',
+                'icon'        => 'icon-calendar',
+                'class'       => 'Zoomyboy\Scoutnet\Models\Settings',
+                'order'       => 500,
+                'keywords'    => 'calendar scoutnet scout',
+                'permissions' => ['zoomyboy.scoutnet.settings']
+            ]
+        ];
+    }
 }
