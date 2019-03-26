@@ -17,6 +17,9 @@ class SingleCalendar extends ComponentBase {
     public $yearList;
     public $months = ['', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
 
+    /**
+     * @todo configure filter
+     */
     public function defaultFilter() {
         return [
             'calendars' => [3],
