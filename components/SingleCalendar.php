@@ -23,7 +23,8 @@ class SingleCalendar extends ComponentBase {
     public function defaultFilter() {
         return [
             'calendars' => [3],
-            'categories' => []
+            'categories' => [],
+            'showPast' => false
         ];
     }
 
@@ -34,13 +35,18 @@ class SingleCalendar extends ComponentBase {
         ];
     }
 
-    public function events($filter = null) {
-        $filter = $filter ?: $this->defaultFilter();
+    public function events($filter = []) {
+        $filter = array_merge($this->defaultFilter(), $filter);
+
+        $minDate = empty($filter['showPast'])
+            ? Carbon::now()
+            : Carbon::now()->startOfYear()->subYears(1);
 
         $query = (new Event())->newQuery()
             ->with(['keywords'])
             ->select('title', 'organizer', 'starts_at', 'ends_at', 'location', 'target', 'id')
             ->selectRaw('(SELECT GROUP_CONCAT(zoomyboy_scoutnet_keywords.title SEPARATOR \', \') from zoomyboy_scoutnet_keywords WHERE zoomyboy_scoutnet_keywords.id IN (SELECT zoomyboy_scoutnet_event_keyword.keyword_id FROM zoomyboy_scoutnet_event_keyword WHERE zoomyboy_scoutnet_event_keyword.event_id=zoomyboy_scoutnet_events.id)) AS keywordList')
+            ->where('starts_at', '>=', $minDate)
             ->orderBy('starts_at');
 
         if (!empty($filter['calendars'])) {
