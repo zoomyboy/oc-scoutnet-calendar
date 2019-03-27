@@ -110,4 +110,12 @@ class Event extends Model
         return $this->starts_at->format('d.m.Y H:i')
         .(!empty($this->ends_at) ? ' - '.$this->ends_at->format('d.m.Y H:i') : '');
     }
+
+    public function getIcalStartAttribute() {
+        return $this->starts_at;
+    }
+
+    public function getIcalEndAttribute() {
+        return $this->ends_at ?: $this->starts_at->addMinutes(15);
+    }
 }

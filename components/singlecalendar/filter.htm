@@ -27,7 +27,10 @@
                 <input type="checkbox" name="filter[calendars][]" value="{{ calendar.id }}"
                     id="calendar-{{ calendar.id }}"
                     data-request="onFilter"
-                    data-request-update="'{{ __SELF__ }}::events': '#event-container'"
+                    data-request-update="
+                        '{{ __SELF__ }}::events': '#event-container',
+                        '{{ __SELF__ }}::actions': '#calendar-actions'
+                    "
                     class="calendarCheckbox"
 
                     {% if calendar.id in filter.calendars %} checked {% endif %}
@@ -67,7 +70,10 @@
                     id="category-{{ category.id }}"
                     data-request="onFilter"
                     class="categoryCheckbox"
-                    data-request-update="'{{ __SELF__ }}::events': '#event-container'"
+                    data-request-update="
+                        '{{ __SELF__ }}::events': '#event-container',
+                        '{{ __SELF__ }}::actions': '#calendar-actions'
+                    "
                     {% if category.id in filter.categories %} checked {% endif %}
                 >
                 <span class="tw-pr-7 tw-text-sm tw-font-hairline">
@@ -90,7 +96,10 @@
                 id="showPast"
                 data-request="onFilter"
                 class="categoryCheckbox"
-                data-request-update="'{{ __SELF__ }}::events': '#event-container'"
+                data-request-update="
+                    '{{ __SELF__ }}::events': '#event-container',
+                    '{{ __SELF__ }}::actions': '#calendar-actions'
+                "
                 {% if filter.showPast %} checked {% endif %}
             >
             <span class="tw-pr-7 tw-text-sm tw-font-hairline">

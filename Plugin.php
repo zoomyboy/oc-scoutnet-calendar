@@ -1,8 +1,11 @@
 <?php namespace Zoomyboy\Scoutnet;
 
+use Input;
 use Backend;
 use System\Classes\PluginBase;
 use Zoomyboy\Scoutnet\Models\Settings;
+use Zoomyboy\Scoutnet\Classes\IcalGenerator;
+use Zoomyboy\Scoutnet\Classes\EventRepository;
 
 
 /**
@@ -37,6 +40,13 @@ class Plugin extends PluginBase
             'zoomyboy.scoutnetsync',
             \Zoomyboy\Scoutnet\Console\ScoutnetSync::class
         );
+
+        $this->app->bind('scoutnet.ical', function() {
+            return new IcalGenerator();
+        });
+        $this->app->bind('scoutnetevents', function() {
+            return new EventRepository();
+        });
     }
 
     /**
