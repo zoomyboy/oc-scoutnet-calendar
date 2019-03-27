@@ -29,7 +29,7 @@
                     data-request="onFilter"
                     data-request-update="
                         '{{ __SELF__ }}::events': '#event-container',
-                        '{{ __SELF__ }}::actions': '#calendar-actions'
+                        '{{ __SELF__ }}::export-button': '#export-button'
                     "
                     class="calendarCheckbox"
 
@@ -72,7 +72,7 @@
                     class="categoryCheckbox"
                     data-request-update="
                         '{{ __SELF__ }}::events': '#event-container',
-                        '{{ __SELF__ }}::actions': '#calendar-actions'
+                        '{{ __SELF__ }}::export-button': '#export-button'
                     "
                     {% if category.id in filter.categories %} checked {% endif %}
                 >
@@ -98,7 +98,7 @@
                 class="categoryCheckbox"
                 data-request-update="
                     '{{ __SELF__ }}::events': '#event-container',
-                    '{{ __SELF__ }}::actions': '#calendar-actions'
+                    '{{ __SELF__ }}::export-button': '#export-button'
                 "
                 {% if filter.showPast %} checked {% endif %}
             >

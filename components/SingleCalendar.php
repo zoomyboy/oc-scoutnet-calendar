@@ -36,7 +36,7 @@ class SingleCalendar extends ComponentBase {
 
     public function events($filter = []) {
         $filter = array_merge($this->defaultFilter(), $filter);
-        return app('scoutnetevents')->get($filter);
+        return app('scoutnetevents')->forFrontend($filter)->group();
     }
 
     public function onRun() {
@@ -57,7 +57,7 @@ class SingleCalendar extends ComponentBase {
             $this->alias.'::events' => $this->renderPartial($this->alias.'::events', [
                 'events' => $this->events(Input::get('filter'))
             ]),
-            $this->alias.'::actions' => $this->renderPartial($this->alias.'::actions', [
+            $this->alias.'::export-button' => $this->renderPartial($this->alias.'::export-button', [
                 'href' => $this->generateExportLink(Input::get('filter'))
             ])
         ];

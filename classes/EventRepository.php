@@ -7,9 +7,11 @@ use Zoomyboy\Scoutnet\Models\Event;
 
 class EventRepository {
 
+    public $query;
+
     public $months = ['', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
 
-    public function get($filter = []) {
+    public function forFrontend($filter = []) {
         $minDate = empty($filter['showPast'])
             ? Carbon::now()
             : Carbon::now()->startOfYear()->subYears(1);
@@ -33,9 +35,26 @@ class EventRepository {
             });
         }
 
-        return $query->get()->groupBy(function($e) {
+        $this->query = $query;
+
+        return $this;
+    }
+
+    public function group() {
+        return $this->query->get()->groupBy(function($e) {
             return $this->months[Carbon::parse($e->starts_at)->format('n')]
             .' '.Carbon::parse($e->starts_at)->format('Y');
         });
+    }
+
+    public function forIcal($filters = []) {
+        $this->forFrontend($filters);
+        $this->query->addSelect('description');
+
+        return $this;
+    }
+
+    public function get() {
+        return $this->query->get();
     }
 }
