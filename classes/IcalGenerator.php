@@ -33,6 +33,10 @@ class IcalGenerator {
 
             $eventobj->addNode(new ZCiCalDataNode("DESCRIPTION:" . $event->description));
             $eventobj->addNode(new ZCiCalDataNode("LOCATION:" . $event->location));
+
+            if ($event->url) {
+                $eventobj->addNode(new ZCiCalDataNode("URL:" . $event->url));
+            }
         }
 
         echo $icalobj->export();
