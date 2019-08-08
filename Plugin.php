@@ -159,4 +159,8 @@ class Plugin extends PluginBase
             ]
         ];
     }
+
+    public function registerSchedule($schedule) {
+        $schedule->command('scoutnet:sync')->hourly();
+    }
 }
