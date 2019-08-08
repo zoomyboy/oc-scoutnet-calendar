@@ -39,6 +39,7 @@ class IcalGenerator {
             }
         }
 
-        echo $icalobj->export();
+        return response($icalobj->export())
+            ->header('Content-type', 'text/calendar');
     }
 }
