@@ -28,6 +28,6 @@ class CreateEventsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('zoomyboy_scoutnet_calendars');
+        Schema::dropIfExists('zoomyboy_scoutnet_events');
     }
 }
