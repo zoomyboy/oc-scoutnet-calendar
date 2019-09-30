@@ -1,0 +1,9 @@
+<?php if (!$this->fatalError): ?>
+    <?= Form::open([
+        'data-calendar-form' => ''
+    ]) ?>
+        <div class="layout-row">
+            <?= $form->render() ?>
+        </div>
+    <?= Form::close() ?>
+<?php endif ?>

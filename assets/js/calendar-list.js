@@ -29,7 +29,40 @@
         $(document).on('ajaxSuccess', '#scoutnet-master-tabs form', this.proxy(this.onAjaxSuccess))
         $(document).on('click', 'form.layout[data-content-id=calendar] button[data-control=delete-object]',
             this.proxy(this.onDeleteObject))
+        $(document).on('click', 'form.layout[data-content-id=calendar] [data-add-calendar]',
+            this.proxy(this.onCreateCalendar));
     }
+
+    ScoutnetPage.prototype.onCreateCalendar = function(e, context, data) {
+        var self = this,
+            form = $(e.target).closest('form'),
+            tabId = Math.floor(Math.random() * 10000);
+
+        $.oc.stripeLoadIndicator.show()
+        form.request('onCreate').done(function(data) {
+            self.$masterTabs.ocTab('addTab', data.tabTitle, data.content, tabId, 'oc-icon-calendar new-template')
+            
+            var tab = self.masterTabsObj.findByIdentifier(tabId);
+            var tabPane = self.masterTabsObj.findPaneFromTab(tab);
+
+            self.$calendarTree.treeView('markActive', '');
+            self.setPageTitle(data.tabTitle)
+
+            $(tabPane).on('submit', '[data-calendar-form]', self.proxy(self.onStoreCalendar))
+        }).always(function(){
+            $.oc.stripeLoadIndicator.hide()
+        })
+
+        e.stopPropagation()
+
+        return false
+    };
+
+    ScoutnetPage.prototype.onStoreCalendar = function(e) {
+        e.preventDefault();
+        var form = e.target;
+        $(form).request('onStore');
+    };
 
     ScoutnetPage.prototype.onDeleteObject = function(event, context, data) {
         var form = $('form.layout[data-content-id=calendar]');

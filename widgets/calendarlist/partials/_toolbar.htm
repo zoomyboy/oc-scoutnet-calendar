@@ -6,14 +6,10 @@
             <div class="btn-group">
                 <!-- @todo button-events in js schreiben, um Termin einzufügen -->
                 <button type="button" class="btn btn-default oc-icon-plus last"
-                    data-request="onCreateObject"
-                    data-request-success="
-                        $.oc.layout.setPageTitle('Neuer Kalender')
-                        $('#calendar-master-tabs').ocTab('addTab', data.tabTitle, data.tab, Math.floor(Math.random() * 10000), 'oc-icon-calendar new-template')
-                        $('#layout-side-panel').trigger('close.oc.sidePanel')
-                        $.oc.stripeLoadIndicator.hide()
-                    "
-                    ><?= e(trans('rainlab.pages::lang.sidebar.add')) ?></button>
+                    data-add-calendar
+                >
+                    <?= e(trans('rainlab.pages::lang.sidebar.add')) ?>
+                </button>
                 <button type="button" class="btn btn-default empty oc-icon-trash-o hide"
                     id="<?= $this->getId('delete-button') ?>"
                     data-control="delete-object"

@@ -48,6 +48,26 @@ class Calendar extends Controller
         $this->makeLists();
     }
 
+    public function onCreate()
+    {
+        $calendar = Request::input('calendar');
+        $this->vars['calendar'] = $calendar;
+
+        $this->vars['mode'] = 'adding';
+        parent::create();
+
+        return [
+            'tabTitle' => Lang::get('zoomyboy.scoutnet::lang.newEvent'),
+            'content' => $this->makePartial('create', [
+                'form' => $this->widget->form,
+            ])
+        ];
+    }
+
+    public function onStore() {
+        parent::create_onSave();
+    }
+
     public function onDeleteObjects() {
         $indexes = collect(Input::get('object'))
             ->filter(function($o) {
