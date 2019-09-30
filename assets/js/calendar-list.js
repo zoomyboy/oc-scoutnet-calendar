@@ -5,16 +5,16 @@
     var Base = $.oc.foundation.base,
         BaseProto = Base.prototype
 
-    var ScoutnetPage = function () {
+    var Scoutnet = function () {
         Base.call(this)
 
         this.init()
     }
 
-    ScoutnetPage.prototype = Object.create(BaseProto)
-    ScoutnetPage.prototype.constructor = ScoutnetPage
+    Scoutnet.prototype = Object.create(BaseProto)
+    Scoutnet.prototype.constructor = Scoutnet
 
-    ScoutnetPage.prototype.init = function() {
+    Scoutnet.prototype.init = function() {
         this.$masterTabs = $('#scoutnet-master-tabs')
         this.masterTabsObj = this.$masterTabs.data('oc.tab')
         this.$sidePanel = $('#scoutnet-side-panel')
@@ -23,7 +23,7 @@
         this.registerHandlers()
     }
 
-    ScoutnetPage.prototype.registerHandlers = function() {
+    Scoutnet.prototype.registerHandlers = function() {
         $(document).on('open.oc.treeview', 'form.layout[data-content-id=calendar]', this.proxy(this.onSidebarItemClick))
         $(document).on('submenu.oc.treeview', 'form.layout[data-content-id=calendar]', this.proxy(this.onSidebarSubmenuItemClick))
         $(document).on('ajaxSuccess', '#scoutnet-master-tabs form', this.proxy(this.onAjaxSuccess))
@@ -33,7 +33,7 @@
             this.proxy(this.onCreateCalendar));
     }
 
-    ScoutnetPage.prototype.onCreateCalendar = function(e, context, data) {
+    Scoutnet.prototype.onCreateCalendar = function(e, context, data) {
         var self = this,
             form = $(e.target).closest('form'),
             tabId = Math.floor(Math.random() * 10000);
@@ -58,13 +58,13 @@
         return false
     };
 
-    ScoutnetPage.prototype.onStoreCalendar = function(e) {
+    Scoutnet.prototype.onStoreCalendar = function(e) {
         e.preventDefault();
         var form = e.target;
         $(form).request('onStore');
     };
 
-    ScoutnetPage.prototype.onDeleteObject = function(event, context, data) {
+    Scoutnet.prototype.onDeleteObject = function(event, context, data) {
         var form = $('form.layout[data-content-id=calendar]');
         var self = this;
 
@@ -76,7 +76,7 @@
         });
     };
 
-    ScoutnetPage.prototype.onAjaxSuccess = function(event, context, data) {
+    Scoutnet.prototype.onAjaxSuccess = function(event, context, data) {
         var form = $(event.currentTarget),
             tabPane = form.closest('.tab-pane')
 
@@ -93,14 +93,14 @@
         this.updateObjectList('event', tabId)
     }
 
-    ScoutnetPage.prototype.onSidebarSubmenuItemClick = function(e) {
+    Scoutnet.prototype.onSidebarSubmenuItemClick = function(e) {
         if ($(e.clickEvent.target).data('control') == 'create-event')
             this.onCreateEvent(e.clickEvent)
 
         return false
     }
 
-    ScoutnetPage.prototype.updateObjectList = function(modelType, modelId) {
+    Scoutnet.prototype.updateObjectList = function(modelType, modelId) {
         var form = $('form[data-content-id=calendar]', this.$sidePanel),
             self = this
 
@@ -118,7 +118,7 @@
         })
     }
 
-    ScoutnetPage.prototype.onCreateEvent = function(e) {
+    Scoutnet.prototype.onCreateEvent = function(e) {
         var self = this,
             button = $(e.target),
             form = button.closest('form'),
@@ -153,11 +153,11 @@
         return false
     }
 
-    ScoutnetPage.prototype.setPageTitle = function(title) {
+    Scoutnet.prototype.setPageTitle = function(title) {
         $.oc.layout.setPageTitle(title)
     }
 
-    ScoutnetPage.prototype.onStoreEvent = function(e) {
+    Scoutnet.prototype.onStoreEvent = function(e) {
         e.preventDefault();
         var form = e.target;
         $(form).request('onStore', {
@@ -165,7 +165,7 @@
         });
     }
 
-    ScoutnetPage.prototype.onUpdateEvent = function(e, eventId) {
+    Scoutnet.prototype.onUpdateEvent = function(e, eventId) {
         e.preventDefault();
         var form = e.target;
         $(form).request('onUpdate', {
@@ -173,7 +173,7 @@
         });
     }
 
-    ScoutnetPage.prototype.onSidebarItemClick = function(e) {
+    Scoutnet.prototype.onSidebarItemClick = function(e) {
         var self = this,
             item = $(e.relatedTarget),
             form = item.closest('form'),
@@ -208,7 +208,7 @@
     }
 
     $(document).ready(function(){
-        $.oc.scoutnetPage = new ScoutnetPage()
+        $.oc.Scoutnet = new Scoutnet()
     })
 
 }(window.jQuery);
