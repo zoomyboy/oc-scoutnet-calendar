@@ -62,6 +62,12 @@ class Calendar extends Controller
         ];
     }
 
+    public function create_onSave() {
+        parent::create_onSave();
+
+        return ['model' => $this->formGetModel(), 'tabTitle' => $this->formGetModel()->title];
+    }
+
     public function onGetTitle() {
         try {
             $group = ScoutnetSync::fromGroup(Input::get('Calendar.scoutnet_id'));

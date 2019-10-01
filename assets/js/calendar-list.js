@@ -37,7 +37,7 @@
     Scoutnet.prototype.onCreateCalendar = function(e, context, data) {
         var self = this,
             form = this.$sidePanelForm,
-            tabId = Math.floor(Math.random() * 10000);
+            tabId = 'calendar-'+Math.floor(Math.random() * 10000);
 
         $.oc.stripeLoadIndicator.show()
         form.request('onCreate').done(function(data) {
@@ -49,9 +49,9 @@
             self.$calendarTree.treeView('markActive', '');
             self.setPageTitle(data.tabTitle)
 
-            $(tabPane).on('keyup change', '[data-calendar-form] [data-source=title]', self.proxy(self.getCalendarTitle));
+            $(tabPane).on('keyup change', '[data-source=title]', self.proxy(self.getCalendarTitle));
 
-            $(tabPane).on('submit', '[data-calendar-form]', self.proxy(self.onStoreCalendar))
+            $(tabPane).on('submit', 'form', self.proxy(self.onStoreCalendar))
         }).always(function(){
             $.oc.stripeLoadIndicator.hide()
         })
@@ -97,6 +97,8 @@
         var form = $(event.currentTarget),
             tabPane = form.closest('.tab-pane')
 
+        var tabId = this.masterTabsObj.findTabFromPane(tabPane).parent().data('tab-id').split('-');
+
         var tabTitle = data.tabTitle ? data.tabTitle : null;
 
         if(tabTitle) {
@@ -104,10 +106,13 @@
             this.setPageTitle(tabTitle)
         }
 
-        var tabId = data.model ? data.model.id : tabPane.attr('id');
-        this.$masterTabs.ocTab('updateIdentifier', tabPane, 'event-'+tabId)
+        if (data.model) {
+            tabId[1] = data.model.id;
+        }
 
-        this.updateObjectList('event', tabId)
+        this.$masterTabs.ocTab('updateIdentifier', tabPane, tabId.join('-'))
+
+        this.updateObjectList(tabId[0], tabId[1])
     }
 
     Scoutnet.prototype.onSidebarSubmenuItemClick = function(e) {
@@ -137,12 +142,11 @@
 
     Scoutnet.prototype.onCreateEvent = function(e) {
         var self = this,
-            button = $(e.target),
-            form = button.closest('form'),
-            calendar = button.data('parent') !== undefined
-                ? button.data('parent').replace('calendar-', '')
-                : null,
-            tabId = Math.random()
+            tabId = 'event-'+Math.floor(Math.random() * 10000),
+            form = this.$sidePanelForm,
+            calendar = $(e.target).data('parent') !== undefined
+                ? $(e.target).data('parent').replace('calendar-', '')
+                : null;
 
         $.oc.stripeLoadIndicator.show()
         form.request('onCreate', {
@@ -151,19 +155,19 @@
                calendar: calendar
             }
         }).done(function(data) {
-            var tab = self.$masterTabs.ocTab('addTab', data.tabTitle, data.content, tabId, form.data('type-icon') + ' new-template')
-            tab = self.masterTabsObj.findByIdentifier(tabId);
+            self.$masterTabs.ocTab('addTab', data.tabTitle, data.content, tabId, 'oc-icon-calendar new-template')
 
+            var tab = self.masterTabsObj.findByIdentifier(tabId);
             var tabPane = self.masterTabsObj.findPaneFromTab(tab);
 
-            $(tabPane).on('submit', 'form.layout[data-event-form]', self.proxy(self.onStoreEvent))
-
             self.$calendarTree.treeView('markActive', '');
-
             self.setPageTitle(data.tabTitle)
+
+            $(tabPane).on('submit', 'form', self.proxy(self.onStoreEvent))
         }).always(function(){
             $.oc.stripeLoadIndicator.hide()
         })
+
 
         e.stopPropagation()
 
