@@ -7,6 +7,15 @@ fields:
         span: left
         label: zoomyboy.scoutnet::lang.form.scoutnetIdLabel
         placeholder: zoomyboy.scoutnet::lang.form.scoutnetIdPlaceholder
+        attributes:
+            data-source: title
+
+    title:
+        span: right
+        label: zoomyboy.scoutnet::lang.form.titleLabel
+        placeholder: zoomyboy.scoutnet::lang.form.titlePlaceholder
+        attributes:
+            data-target: title
 
     toolbar:
         type: partial

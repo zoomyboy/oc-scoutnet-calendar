@@ -31,6 +31,10 @@ class ScoutnetSync {
 		return $this->sn->name;
 	}
 
+    public function isValid() {
+        return $this->sn !== null;
+    }
+
 	public function getZip() {
 		return $this->sn->zip;
 	}

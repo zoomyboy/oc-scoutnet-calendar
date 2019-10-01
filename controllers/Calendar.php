@@ -3,6 +3,7 @@
 use Lang;
 use Input;
 use Request;
+use Exception;
 use BackendMenu;
 use Backend\Classes\Controller;
 use Zoomyboy\Scoutnet\Models\Event;
@@ -59,6 +60,16 @@ class Calendar extends Controller
                 'form' => $this->widget->form,
             ])
         ];
+    }
+
+    public function onGetTitle() {
+        try {
+            $group = ScoutnetSync::fromGroup(Input::get('Calendar.scoutnet_id'));
+
+            return response($group->getName());
+        } catch(Exception $e) {
+            return response('');
+        }
     }
 
     public function onDeleteObjects() {

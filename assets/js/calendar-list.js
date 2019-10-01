@@ -49,6 +49,8 @@
             self.$calendarTree.treeView('markActive', '');
             self.setPageTitle(data.tabTitle)
 
+            $(tabPane).on('keyup change', '[data-calendar-form] [data-source=title]', self.proxy(self.getCalendarTitle));
+
             $(tabPane).on('submit', '[data-calendar-form]', self.proxy(self.onStoreCalendar))
         }).always(function(){
             $.oc.stripeLoadIndicator.hide()
@@ -57,6 +59,20 @@
         e.stopPropagation()
 
         return false
+    };
+
+    Scoutnet.prototype.getCalendarTitle = function(e) {
+        $.oc.stripeLoadIndicator.show();
+
+        var $form = $(e.target).closest('form');
+        var target = $form.find('[data-target=title]');
+
+        $form.request('onGetTitle').done(function(data) {
+            target.val(data);
+        }).error(function() {})
+        .always(function() {
+            $.oc.stripeLoadIndicator.hide();
+        });
     };
 
     Scoutnet.prototype.onStoreCalendar = function(e) {
