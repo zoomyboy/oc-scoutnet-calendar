@@ -15,7 +15,7 @@
     Scoutnet.prototype.constructor = Scoutnet
 
     Scoutnet.prototype.init = function() {
-        this.$masterTabs = $('#scoutnet-master-tabs')
+        this.$masterTabs = $('#master-tabs')
         this.masterTabsObj = this.$masterTabs.data('oc.tab')
         this.$sidePanel = $('#scoutnet-side-panel')
         this.$calendarTree = $('[data-control=treeview]', this.$sidePanel)
@@ -26,7 +26,7 @@
     Scoutnet.prototype.registerHandlers = function() {
         $(document).on('open.oc.treeview', 'form.layout[data-content-id=calendar]', this.proxy(this.onSidebarItemClick))
         $(document).on('submenu.oc.treeview', 'form.layout[data-content-id=calendar]', this.proxy(this.onSidebarSubmenuItemClick))
-        $(document).on('ajaxSuccess', '#scoutnet-master-tabs form', this.proxy(this.onAjaxSuccess))
+        $(document).on('ajaxSuccess', '#master-tabs form', this.proxy(this.onAjaxSuccess))
         $(document).on('click', 'form.layout[data-content-id=calendar] button[data-control=delete-object]',
             this.proxy(this.onDeleteObject))
         $(document).on('click', 'form.layout[data-content-id=calendar] [data-add-calendar]',
