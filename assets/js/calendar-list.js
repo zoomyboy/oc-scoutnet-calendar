@@ -36,7 +36,7 @@
 
     Scoutnet.prototype.onCreateCalendar = function(e, context, data) {
         var self = this,
-            form = $(e.target).closest('form'),
+            form = this.$sidePanelForm,
             tabId = Math.floor(Math.random() * 10000);
 
         $.oc.stripeLoadIndicator.show()
