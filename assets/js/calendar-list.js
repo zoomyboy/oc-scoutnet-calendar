@@ -30,7 +30,7 @@
         $(document).on('ajaxSuccess', '#master-tabs form', this.proxy(this.onAjaxSuccess))
         $(document).on('click', '#sidebar-form button[data-control=delete-object]',
             this.proxy(this.onDeleteObject))
-        $(document).on('click', '#sidebar-form [data-add-calendar]',
+        $(document).on('click', '#sidebar-form [data-control=create-calendar]',
             this.proxy(this.onCreateCalendar));
     }
 
