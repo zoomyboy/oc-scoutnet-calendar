@@ -3,6 +3,7 @@
 use Model;
 use Zoomyboy\Scoutnet\Models\Event;
 use October\Rain\Database\Traits\Sortable;
+use \October\Rain\Database\Traits\Validation;
 
 /**
  * Calendar Model
@@ -10,6 +11,12 @@ use October\Rain\Database\Traits\Sortable;
 class Calendar extends Model
 {
     use Sortable;
+    use Validation;
+
+    public $rules = [
+        'title' => 'required',
+        'scoutnet_id' => 'required'
+    ];
 
     /**
      * @var string The database table used by the model.
