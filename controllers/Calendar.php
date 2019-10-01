@@ -54,7 +54,7 @@ class Calendar extends Controller
         parent::create();
 
         return [
-            'tabTitle' => Lang::get('zoomyboy.scoutnet::lang.newEvent'),
+            'tabTitle' => Lang::get('zoomyboy.scoutnet::lang.newCalendar'),
             'content' => $this->makePartial('create', [
                 'form' => $this->widget->form,
             ])
