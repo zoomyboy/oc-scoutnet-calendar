@@ -64,10 +64,6 @@ class Calendar extends Controller
         ];
     }
 
-    public function onStore() {
-        parent::create_onSave();
-    }
-
     public function onDeleteObjects() {
         $indexes = collect(Input::get('object'))
             ->filter(function($o) {

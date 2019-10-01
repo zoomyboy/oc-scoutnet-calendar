@@ -61,7 +61,7 @@
     Scoutnet.prototype.onStoreCalendar = function(e) {
         e.preventDefault();
         var form = e.target;
-        $(form).request('onStore');
+        $(form).request('onSave', { url: form.getAttribute('action') });
     };
 
     Scoutnet.prototype.onDeleteObject = function(event, context, data) {
