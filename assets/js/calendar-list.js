@@ -17,19 +17,20 @@
     Scoutnet.prototype.init = function() {
         this.$masterTabs = $('#master-tabs')
         this.masterTabsObj = this.$masterTabs.data('oc.tab')
-        this.$sidePanel = $('#scoutnet-side-panel')
+        this.$sidePanel = $('#side-panel');
+        this.$sidePanelForm = $('#sidebar-form');
         this.$calendarTree = $('[data-control=treeview]', this.$sidePanel)
 
         this.registerHandlers()
     }
 
     Scoutnet.prototype.registerHandlers = function() {
-        $(document).on('open.oc.treeview', 'form.layout[data-content-id=calendar]', this.proxy(this.onSidebarItemClick))
-        $(document).on('submenu.oc.treeview', 'form.layout[data-content-id=calendar]', this.proxy(this.onSidebarSubmenuItemClick))
+        $(document).on('open.oc.treeview', '#sidebar-form', this.proxy(this.onSidebarItemClick))
+        $(document).on('submenu.oc.treeview', '#sidebar-form', this.proxy(this.onSidebarSubmenuItemClick))
         $(document).on('ajaxSuccess', '#master-tabs form', this.proxy(this.onAjaxSuccess))
-        $(document).on('click', 'form.layout[data-content-id=calendar] button[data-control=delete-object]',
+        $(document).on('click', '#sidebar-form button[data-control=delete-object]',
             this.proxy(this.onDeleteObject))
-        $(document).on('click', 'form.layout[data-content-id=calendar] [data-add-calendar]',
+        $(document).on('click', '#sidebar-form [data-add-calendar]',
             this.proxy(this.onCreateCalendar));
     }
 
@@ -65,7 +66,7 @@
     };
 
     Scoutnet.prototype.onDeleteObject = function(event, context, data) {
-        var form = $('form.layout[data-content-id=calendar]');
+        var form = this.$sidePanelForm;
         var self = this;
 
         form.request('onDelete', {
@@ -101,7 +102,7 @@
     }
 
     Scoutnet.prototype.updateObjectList = function(modelType, modelId) {
-        var form = $('form[data-content-id=calendar]', this.$sidePanel),
+        var form = this.$sidePanelForm,
             self = this
 
         var data = modelType ? {modelType: modelType, modelId: modelId} : {};
