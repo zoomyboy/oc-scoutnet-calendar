@@ -50,9 +50,6 @@ class Calendar extends Controller
 
     public function onCreate()
     {
-        $calendar = Request::input('calendar');
-        $this->vars['calendar'] = $calendar;
-
         $this->vars['mode'] = 'adding';
         parent::create();
 
