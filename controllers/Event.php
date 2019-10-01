@@ -57,7 +57,7 @@ class Event extends Controller
         return $model;
     }
 
-    public function onStore() {
+    public function create_onSave() {
         parent::create_onSave();
 
         return ['model' => $this->formGetModel(), 'tabTitle' => $this->formGetModel()->title];

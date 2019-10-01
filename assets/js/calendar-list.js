@@ -93,11 +93,20 @@
         });
     };
 
+    Scoutnet.prototype.afterSave = function(form, tabId) {
+        $(form).find('[data-control=delete-button]').removeClass('hidden');
+        
+    };
+
     Scoutnet.prototype.onAjaxSuccess = function(event, context, data) {
         var form = $(event.currentTarget),
             tabPane = form.closest('.tab-pane')
 
         var tabId = this.masterTabsObj.findTabFromPane(tabPane).parent().data('tab-id').split('-');
+
+        if (context.handler == 'onSave') {
+            this.afterSave(form, tabId);
+        }
 
         var tabTitle = data.tabTitle ? data.tabTitle : null;
 
@@ -181,9 +190,7 @@
     Scoutnet.prototype.onStoreEvent = function(e) {
         e.preventDefault();
         var form = e.target;
-        $(form).request('onStore', {
-            url: $(form).data('request-url')
-        });
+        $(form).request('onSave', { url: form.getAttribute('action') });
     }
 
     Scoutnet.prototype.onUpdateEvent = function(e, eventId) {

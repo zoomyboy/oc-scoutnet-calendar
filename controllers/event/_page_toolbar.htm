@@ -6,13 +6,11 @@
         <?= e(trans('backend::lang.form.save')) ?>
     </button>
 
-    <?php if($mode == 'editing'): ?>
     <button
         type="button"
-        class="btn btn-default empty oc-icon-trash-o"
+        class="btn btn-default empty oc-icon-trash-o <?php if ($mode !== 'editing'): ?> hidden <?php endif; ?>"
         data-request="onDelete"
         data-request-confirm="Löschen?"
         data-request-success="$.oc.calendarPage.closeTabs(data, 'calendar'); $.oc.calendarPage.updateObjectList('calendar'); $(this).trigger('close.oc.tab', [{force: true}])"
         data-control="delete-button"></button>
-    <?php endif; ?>
 </div>
