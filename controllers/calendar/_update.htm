@@ -1,0 +1,11 @@
+<?php if (!$this->fatalError): ?>
+    <?= Form::open([
+        'data-calendar-form' => '',
+        'class' => 'layout',
+        'url' => Backend::url('zoomyboy/scoutnet/calendar/update/'.$form->model->id)
+    ]) ?>
+        <div class="layout-row">
+            <?= $form->render() ?>
+        </div>
+    <?= Form::close() ?>
+<?php endif ?>

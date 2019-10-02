@@ -2,6 +2,12 @@
  * Handles the Scoutnet main page.
  */
 +function ($) { "use strict";
+    String.prototype.ucfirst = function() {
+        var f = this.charAt(0)
+        .toUpperCase()
+        return f + this.substr(1)
+    };
+
     var Base = $.oc.foundation.base,
         BaseProto = Base.prototype
 
@@ -93,9 +99,19 @@
         });
     };
 
-    Scoutnet.prototype.afterSave = function(form, tabId) {
+    Scoutnet.prototype.afterSave = function(form, tabId, tabPane) {
         $(form).find('[data-control=delete-button]').removeClass('hidden');
-        
+        $(tabPane).off('submit', 'form');
+        $(tabPane).on('submit', 'form', this.proxy(this['onUpdate'+tabId[0].ucfirst()]));
+    };
+
+    Scoutnet.prototype.onUpdateCalendar = function(e) {
+        e.preventDefault();
+        var form = e.target,
+            tabPane = form.closest('.tab-pane'),
+            tabId = this.masterTabsObj.findTabFromPane(tabPane).parent().data('tab-id');
+
+        $(form).request('onSave', { url: this.getEditUrl(tabId) });
     };
 
     Scoutnet.prototype.onAjaxSuccess = function(event, context, data) {
@@ -105,7 +121,7 @@
         var tabId = this.masterTabsObj.findTabFromPane(tabPane).parent().data('tab-id').split('-');
 
         if (context.handler == 'onSave') {
-            this.afterSave(form, tabId);
+            this.afterSave(form, tabId, tabPane);
         }
 
         var tabTitle = data.tabTitle ? data.tabTitle : null;
@@ -193,18 +209,24 @@
         $(form).request('onSave', { url: form.getAttribute('action') });
     }
 
-    Scoutnet.prototype.onUpdateEvent = function(e, eventId) {
+    Scoutnet.prototype.onUpdateObject = function(e, eventId) {
         e.preventDefault();
-        var form = e.target;
-        $(form).request('onUpdate', {
-            url: $(form).data('request-url')
-        });
+
+        var form = e.target,
+            tabPane = form.closest('.tab-pane'),
+            tabId = this.masterTabsObj.findTabFromPane(tabPane).parent().data('tab-id');
+
+        $(form).request('onSave', { url: this.getEditUrl(tabId.split('-')) });
     }
+
+    Scoutnet.prototype.getEditUrl = function(tabId) {
+        return this.$sidePanelForm.data('edit-url').replace('{model}', tabId[0]).replace('{id}', tabId[1]);
+    };  
 
     Scoutnet.prototype.onSidebarItemClick = function(e) {
         var self = this,
             item = $(e.relatedTarget),
-            form = item.closest('form'),
+            form = this.$sidePanelForm,
             tabId = item.data('id');
 
         // Find if the tab is already opened
@@ -215,19 +237,19 @@
 
         // Open a new tab
         $.oc.stripeLoadIndicator.show()
-        var eventId = item.data('id').replace('event-', '');
-        form.request('onEdit', {
-            data: {
-               event: eventId
-            },
-            url: form.data('edit-event-url'),
-        }).done(function(data) {
-            var tab = self.$masterTabs.ocTab('addTab', data.tabTitle, data.content, tabId, form.data('type-icon'))
-            tab = self.masterTabsObj.findByIdentifier(tabId);
+        
+        form.request('onEdit', { url: this.getEditUrl(tabId.split('-')) }).done(function(data) {
+            self.$masterTabs.ocTab('addTab', data.tabTitle, data.content, tabId, 'oc-icon-calendar new-template')
+
+            var tab = self.masterTabsObj.findByIdentifier(tabId);
             var tabPane = self.masterTabsObj.findPaneFromTab(tab);
-            $(tabPane).on('submit', 'form.layout[data-event-form]', self.proxy(self.onUpdateEvent, eventId))
+
             self.$calendarTree.treeView('markActive', tabId);
             self.setPageTitle(data.tabTitle)
+
+            $(tabPane).on('keyup change', '[data-source=title]', self.proxy(self.getCalendarTitle));
+
+            $(tabPane).on('submit', 'form', self.proxy(self.onUpdateObject))
         }).always(function() {
             $.oc.stripeLoadIndicator.hide()
         })

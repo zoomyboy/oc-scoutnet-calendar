@@ -62,6 +62,19 @@ class Calendar extends Controller
         ];
     }
 
+    public function update_onEdit($recordId = null, $context = null)
+    {
+        $this->vars['mode'] = 'editing';
+        parent::update($recordId, $context);
+
+        return [
+            'tabTitle' => $this->widget->form->model->title,
+            'content' => $this->makePartial('update', [
+                'form' => $this->widget->form,
+            ])
+        ];
+    }
+
     public function create_onSave() {
         parent::create_onSave();
 
