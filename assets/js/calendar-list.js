@@ -99,10 +99,11 @@
         });
     };
 
-    Scoutnet.prototype.afterSave = function(form, tabId, tabPane) {
+    Scoutnet.prototype.afterSave = function(form) {
+        var tabPane = form.closest('.tab-pane');
         $(form).find('[data-control=delete-button]').removeClass('hidden');
         $(tabPane).off('submit', 'form');
-        $(tabPane).on('submit', 'form', this.proxy(this['onUpdate'+tabId[0].ucfirst()]));
+        $(tabPane).on('submit', 'form', this.proxy(this.onUpdateObject));
     };
 
     Scoutnet.prototype.onUpdateCalendar = function(e) {
@@ -121,7 +122,7 @@
         var tabId = this.masterTabsObj.findTabFromPane(tabPane).parent().data('tab-id').split('-');
 
         if (context.handler == 'onSave') {
-            this.afterSave(form, tabId, tabPane);
+            this.afterSave(form);
         }
 
         var tabTitle = data.tabTitle ? data.tabTitle : null;
@@ -175,7 +176,7 @@
 
         $.oc.stripeLoadIndicator.show()
         form.request('onCreate', {
-            url: form.data('create-event-url'),
+            url: this.getCreateUrl('event'),
             data: {
                calendar: calendar
             }
@@ -217,6 +218,11 @@
         return this.$sidePanelForm.data('edit-url')
             .replace('{model}', tabId.split('-')[0])
             .replace('{id}', tabId.split('-')[1]);
+    };  
+
+    Scoutnet.prototype.getCreateUrl = function(model) {
+        return this.$sidePanelForm.data('create-url')
+            .replace('{model}', model);
     };  
 
     Scoutnet.prototype.onSidebarItemClick = function(e) {
