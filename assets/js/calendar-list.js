@@ -57,7 +57,7 @@
 
             $(tabPane).on('keyup change', '[data-source=title]', self.proxy(self.getCalendarTitle));
 
-            $(tabPane).on('submit', 'form', self.proxy(self.onStoreCalendar))
+            $(tabPane).on('submit', 'form', self.proxy(self.onStoreObject))
         }).always(function(){
             $.oc.stripeLoadIndicator.hide()
         })
@@ -81,7 +81,7 @@
         });
     };
 
-    Scoutnet.prototype.onStoreCalendar = function(e) {
+    Scoutnet.prototype.onStoreObject = function(e) {
         e.preventDefault();
         var form = e.target;
         $(form).request('onSave', { url: form.getAttribute('action') });
@@ -188,7 +188,7 @@
             self.$calendarTree.treeView('markActive', '');
             self.setPageTitle(data.tabTitle)
 
-            $(tabPane).on('submit', 'form', self.proxy(self.onStoreEvent))
+            $(tabPane).on('submit', 'form', self.proxy(self.onStoreObject))
         }).always(function(){
             $.oc.stripeLoadIndicator.hide()
         })
@@ -201,12 +201,6 @@
 
     Scoutnet.prototype.setPageTitle = function(title) {
         $.oc.layout.setPageTitle(title)
-    }
-
-    Scoutnet.prototype.onStoreEvent = function(e) {
-        e.preventDefault();
-        var form = e.target;
-        $(form).request('onSave', { url: form.getAttribute('action') });
     }
 
     Scoutnet.prototype.onUpdateObject = function(e, eventId) {
