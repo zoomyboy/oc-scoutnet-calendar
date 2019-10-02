@@ -216,11 +216,13 @@
             tabPane = form.closest('.tab-pane'),
             tabId = this.masterTabsObj.findTabFromPane(tabPane).parent().data('tab-id');
 
-        $(form).request('onSave', { url: this.getEditUrl(tabId.split('-')) });
+        $(form).request('onSave', { url: this.getEditUrl(tabId) });
     }
 
     Scoutnet.prototype.getEditUrl = function(tabId) {
-        return this.$sidePanelForm.data('edit-url').replace('{model}', tabId[0]).replace('{id}', tabId[1]);
+        return this.$sidePanelForm.data('edit-url')
+            .replace('{model}', tabId.split('-')[0])
+            .replace('{id}', tabId.split('-')[1]);
     };  
 
     Scoutnet.prototype.onSidebarItemClick = function(e) {
@@ -238,7 +240,7 @@
         // Open a new tab
         $.oc.stripeLoadIndicator.show()
         
-        form.request('onEdit', { url: this.getEditUrl(tabId.split('-')) }).done(function(data) {
+        form.request('onEdit', { url: this.getEditUrl(tabId) }).done(function(data) {
             self.$masterTabs.ocTab('addTab', data.tabTitle, data.content, tabId, 'oc-icon-calendar new-template')
 
             var tab = self.masterTabsObj.findByIdentifier(tabId);
