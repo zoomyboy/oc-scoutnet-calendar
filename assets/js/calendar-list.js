@@ -106,15 +106,6 @@
         $(tabPane).on('submit', 'form', this.proxy(this.onUpdateObject));
     };
 
-    Scoutnet.prototype.onUpdateCalendar = function(e) {
-        e.preventDefault();
-        var form = e.target,
-            tabPane = form.closest('.tab-pane'),
-            tabId = this.masterTabsObj.findTabFromPane(tabPane).parent().data('tab-id');
-
-        $(form).request('onSave', { url: this.getEditUrl(tabId) });
-    };
-
     Scoutnet.prototype.onAjaxSuccess = function(event, context, data) {
         var form = $(event.currentTarget),
             tabPane = form.closest('.tab-pane')
