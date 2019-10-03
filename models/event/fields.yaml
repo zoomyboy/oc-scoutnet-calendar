@@ -21,6 +21,7 @@ fields:
         cssClass: collapse-visible
 
 tabs:
+    cssClass: master-area
     fields:
         starts_at:
             tab: zoomyboy.scoutnet::lang.tabs.time
