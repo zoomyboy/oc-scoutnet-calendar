@@ -83,6 +83,12 @@ class Calendar extends Controller
         return ['model' => $this->formGetModel(), 'env' => $this->getEnv() ];
     }
 
+    public function update_onSave($recordId = null, $context = null) {
+        parent::update_onSave($recordId, $context);
+
+        return ['model' => $this->formGetModel(), 'env' => $this->getEnv() ];
+    }
+
     public function onGetTitle() {
         try {
             $group = ScoutnetSync::fromGroup(Input::get('Calendar.scoutnet_id'));

@@ -50,7 +50,7 @@ class Event extends Controller
 
     public function formExtendModel($model) {
         if ($this->formGetContext() === 'create') {
-            $model->fill(['calendar_id' => Request::input('calendar')]);
+            $model->fill(['calendar_id' => str_replace('calendar-', '', Request::input('parent'))]);
         }
 
         return $model;
@@ -59,14 +59,13 @@ class Event extends Controller
     public function create_onSave() {
         parent::create_onSave();
 
-        return ['model' => $this->formGetModel(), 'tabTitle' => $this->formGetModel()->title];
+        return ['model' => $this->formGetModel(), 'env' => $this->getEnv()];
     }
 
-    public function onUpdate() {
-        $event = EventModel::findOrFail($this->params[0]);
-        parent::update_onSave($event->id);
+    public function update_onSave($recordId = null, $context = null) {
+        parent::update_onSave($recordId, $context);
 
-        return ['model' => $this->formGetModel(), 'tabTitle' => $this->formGetModel()->title];
+        return ['model' => $this->formGetModel(), 'env' => $this->getEnv() ];
     }
 
     public function onDelete() {

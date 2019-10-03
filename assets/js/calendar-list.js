@@ -149,24 +149,11 @@
         });
     };
 
-
-    Scoutnet.prototype.onDeleteObject = function(event, context, data) {
-        var form = this.$sidePanelForm;
-        var self = this;
-
-        form.request('onDelete', {
-            url: form.data('delete-event-url'),
-            complete: function(data) {
-                self.updateObjectList()
-            }
-        });
-    };
-
     Scoutnet.prototype.afterSave = function(form) {
         var tabPane = form.closest('.tab-pane');
         $(form).find('[data-control=delete-button]').removeClass('hidden');
         $(tabPane).off('submit', 'form');
-        $(tabPane).on('submit', 'form', this.proxy(this.onUpdateObject));
+        $(tabPane).on('submit', 'form', this.proxy(this.onUpdateModel));
     };
 
     Scoutnet.prototype.onAjaxSuccess = function(event, context, data) {
@@ -194,6 +181,18 @@
 
         this.updateObjectList(tabId[0], tabId[1])
     }
+
+    Scoutnet.prototype.onDeleteObject = function(event, context, data) {
+        var form = this.$sidePanelForm;
+        var self = this;
+
+        form.request('onDelete', {
+            url: form.data('delete-event-url'),
+            complete: function(data) {
+                self.updateObjectList()
+            }
+        });
+    };
 
     Scoutnet.prototype.updateObjectList = function(modelType, modelId) {
         var form = this.$sidePanelForm,
