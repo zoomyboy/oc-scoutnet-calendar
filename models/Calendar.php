@@ -13,6 +13,9 @@ class Calendar extends Model
     use Sortable;
     use Validation;
 
+    public static $icon = 'oc-icon-calendar';
+    public static $tabTitle = 'zoomyboy.scoutnet::lang.newCalendar';
+
     public $rules = [
         'title' => 'required',
         'scoutnet_id' => 'required'

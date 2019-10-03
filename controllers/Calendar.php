@@ -16,6 +16,8 @@ use Zoomyboy\Scoutnet\Models\Calendar as CalendarModel;
  */
 class Calendar extends Controller
 {
+    use HasNestedList;
+
     public $implement = [
         'Backend.Behaviors.FormController',
         'Backend.Behaviors.ListController'
@@ -55,7 +57,7 @@ class Calendar extends Controller
         parent::create();
 
         return [
-            'tabTitle' => Lang::get('zoomyboy.scoutnet::lang.newCalendar'),
+            'env' => $this->getEnv(),
             'content' => $this->makePartial('create', [
                 'form' => $this->widget->form,
             ])
@@ -68,7 +70,7 @@ class Calendar extends Controller
         parent::update($recordId, $context);
 
         return [
-            'tabTitle' => $this->widget->form->model->title,
+            'env' => $this->getEnv(),
             'content' => $this->makePartial('update', [
                 'form' => $this->widget->form,
             ])
@@ -78,7 +80,7 @@ class Calendar extends Controller
     public function create_onSave() {
         parent::create_onSave();
 
-        return ['model' => $this->formGetModel(), 'tabTitle' => $this->formGetModel()->title];
+        return ['model' => $this->formGetModel(), 'env' => $this->getEnv() ];
     }
 
     public function onGetTitle() {

@@ -11,6 +11,9 @@ class Event extends Model
 {
     use Validation;
 
+    public static $icon = 'oc-icon-clock-o';
+    public static $tabTitle = 'zoomyboy.scoutnet::lang.newEvent';
+
     public $rules = [
         'title' => 'required',
         'starts_at' => 'required|date',

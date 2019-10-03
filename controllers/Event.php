@@ -11,6 +11,8 @@ use Zoomyboy\Scoutnet\Models\Event as EventModel;
  */
 class Event extends Controller
 {
+    use HasNestedList;
+
     public $implement = [
         'Backend.Behaviors.FormController',
     ];
@@ -21,14 +23,11 @@ class Event extends Controller
     public function index() {}
 
     public function onCreate() {
-        $calendar = Request::input('calendar');
-        $this->vars['calendar'] = $calendar;
-
         $this->vars['mode'] = 'adding';
         parent::create();
 
         return [
-            'tabTitle' => Lang::get('zoomyboy.scoutnet::lang.newEvent'),
+            'env' => $this->getEnv($this->widget->form->model),
             'content' => $this->makePartial('create', [
                 'form' => $this->widget->form,
             ])
@@ -42,7 +41,7 @@ class Event extends Controller
         parent::update($event->id);
 
         return [
-            'tabTitle' => $event->title,
+            'env' => $this->getEnv($this->widget->form->model),
             'content' => $this->makePartial('edit', [
                 'form' => $this->widget->form,
             ])

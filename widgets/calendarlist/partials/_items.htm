@@ -35,7 +35,8 @@
                         <li>
                             <a
                                 href="#"
-                                data-control="create-event"
+                                data-control="create-model"
+                                data-model="event"
                                 data-parent="calendar-<?php echo $calendar->id; ?>"
                             >
                                 <i class="icon-plus"></i>
@@ -45,11 +46,7 @@
                     </ul>
                 </div>
 
-                <ol
-                    <?php if(!(isset($modelType) && $modelType == 'event' && isset($modelId) && $calendar->events->where('id', $modelId)->count() ? 'expanded' : 'collapsed')): ?>
-                        style="overflow: visible; display: none; height: auto;"
-                    <?php endif; ?>
-                >
+                <ol>
                     <?php if ($events = $calendar->events): ?>
                         <?= $this->makePartial('eventList', ['events' => $events, 'searchMode' => $searchMode]) ?>
                     <?php endif ?>
