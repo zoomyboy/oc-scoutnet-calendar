@@ -3,7 +3,7 @@
         <?php foreach ($items as $calendar): ?>
             <?php
                 $searchMode = strlen($this->getSearchTerm()) > 0;
-                $cbId = 'cb'.md5($calendar->name);
+                $cbId = 'cb'.md5($calendar->title);
             ?>
             <li
                 class="<?= $calendar->events->count() ? 'has-subitems' : null ?>"
