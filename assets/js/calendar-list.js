@@ -38,7 +38,15 @@
             this.proxy(this.onDeleteObject))
         $(document).on('click', '#sidebar-form .control-toolbar [data-control=create-model]',
             this.proxy(this.onNewEntry));
+        this.$masterTabs.on('initTab.oc.tab', this.proxy(this.onInitTab))
     }
+
+    Scoutnet.prototype.onInitTab = function(e, data) {
+        if ($(e.target).attr('id') != 'master-tabs') return
+
+        var $secondaryPanel = $('.control-tabs.secondary-tabs', data.pane);
+        $secondaryPanel.addClass('secondary-content-tabs');
+    };
 
     Scoutnet.prototype.onNewEntry = function(event) {
         console.log(event.target);
