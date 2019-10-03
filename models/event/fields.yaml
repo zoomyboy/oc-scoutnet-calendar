@@ -13,7 +13,7 @@ fields:
     location:
         span: right
         placeholder: zoomyboy.scoutnet::lang.form.locationPlaceholder
-        label: zoomyboy.scoutnet::lang.form.locationPlaceholder
+        label: zoomyboy.scoutnet::lang.form.locationLabel
 
     toolbar:
         type: partial
