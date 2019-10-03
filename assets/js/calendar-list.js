@@ -95,7 +95,6 @@
 
     Scoutnet.prototype.onUpdateModel = function(e, eventId) {
         e.preventDefault();
-        console.log(this.activeTab());
 
         $(e.target).request('onSave', { url: this.getEditUrl(this.activeTab()) });
     }
