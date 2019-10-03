@@ -34,14 +34,13 @@ class Event extends Controller
         ];
     }
 
-    public function onEdit() {
-        $event = EventModel::findOrFail(Request::input('event'));
-
+    public function update_onEdit($recordId = null, $context = null)
+    {
         $this->vars['mode'] = 'editing';
-        parent::update($event->id);
+        parent::update($recordId, $context);
 
         return [
-            'env' => $this->getEnv($this->widget->form->model),
+            'env' => $this->getEnv(),
             'content' => $this->makePartial('edit', [
                 'form' => $this->widget->form,
             ])

@@ -55,14 +55,10 @@
         return false
     };
 
-    Scoutnet.prototype.onSidebarItemClick = function(e) {
-        var self = this,
-            item = $(e.relatedTarget),
-            form = this.$sidePanelForm,
-            tabId = item.data('id'),
-            parent = $(item).data('parent') !== undefined
-                ? $(item).data('parent')
-                : null;
+    Scoutnet.prototype.renderForm = function(submitEvent, request, tabId, parent, urlResolver) {
+        parent = typeof parent !== "undefined" ? parent : null;
+        var form = this.$sidePanelForm,
+            self = this;
 
         // Find if the tab is already opened
         if (this.masterTabsObj.goTo(tabId)) {
@@ -71,8 +67,8 @@
         }
 
         $.oc.stripeLoadIndicator.show()
-        form.request('onEdit', {
-            url: this.getEditUrl(tabId),
+        form.request(request, {
+            url: urlResolver(tabId),
             data: { parent: parent }
         }).done(function(data) {
             self.$masterTabs.ocTab('addTab', data.env.title, data.content, tabId, data.env.icon)
@@ -85,49 +81,39 @@
 
             $(tabPane).on('keyup change', '[data-source=title]', self.proxy(self.getCalendarTitle));
 
-            $(tabPane).on('submit', 'form', self.proxy(self.onUpdateModel))
+            $(tabPane).on('submit', 'form', self.proxy(submitEvent));
         }).always(function() {
             $.oc.stripeLoadIndicator.hide()
         })
+    };
 
-        return false
+    Scoutnet.prototype.onSidebarItemClick = function(e) {
+        var self = this,
+            item = $(e.relatedTarget),
+            tabId = item.data('id'),
+            parent = $(item).data('parent');
+
+        this.renderForm(self.onUpdateModel, 'onEdit', tabId, parent, function(tabId) {
+            return self.getEditUrl(tabId);
+        });
     }
+
+    Scoutnet.prototype.onCreateModel = function(target) {
+        var self = this,
+            model = $(target).data('model'),
+            tabId = model+'-'+Math.floor(Math.random() * 10000),
+            parent = $(target).data('parent');
+
+        this.renderForm(self.onStoreModel, 'onCreate', tabId, parent, function(tabId) {
+            return self.getCreateUrl(model);
+        });
+    };
 
     Scoutnet.prototype.onUpdateModel = function(e, eventId) {
         e.preventDefault();
 
         $(e.target).request('onSave', { url: this.getEditUrl(this.activeTab()) });
     }
-
-    Scoutnet.prototype.onCreateModel = function(target) {
-        var self = this,
-            form = this.$sidePanelForm,
-            model = $(target).data('model'),
-            tabId = model+'-'+Math.floor(Math.random() * 10000),
-            parent = $(target).data('parent') !== undefined
-                ? $(target).data('parent')
-                : null;
-
-        $.oc.stripeLoadIndicator.show()
-        form.request('onCreate', {
-            url: this.getCreateUrl(model),
-            data: { parent: parent }
-        }).done(function(data) {
-            self.$masterTabs.ocTab('addTab', data.env.title, data.content, tabId, data.env.icon)
-            
-            var tab = self.masterTabsObj.findByIdentifier(tabId);
-            var tabPane = self.masterTabsObj.findPaneFromTab(tab);
-
-            self.$tree.treeView('markActive', '');
-            self.setPageTitle(data.env.title)
-
-            $(tabPane).on('keyup change', '[data-source=title]', self.proxy(self.getCalendarTitle));
-
-            $(tabPane).on('submit', 'form', self.proxy(self.onStoreModel))
-        }).always(function(){
-            $.oc.stripeLoadIndicator.hide()
-        })
-    };
 
     Scoutnet.prototype.onStoreModel = function(e) {
         e.preventDefault();
