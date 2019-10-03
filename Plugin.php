@@ -44,7 +44,7 @@ class Plugin extends PluginBase
         $this->app->bind('scoutnet.ical', function() {
             return new IcalGenerator();
         });
-        $this->app->bind('scoutnetevents', function() {
+        $this->app->bind('scoutnet.events', function() {
             return new EventRepository();
         });
     }
