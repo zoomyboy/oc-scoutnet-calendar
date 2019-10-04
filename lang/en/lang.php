@@ -21,6 +21,14 @@ return [
         'abort-button' => 'Abort sync',
         'running-message' => 'Synchronizing…'
     ],
+    'delete' => [
+        'confirm-title' => 'Delete hese elements?',
+        'confirm-content' => [
+            'Delete these elements?'
+        ],
+        'confirm-button' => 'Delete',
+        'abort-button' => 'Abort'
+    ],
     'form' => [
         'sync' => 'Request data',
         'scoutnetIdLabel' => 'Scoutnet-ID',

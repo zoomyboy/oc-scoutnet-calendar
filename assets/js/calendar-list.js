@@ -217,27 +217,28 @@
     }
 
     Scoutnet.prototype.onDeleteActiveModel = function(e) {
-        new Promise(function(resolve, reject) {
-            $('#delete-confirmation').html($('#delete-confirmation').html().replace(/{calendar}/g, f.find('#Form-field-Calendar-title').val()));
-
-            $('#sync-confirmation').on('click', '[data-confirm]', function() { resolve(); });
-            $('#sync-confirmation').on('click', '[data-abort]', function() { reject(); });
-
-            $('#sync-confirmation').modal('show');
-        }).then(function() {
-            $('#sync-running').modal('show');
-
-            form.request('onSync', {
-                url: self.getEditUrl(self.activeTab())
-            }).done(function(data) {
-                self.updateObjectList();
-                $('#sync-running').modal('hide');
-            });
-        }).catch(function() {});
+        var f = $(e.target).closest('form');
+        var tabId = this.activeTab();
+        var self = this;
 
         e.preventDefault();
 
-        $(e.target).request('onDelete', { url: this.getEditUrl(this.activeTab()) });
+        new Promise(function(resolve, reject) {
+            $('#delete-confirmation').html($('#delete-confirmation').html().replace(
+                /{calendar}/g,
+                f.find('#Form-field-'+tabId.split('-')[0].ucfirst()+'-title').val()
+            ));
+
+            $('#delete-confirmation').on('click', '[data-confirm]', function() { resolve(); });
+            $('#delete-confirmation').on('click', '[data-abort]', function() { reject(); });
+
+            $('#delete-confirmation').modal('show');
+        }).then(function() {
+            $(f).request('onDelete', { url: self.getEditUrl(self.activeTab()) })
+        }).catch(function() {});
+
+        e.stopPropagation();
+        return false;
     };
 
     Scoutnet.prototype.updateObjectList = function(modelType, modelId) {
