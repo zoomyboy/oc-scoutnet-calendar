@@ -36,7 +36,7 @@ class SingleCalendar extends ComponentBase {
 
     public function events($filter = []) {
         $filter = array_merge($this->defaultFilter(), $filter);
-        return app('scoutnetevents')->forFrontend($filter)->group();
+        return app('scoutnet.events')->forFrontend($filter)->group();
     }
 
     public function onRun() {
