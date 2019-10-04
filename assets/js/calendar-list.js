@@ -169,6 +169,9 @@
         .always(function() {
             $.oc.stripeLoadIndicator.hide();
         });
+
+        e.stopPropagation();
+        return false;
     };
 
     Scoutnet.prototype.afterSave = function(form) {
