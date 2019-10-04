@@ -153,8 +153,7 @@
 
     Scoutnet.prototype.onStoreModel = function(e) {
         e.preventDefault();
-        var form = e.target;
-        $(form).request('onSave', { url: this.getCreateUrl(this.activeTab().split('-')[0]) });
+        $(e.target).request('onSave', { url: this.getCreateUrl(this.activeTab().split('-')[0]) });
     };
 
     Scoutnet.prototype.getCalendarTitle = function(e) {
