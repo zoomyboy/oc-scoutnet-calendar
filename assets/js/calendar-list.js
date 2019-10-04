@@ -119,7 +119,6 @@
                 self.updateObjectList();
                 $('#sync-running').modal('hide');
             });
-
         }).catch(function() {});
     };
 
