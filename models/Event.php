@@ -1,6 +1,7 @@
 <?php namespace Zoomyboy\Scoutnet\Models;
 
 use Model;
+use Carbon\Carbon;
 use Zoomyboy\Scoutnet\Models\Keyword;
 use Zoomyboy\Scoutnet\Models\Calendar;
 use \October\Rain\Database\Traits\Validation;
@@ -120,5 +121,40 @@ class Event extends Model
 
     public function getIcalEndAttribute() {
         return $this->ends_at ?: $this->starts_at->addMinutes(15);
+    }
+
+    public static function createFromScoutnet($event) {
+        $calendar = Calendar::where(['scoutnet_id' => $event->group_id])->firstOrFail();
+
+        $start = $event->start_date ? $event->start_date : '';
+        $start .= $event->start_time ? ' '.$event->start_time : '';
+
+        $end = $event->end_date ? $event->end_date : '';
+        $end .= $event->end_time ? ' '.$event->end_time : '';
+
+        $local = Event::updateOrCreate(['scoutnet_id' => $event->id], [
+            'calendar_id' => $calendar->id,
+            'title' => $event->title,
+            'location' => $event->location && $event->location !== 'NULL'
+                ? $event->location
+                : null,
+            'starts_at' => $start ? Carbon::parse($start) : null,
+            'ends_at' => $end ? Carbon::parse($end) : null,
+            'organizer' => $event->organizer ?: null,
+            'target' => $event->target_group ?: null,
+            'url' => $event->url ?: null,
+            'url_text' => $event->url_text ?: null,
+            'description' => $event->description ?: null,
+            'scoutnet_id' => $event->id
+        ]);
+
+        $keywords = collect([]);
+        foreach($event->keywords as $keywordId => $keyword) {
+            $keywords->push(Keyword::updateOrCreate(['scoutnet_id' => $keywordId], [
+                'scoutnet_id' => $keywordId,
+                'title' => $keyword
+            ]));
+        }
+        $local->keywords()->sync($keywords->pluck('id')->toArray());
     }
 }

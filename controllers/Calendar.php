@@ -51,6 +51,10 @@ class Calendar extends Controller
         $this->makeLists();
     }
 
+    public function update_onSync($recordId = null) {
+        CalendarModel::findOrFail($recordId)->pullEvents();
+    }
+
     public function onGetTitle() {
         try {
             $group = ScoutnetSync::fromGroup(Input::get('Calendar.scoutnet_id'));

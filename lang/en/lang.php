@@ -11,7 +11,18 @@ return [
     'calendar' => 'Calendar',
     'newCalendar' => 'New calendar',
     'newEvent' => 'New event',
+    'sync' => [
+        'confirm-title' => 'Synchronize calendar {calendar}',
+        'confirm-content' => [
+            'Do you really wand to sync the calendar {calendar}?',
+            'All events will be updated from scoutnet. Events that have been manually added here will not be overwriten. Depending on the number of events and the synchronization settings this can take a bit of time. You shouldn\'t close the browser while the synchronization is running'
+        ],
+        'confirm-button' => 'Sync now',
+        'abort-button' => 'Abort sync',
+        'running-message' => 'Synchronizing…'
+    ],
     'form' => [
+        'sync' => 'Request data',
         'scoutnetIdLabel' => 'Scoutnet-ID',
         'scoutnetIdPlaceholder' => 'Select foreign scoutnet calendar',
 

@@ -4,6 +4,7 @@ use Model;
 use Zoomyboy\Scoutnet\Models\Event;
 use October\Rain\Database\Traits\Sortable;
 use \October\Rain\Database\Traits\Validation;
+use Zoomyboy\Scoutnet\Classes\ScoutnetSync;
 
 /**
  * Calendar Model
@@ -34,7 +35,7 @@ class Calendar extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = ['scoutnet_id', 'name'];
+    protected $fillable = ['scoutnet_id', 'title'];
 
     /**
      * @var array Relations
@@ -50,4 +51,16 @@ class Calendar extends Model
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
+
+    public function pullEvents() {
+        $group = ScoutnetSync::fromGroup($this->scoutnet_id);
+        $this->update(['title' => $group->getName()]);
+
+        $events = $group->events()->ofYears(range(date('Y')-1, date('Y')+1))
+            ->get();
+
+        $events->each(function($event) {
+            Event::createFromScoutnet($event);
+        });
+    }
 }

@@ -90,9 +90,37 @@
             $(tabPane).on('keyup change', '[data-source=title]', self.proxy(self.getCalendarTitle));
 
             $(tabPane).on('submit', 'form', self.proxy(submitEvent));
+
+            $(tabPane).on('click', '[data-control=sync]', self.proxy(self.onSync));
         }).always(function() {
             $.oc.stripeLoadIndicator.hide()
         })
+    };
+
+    Scoutnet.prototype.onSync = function(e) {
+        var self = this,
+            form = this.$sidePanelForm,
+            f = $(e.target).closest('form');
+
+
+        new Promise(function(resolve, reject) {
+            $('#sync-confirmation').html($('#sync-confirmation').html().replace(/{calendar}/g, f.find('#Form-field-Calendar-title').val()));
+
+            $('#sync-confirmation').on('click', '[data-confirm]', function() { resolve(); });
+            $('#sync-confirmation').on('click', '[data-abort]', function() { reject(); });
+
+            $('#sync-confirmation').modal('show');
+        }).then(function() {
+            $('#sync-running').modal('show');
+
+            form.request('onSync', {
+                url: self.getEditUrl(self.activeTab())
+            }).done(function(data) {
+                self.updateObjectList();
+                $('#sync-running').modal('hide');
+            });
+
+        }).catch(function() {});
     };
 
     Scoutnet.prototype.onSidebarItemClick = function(e) {
@@ -146,6 +174,7 @@
     Scoutnet.prototype.afterSave = function(form) {
         var tabPane = form.closest('.tab-pane');
         $(form).find('[data-control=delete-button]').removeClass('hidden');
+        $(form).find('[data-control=sync]').removeClass('hidden');
         $(tabPane).off('submit', 'form');
         $(tabPane).on('submit', 'form', this.proxy(this.onUpdateModel));
     };

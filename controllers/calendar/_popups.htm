@@ -1,0 +1,39 @@
+<div class="control-popup modal fade" id="sync-confirmation" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><?= trans('zoomyboy.scoutnet::lang.sync.confirm-title'); ?></h4>
+            </div>
+            <div class="modal-body">
+                <?php foreach (trans('zoomyboy.scoutnet::lang.sync.confirm-content') as $paragraph): ?>
+                <p><?= $paragraph; ?></p>
+                <?php endforeach; ?>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-confirm><?= trans('zoomyboy.scoutnet::lang.sync.confirm-button'); ?></button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" data-abort><?= trans('zoomyboy.scoutnet::lang.sync.abort-button'); ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="control-popup modal fade" id="sync-running" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="loading-indicator-container">
+                    <div class="loading-indicator">
+                        <span></span>
+                        <div><?= trans('zoomyboy.scoutnet::lang.sync.running-message'); ?></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>

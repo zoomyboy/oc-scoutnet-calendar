@@ -11,7 +11,9 @@ return [
     'calendar' => 'Kalender',
     'newCalendar' => 'Neuer Kalender',
     'newEvent' => 'Neue Veranstaltung',
+    'sync-confirm' => 'Willst du den Kalender {calendar} wirklich synchronisieren? Hierbei werden alle Veranstaltungen neu von Scountet geladen. Veranstaltungen, die hier manuell hinzugefügt wurden, werden nicht überschrieben. Je nach Anzahl der Veranstaltungen kann dies einige Zeit dauern.',
     'form' => [
+        'sync' => 'Daten abrufen',
         'scoutnetIdLabel' => 'Scoutnet-ID',
         'scoutnetIdPlaceholder' => 'Entfernten Scoutnet-Kalender auswählen',
 

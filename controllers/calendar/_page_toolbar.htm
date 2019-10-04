@@ -13,4 +13,10 @@
         data-request-confirm="Löschen?"
         data-request-success="$.oc.calendarPage.closeTabs(data, 'calendar'); $.oc.calendarPage.updateObjectList('calendar'); $(this).trigger('close.oc.tab', [{force: true}])"
         data-control="delete-button"></button>
+    <button type="button"
+        class="btn btn-primary oc-icon-refresh <?php if ($mode !== 'editing'): ?> hidden <?php endif; ?>"
+        data-control="sync"
+    >
+        <?= e(trans('zoomyboy.scoutnet::lang.form.sync')) ?>
+    </button>
 </div>
