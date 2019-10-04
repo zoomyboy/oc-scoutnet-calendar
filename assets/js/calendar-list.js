@@ -34,8 +34,10 @@
         $(document).on('open.oc.treeview', '#sidebar-form', this.proxy(this.onSidebarItemClick))
         $(document).on('submenu.oc.treeview', '#sidebar-form', this.proxy(this.onNewSubentry))
         $(document).on('ajaxSuccess', '#master-tabs form', this.proxy(this.onAjaxSuccess))
+        /*
         $(document).on('click', '#sidebar-form button[data-control=delete-object]',
             this.proxy(this.onDeleteObject))
+        */
         $(document).on('click', '#sidebar-form .control-toolbar [data-control=create-model]',
             this.proxy(this.onNewEntry));
         this.$masterTabs.on('initTab.oc.tab', this.proxy(this.onInitTab))
@@ -92,6 +94,7 @@
             $(tabPane).on('submit', 'form', self.proxy(submitEvent));
 
             $(tabPane).on('click', '[data-control=sync]', self.proxy(self.onSync));
+            $(tabPane).on('click', '[data-control=delete]', self.proxy(self.onDeleteActiveModel));
         }).always(function() {
             $.oc.stripeLoadIndicator.hide()
         })
@@ -174,7 +177,7 @@
 
     Scoutnet.prototype.afterSave = function(form) {
         var tabPane = form.closest('.tab-pane');
-        $(form).find('[data-control=delete-button]').removeClass('hidden');
+        $(form).find('[data-control=delete]').removeClass('hidden');
         $(form).find('[data-control=sync]').removeClass('hidden');
         $(tabPane).off('submit', 'form');
         $(tabPane).on('submit', 'form', this.proxy(this.onUpdateModel));
@@ -202,18 +205,39 @@
             this.$masterTabs.ocTab('updateIdentifier', tabPane, tabId.join('-'))
             this.updateObjectList(tabId[0], tabId[1])
         }
+
+        if (context.handler == 'onDelete') {
+            var tabId = this.activeTab(),
+                tab = this.masterTabsObj.findByIdentifier(tabId);
+
+            $(tab).trigger('close.oc.tab', [{force: true}]);
+
+            this.updateObjectList('', '');
+        }
     }
 
-    Scoutnet.prototype.onDeleteObject = function(event, context, data) {
-        var form = this.$sidePanelForm;
-        var self = this;
+    Scoutnet.prototype.onDeleteActiveModel = function(e) {
+        new Promise(function(resolve, reject) {
+            $('#delete-confirmation').html($('#delete-confirmation').html().replace(/{calendar}/g, f.find('#Form-field-Calendar-title').val()));
 
-        form.request('onDelete', {
-            url: form.data('delete-event-url'),
-            complete: function(data) {
-                self.updateObjectList()
-            }
-        });
+            $('#sync-confirmation').on('click', '[data-confirm]', function() { resolve(); });
+            $('#sync-confirmation').on('click', '[data-abort]', function() { reject(); });
+
+            $('#sync-confirmation').modal('show');
+        }).then(function() {
+            $('#sync-running').modal('show');
+
+            form.request('onSync', {
+                url: self.getEditUrl(self.activeTab())
+            }).done(function(data) {
+                self.updateObjectList();
+                $('#sync-running').modal('hide');
+            });
+        }).catch(function() {});
+
+        e.preventDefault();
+
+        $(e.target).request('onDelete', { url: this.getEditUrl(this.activeTab()) });
     };
 
     Scoutnet.prototype.updateObjectList = function(modelType, modelId) {
@@ -246,12 +270,12 @@
         return this.$sidePanelForm.data('edit-url')
             .replace('{model}', tabId.split('-')[0])
             .replace('{id}', tabId.split('-')[1]);
-    };  
+    };
 
     Scoutnet.prototype.getCreateUrl = function(model) {
         return this.$sidePanelForm.data('create-url')
             .replace('{model}', model);
-    };  
+    };
 
     $(document).ready(function(){
         $.oc.Scoutnet = new Scoutnet()

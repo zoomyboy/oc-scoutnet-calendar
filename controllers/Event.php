@@ -29,10 +29,4 @@ class Event extends Controller
 
         return $model;
     }
-
-    public function onDelete() {
-        foreach(Input::get('events') as $event) {
-            $this->update_onDelete($event);
-        }
-    }
 }
