@@ -169,11 +169,9 @@
 
         if (data.model) {
             tabId[1] = data.model.id;
+            this.$masterTabs.ocTab('updateIdentifier', tabPane, tabId.join('-'))
+            this.updateObjectList(tabId[0], tabId[1])
         }
-
-        this.$masterTabs.ocTab('updateIdentifier', tabPane, tabId.join('-'))
-
-        this.updateObjectList(tabId[0], tabId[1])
     }
 
     Scoutnet.prototype.onDeleteObject = function(event, context, data) {
