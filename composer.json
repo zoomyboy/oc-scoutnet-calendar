@@ -3,7 +3,8 @@
     "description": "This Plugin adds features to integrate Scoutnet features in October CMS",
     "type": "project",
     "require": {
-        "nesbot/carbon": "^1.21"
+        "nesbot/carbon": "^1.21",
+        "scoutnet/sn-webservice": "^1.0"
     },
     "authors": [
         {
