@@ -63,4 +63,8 @@ class Calendar extends Model
             Event::createFromScoutnet($event);
         });
     }
+
+    public function getHasCredentialsAttribute() {
+        return $this->provider && $this->aes_key && $this->aes_iv;
+    }
 }

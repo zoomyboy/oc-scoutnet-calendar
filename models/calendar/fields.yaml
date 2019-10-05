@@ -22,6 +22,21 @@ fields:
         path: page_toolbar
         cssClass: collapse-visible
 
+tabs:
+    cssClass: master-area
+    fields:
+        provider:
+            tab: ScoutnetConnect
+            label: Provider
+
+        aes_key:
+            tab: ScoutnetConnect
+            label: AES Key
+
+        aes_iv:
+            tab: ScoutnetConnect
+            label: AES IV
+
 secondaryTabs:
     stretch: true
     fields:

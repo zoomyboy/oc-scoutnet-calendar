@@ -14,6 +14,9 @@ class CreateCalendarsTable extends Migration
             $table->string('title')->nullable();
             $table->integer('sort_order')->default(0);
             $table->integer('scoutnet_id')->unique();
+            $table->string('provider')->nullable();
+            $table->string('aes_key')->nullable();
+            $table->string('aes_iv')->nullable();
             $table->text('content');
             $table->timestamps();
         });
