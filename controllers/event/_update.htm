@@ -1,9 +1,5 @@
 <?php if (!$this->fatalError): ?>
-    <?= Form::open([
-        'class' => 'layout',
-        'data-event-form' => '',
-        'data-request-url' => Backend::url('zoomyboy/scoutnet/event/update/'.$form->model->id)
-    ]) ?>
+    <?= Form::open([ 'class' => 'layout' ]) ?>
         <div class="layout-row">
             <?= $form->render() ?>
         </div>
