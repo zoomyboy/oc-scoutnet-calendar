@@ -3,7 +3,7 @@
 use Input;
 use Backend;
 use System\Classes\PluginBase;
-use Zoomyboy\Scoutnet\Models\Settings;
+use Zoomyboy\Scoutnet\Models\Setting;
 use Zoomyboy\Scoutnet\Classes\IcalGenerator;
 use Zoomyboy\Scoutnet\Classes\EventRepository;
 
@@ -152,7 +152,7 @@ class Plugin extends PluginBase
                 'description' => 'zoomyboy.scoutnet::settings.description',
                 'category'    => 'Plugins',
                 'icon'        => 'icon-calendar',
-                'class'       => 'Zoomyboy\Scoutnet\Models\Settings',
+                'class'       => Setting::class,
                 'order'       => 500,
                 'keywords'    => 'calendar scoutnet scout',
                 'permissions' => ['zoomyboy.scoutnet.settings']
