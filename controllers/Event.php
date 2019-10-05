@@ -1,32 +1,27 @@
 <?php namespace Zoomyboy\Scoutnet\Controllers;
 
-use Lang;
-use Input;
-use Request;
+use BackendMenu;
 use Backend\Classes\Controller;
-use Zoomyboy\Scoutnet\Models\Event as EventModel;
 
 /**
  * Calendar Back-end Controller
  */
 class Event extends Controller
 {
-    use HasNestedList;
-
     public $implement = [
-        'Backend.Behaviors.FormController',
+        'Zoomyboy.Scoutnet.Behaviors.NestedFormController',
+        'Zoomyboy.Scoutnet.Behaviors.NestedListController'
     ];
 
     public $formConfig = 'config_form.yaml';
     public $listConfig = 'config_list.yaml';
 
-    public function index() {}
+    public $parent = 'calendar';
 
-    public function formExtendModel($model) {
-        if ($this->formGetContext() === 'create') {
-            $model->fill(['calendar_id' => str_replace('calendar-', '', Request::input('parent'))]);
-        }
+    public function __construct()
+    {
+        parent::__construct();
 
-        return $model;
+        BackendMenu::setContext('Zoomyboy.Scoutnet', 'scoutnet', 'calendar');
     }
 }
