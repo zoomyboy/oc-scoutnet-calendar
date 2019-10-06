@@ -30,7 +30,6 @@ class PushToApi {
         ]);
 
         $event = $events[0];
-        
-        // Schreibe Event ...
+        $api->write_event($event);
     }
 }
