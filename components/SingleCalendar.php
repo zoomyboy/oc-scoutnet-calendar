@@ -21,7 +21,7 @@ class SingleCalendar extends ComponentBase {
      */
     public function defaultFilter() {
         return [
-            'calendars' => [3],
+            'calendars' => [1],
             'categories' => [],
             'showPast' => false
         ];
@@ -40,7 +40,7 @@ class SingleCalendar extends ComponentBase {
     }
 
     public function onRun() {
-        $this->page['calendars'] = Calendar::orderBy('name')->get();
+        $this->page['calendars'] = Calendar::orderBy('title')->get();
         $this->page['categories'] = Tag::orderBy('title')->get();
         $this->page['events'] = $this->events();
         $this->page['filter'] = $this->defaultFilter();
