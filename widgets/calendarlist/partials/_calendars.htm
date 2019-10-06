@@ -4,8 +4,8 @@
             data-control="treeview"
             data-reorder-handler="<?= $this->getEventHandler('onReorder') ?>"
             id="<?= $this->getId('calendar-list') ?>"
-            <?php if(isset($modelType) && isset($modelId)): ?>
-                data-oc.active-item="<?= $modelType ?>-<?= $modelId ?>"
+            <?php if (!is_null($this->activeClass)): ?>
+            data-oc.active-item="<?= $this->activeClass ?>"
             <?php endif; ?>
         >
             <?= $this->makePartial('items', ['items' => $data]) ?>

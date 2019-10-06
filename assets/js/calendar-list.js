@@ -28,6 +28,10 @@
         this.$tree = $('[data-control=treeview]', this.$sidePanel)
 
         this.registerHandlers()
+
+        if (this.$tree.data('oc.active-item')) {
+            $('[data-id='+this.$tree.data('oc.active-item')+'] > div > a').trigger('click.treeview');
+        }
     }
 
     Scoutnet.prototype.registerHandlers = function() {
@@ -40,6 +44,7 @@
         */
         $(document).on('click', '#sidebar-form .control-toolbar [data-control=create-model]',
             this.proxy(this.onNewEntry));
+
         this.$masterTabs.on('initTab.oc.tab', this.proxy(this.onInitTab))
     }
 
@@ -65,7 +70,7 @@
         return false
     };
 
-    Scoutnet.prototype.renderForm = function(submitEvent, request, tabId, parent, urlResolver) {
+    Scoutnet.prototype.renderForm = function(submitEvent, request, tabId, parent, urlResolver, after) {
         parent = typeof parent !== "undefined" ? parent : null;
         var form = this.$sidePanelForm,
             self = this;
@@ -90,11 +95,13 @@
             self.setPageTitle(data.env.title)
 
             $(tabPane).on('keyup change', '[data-source=title]', self.proxy(self.getCalendarTitle));
-
+            
             $(tabPane).on('submit', 'form', self.proxy(submitEvent));
 
             $(tabPane).on('click', '[data-control=sync]', self.proxy(self.onSync));
             $(tabPane).on('click', '[data-control=delete]', self.proxy(self.onDeleteActiveModel));
+            
+            if (after) { after(tabPane); }
         }).always(function() {
             $.oc.stripeLoadIndicator.hide()
         })
@@ -133,6 +140,8 @@
 
         this.renderForm(self.onUpdateModel, 'onEdit', tabId, parent, function(tabId) {
             return self.getEditUrl(tabId);
+        }, function(tabPane) {
+            $.oc.ScoutnetConnect.init(tabPane, self.getEditUrl(tabId));
         });
     }
 

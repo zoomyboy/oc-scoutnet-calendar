@@ -1,8 +1,11 @@
 <?php namespace Zoomyboy\Scoutnet\Controllers;
 
 use Input;
+use Backend;
+use Request;
 use Exception;
 use BackendMenu;
+use ApplicationException;
 use Backend\Classes\Controller;
 use Zoomyboy\Scoutnet\Classes\ScoutnetSync;
 use Zoomyboy\Scoutnet\Models\Calendar as CalendarModel;
@@ -39,5 +42,17 @@ class Calendar extends Controller
         } catch(Exception $e) {
             return response('');
         }
+    }
+
+    public function callback($recordId = null) {
+        $model = $this->formFindModelObject($recordId);
+
+        if (!$model || !Request::filled('auth') || Request::input('logintype') != 'login') {
+            throw new ApplicationException('Login fehlgeschlagen.');
+        }
+
+        $model->setLogin(Request::get('auth'));
+
+        return redirect()->to(Backend::url('zoomyboy/scoutnet/calendar/update/'.$recordId));
     }
 }

@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'noCredentialsError' => 'Bitte hinterlege zunächst Provider und Keys in dem Kalender, bevor du dich mit Scoutnet verbindest.',
+    'connect' => 'Mit ScoutnetConnect verbinden',
+    'connected' => 'Mit ScoutnetConnect verbunden',
     'permissions' => [
         'settings' => 'Einstellungen verwalten',
         'calendar' => 'Kalender verwalten',

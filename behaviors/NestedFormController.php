@@ -42,6 +42,13 @@ class NestedFormController extends FormController {
         $this->initNestedPage();
 
         $this->controller->makeLists();
+
+        // On update we will render a list. But we should make sure that any AJAX request from 
+        // form widgets will still reach the desired location - so we init a form even though
+        // it is not displayed on the page.
+        $model = $this->controller->formFindModelObject($recordId);
+        $this->initForm($model);
+        $this->controller->widget->calendarList->setActive($model);
     }
 
     public function update_onEdit($recordId = null, $context = null)

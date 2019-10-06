@@ -1,6 +1,8 @@
 <?php namespace Zoomyboy\Scoutnet\Models;
 
+use BackendAuth;
 use Model;
+use Backend;
 use Zoomyboy\Scoutnet\Models\Event;
 use October\Rain\Database\Traits\Sortable;
 use \October\Rain\Database\Traits\Validation;
@@ -42,7 +44,8 @@ class Calendar extends Model
      */
     public $hasOne = [];
     public $hasMany = [
-        'events' => [Event::class]
+        'events' => [Event::class],
+        'credentials' => [Credential::class]
     ];
     public $belongsTo = [];
     public $belongsToMany = [];
@@ -66,5 +69,27 @@ class Calendar extends Model
 
     public function getHasCredentialsAttribute() {
         return $this->provider && $this->aes_key && $this->aes_iv;
+    }
+
+    public function getApiReturnUrlAttribute() {
+        return Backend::url('zoomyboy/scoutnet/calendar/callback/'.$this->id);
+    }
+
+    public function setLogin($key) {
+        $this->credentials()->updateOrCreate(['backend_user_id' => BackendAuth::getUser()->id], [
+            'backend_user_id' => BackendAuth::getUser()->id,
+            'auth_key' => $key
+        ]);
+    }
+
+    public function getIsConnectedAttribute() {
+        return $this->credentials()
+            ->where('backend_user_id', BackendAuth::getUser()->id)
+            ->whereNotNull('auth_key')
+            ->exists();
+    }
+
+    public function getButtonTextAttribute() {
+        return $this->isConnected ? 'zoomyboy.scoutnet::lang.connected' : 'zoomyboy.scoutnet::lang.connect';
     }
 }

@@ -37,6 +37,10 @@ tabs:
             tab: ScoutnetConnect
             label: AES IV
 
+        api_key:
+            tab: ScoutnetConnect
+            type: zoomyboy_scoutnet_connect_button
+
 secondaryTabs:
     stretch: true
     fields:

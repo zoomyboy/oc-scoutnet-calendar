@@ -1,0 +1,7 @@
+<?php if ($this->model->hasCredentials): ?>
+    <button data-js-request="<?= $this->getEventHandler('onGetForm') ?>" type="button" class="<?php if ($this->model->isConnected): ?> btn-scoutnet-connected <?php endif; ?> btn btn-scoutnet" data-scoutnet-connect-button>
+        <?= e(trans($this->model->buttonText)) ?>
+    </button>
+<?php else: ?>
+    <p class="flash-message static info"><?= e(trans('zoomyboy.scoutnet::lang.noCredentialsError')) ?></p>
+<?php endif; ?>

@@ -13,3 +13,6 @@
     - Create Tags
     - create_tags_table.php
     - create_keyword_tag_table.php
+1.0.6:
+    - Create Credentials
+    - create_credentials_table.php

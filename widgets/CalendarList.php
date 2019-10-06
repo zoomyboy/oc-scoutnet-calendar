@@ -2,6 +2,7 @@
 
 namespace Zoomyboy\Scoutnet\Widgets;
 
+use Model;
 use Input;
 use Backend\Classes\WidgetBase;
 use Zoomyboy\Scoutnet\Models\Calendar;
@@ -12,15 +13,26 @@ class CalendarList extends WidgetBase {
     use SearchableWidget;
     use SelectableWidget;
 
+    public $activeClass = null;
+
     public $deleteConfirmation = 'rainlab.pages::lang.page.delete_confirmation';
 
-    public function render() {
-        $this->vars['modelType'] = null;
-        $this->vars['modelId'] = null;
+    public function __construct($controller, $active = null) {
+        parent::__construct($controller);
 
+        if (is_a($active, Model::class)) {
+            $this->setActive($active);
+        }
+    }
+
+    public function render() {
         return $this->makePartial('body', [
             'data' => $this->getData()
         ]);
+    }
+
+    public function setActive(Model $model) {
+        $this->activeClass = strtolower(class_basename($model)).'-'.$model->id;
     }
 
     public function getData() {
@@ -52,8 +64,7 @@ class CalendarList extends WidgetBase {
 
     public function onUpdate()
     {
-        $this->vars['modelType'] = Input::get('modelType');
-        $this->vars['modelId'] = Input::get('modelId');
+        $this->activeClass = Input::get('modelType').'-'.Input::get('modelId');
 
         return $this->updateList();
     }

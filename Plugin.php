@@ -6,6 +6,7 @@ use System\Classes\PluginBase;
 use Zoomyboy\Scoutnet\Models\Setting;
 use Zoomyboy\Scoutnet\Classes\IcalGenerator;
 use Zoomyboy\Scoutnet\Classes\EventRepository;
+use Zoomyboy\Scoutnet\FormWidgets\ConnectButton;
 
 
 /**
@@ -13,6 +14,7 @@ use Zoomyboy\Scoutnet\Classes\EventRepository;
  */
 class Plugin extends PluginBase
 {
+    public static $loginUrl = 'https://www.scoutnet.de/community/scoutnetconnect.html';
 
     /**
      * Returns information about this plugin.
@@ -162,5 +164,11 @@ class Plugin extends PluginBase
 
     public function registerSchedule($schedule) {
         $schedule->command('scoutnet:sync')->hourly();
+    }
+
+    public function registerFormWidgets() {
+        return [
+            ConnectButton::class => 'zoomyboy_scoutnet_connect_button'
+        ];
     }
 }

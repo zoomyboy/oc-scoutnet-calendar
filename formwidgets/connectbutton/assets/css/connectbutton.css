@@ -1,0 +1,35 @@
+/*
+ * This is a sample StyleSheet file used by {{ name }}
+ *
+ * You can delete this file if you want
+ */
+.btn.btn-scoutnet {
+    border-radius: 10px;
+    border-image: url(https://www.scoutnet.de/fileadmin/templates/img/stiches-black.png) 30 30 round;
+    border-image-outset: 3px;
+    border-image-width: 20px;
+    border-left-width: 0;
+    border-top-width: 0;
+    padding: 10px 15px 10px 10px;
+    font-weight: 500;
+    color: #e1ddd5;
+    background-color: hsla(36, 17%, 52%, 1);
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.btn.btn-scoutnet:hover {
+    background-color: hsla(36, 17%, 60%, 1);
+}
+.btn.btn-scoutnet:before {
+    content: "";
+    background: url(https://www.scoutnet.de/fileadmin/templates/img/logo.png) no-repeat center;
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    background-size: cover;
+    z-index: 10;
+}
+.btn.btn-scoutnet.btn-scoutnet-connected {
+    background-color: hsl(101, 16.7%, 52%);
+}
