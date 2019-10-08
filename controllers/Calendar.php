@@ -55,4 +55,12 @@ class Calendar extends Controller
 
         return redirect()->to(Backend::url('zoomyboy/scoutnet/calendar/update/'.$recordId));
     }
+
+    public function logout($recordId = null) {
+        $model = $this->formFindModelObject($recordId);
+
+        $model->logout();
+
+        return redirect()->to(Backend::url('zoomyboy/scoutnet/calendar/update/'.$recordId));
+    }
 }

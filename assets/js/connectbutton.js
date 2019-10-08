@@ -15,12 +15,9 @@
     ScoutnetConnect.prototype.init = function(tabPane, formGetUrl) {
         var $button = $(tabPane).find('[data-scoutnet-connect-button]');
 
-        if ($button.hasClass('btn-scoutnet-connected')) {
-            return;
-        }
-
         $button.on('click', function(e) {
             e.preventDefault();
+
             var formId = 'u-'+Math.random().toString().replace('.', '');
 
             $(this).request($(this).data('js-request'), {

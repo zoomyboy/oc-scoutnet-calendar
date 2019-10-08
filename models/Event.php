@@ -1,9 +1,12 @@
 <?php namespace Zoomyboy\Scoutnet\Models;
 
+use Queue;
 use Model;
+use BackendAuth;
 use Carbon\Carbon;
 use Zoomyboy\Scoutnet\Models\Keyword;
 use Zoomyboy\Scoutnet\Models\Calendar;
+use Zoomyboy\Scoutnet\Classes\PushToApi;
 use \October\Rain\Database\Traits\Validation;
 /**
  * Calendar Model
@@ -156,5 +159,20 @@ class Event extends Model
             ]));
         }
         $local->keywords()->sync($keywords->pluck('id')->toArray());
+    }
+
+    public static function boot() {
+        parent::boot();
+
+        static::saved(function($event) {
+            if (!$event->calendar->hasCredentials || !$event->calendar->isConnected) {
+                return;
+            }
+
+            Queue::push(PushToApi::class, [
+                'event_id' => $event->id,
+                'credential_id' => $event->calendar->currentCredential->id
+            ]);
+        });
     }
 }

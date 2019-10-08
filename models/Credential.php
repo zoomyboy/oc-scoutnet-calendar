@@ -1,7 +1,9 @@
 <?php namespace Zoomyboy\Scoutnet\Models;
 
 use Model;
+use BackendAuth;
 use Backend\Models\User;
+use ScoutNet\Api\ScoutnetApi;
 
 class Credential extends Model
 {
@@ -18,7 +20,7 @@ class Credential extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = ['backend_user_id', 'auth_key'];
+    protected $fillable = ['backend_user_id', 'api_key', 'user', 'time', 'firstname', 'surname'];
 
     /**
      * @var array Relations
@@ -26,7 +28,7 @@ class Credential extends Model
     public $hasOne = [];
     public $hasMany = [];
     public $belongsTo = [
-        'user' => [ User::class ]
+        'backendUser' => [ User::class ]
     ];
     public $belongsToMany = [];
     public $morphTo = [];
@@ -34,4 +36,12 @@ class Credential extends Model
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
+
+    public function scopeCurrentUser($q) {
+        return $q->where('backend_user_id', BackendAuth::getUser()->id);
+    }
+
+    public function configure(ScoutnetApi $api) {
+        $api->loginUser($this->user, $this->api_key);
+    }
 }

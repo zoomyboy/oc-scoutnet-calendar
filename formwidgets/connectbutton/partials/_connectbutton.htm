@@ -1,5 +1,10 @@
 <?php if ($this->model->hasCredentials): ?>
-    <button data-js-request="<?= $this->getEventHandler('onGetForm') ?>" type="button" class="<?php if ($this->model->isConnected): ?> btn-scoutnet-connected <?php endif; ?> btn btn-scoutnet" data-scoutnet-connect-button>
+    <button
+        data-js-request="<?= $this->getEventHandler($this->model->isConnected ? 'onGetLogoutForm' : 'onGetLoginForm') ?>"
+        type="button"
+        class="<?php if ($this->model->isConnected): ?> btn-scoutnet-connected <?php endif; ?> btn btn-scoutnet"
+        data-scoutnet-connect-button
+    >
         <?= e(trans($this->model->buttonText)) ?>
     </button>
 <?php else: ?>

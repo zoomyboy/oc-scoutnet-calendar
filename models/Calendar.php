@@ -4,9 +4,12 @@ use BackendAuth;
 use Model;
 use Backend;
 use Zoomyboy\Scoutnet\Models\Event;
+use ScoutNet\Api\ScoutnetException;
+use ScoutNet\Api\ScoutnetApi;
+use Backend\Models\User as BackendUser;
 use October\Rain\Database\Traits\Sortable;
-use \October\Rain\Database\Traits\Validation;
 use Zoomyboy\Scoutnet\Classes\ScoutnetSync;
+use \October\Rain\Database\Traits\Validation;
 
 /**
  * Calendar Model
@@ -42,7 +45,9 @@ class Calendar extends Model
     /**
      * @var array Relations
      */
-    public $hasOne = [];
+    public $hasOne = [
+        'currentCredential' => [Credential::class, 'scope' => 'currentUser']
+    ];
     public $hasMany = [
         'events' => [Event::class],
         'credentials' => [Credential::class]
@@ -76,20 +81,33 @@ class Calendar extends Model
     }
 
     public function setLogin($key) {
-        $this->credentials()->updateOrCreate(['backend_user_id' => BackendAuth::getUser()->id], [
+        $api = $this->getApi();
+
+        $data = $api->getApiKeyFromData();
+
+        $this->credentials()->updateOrCreate(['backend_user_id' => BackendAuth::getUser()->id], array_merge([
             'backend_user_id' => BackendAuth::getUser()->id,
-            'auth_key' => $key
-        ]);
+        ], array_only($data, ['api_key', 'user', 'time', 'firstname', 'surname'])));
+    }
+
+    public function logout() {
+        $this->credentials()->where('backend_user_id', BackendAuth::getUser()->id)->delete();
     }
 
     public function getIsConnectedAttribute() {
-        return $this->credentials()
-            ->where('backend_user_id', BackendAuth::getUser()->id)
-            ->whereNotNull('auth_key')
-            ->exists();
+        return $this->currentCredential()->exists();
     }
 
     public function getButtonTextAttribute() {
         return $this->isConnected ? 'zoomyboy.scoutnet::lang.connected' : 'zoomyboy.scoutnet::lang.connect';
     }
+
+    public function getApi() {
+        return app('scoutnet.api')->group($this->scoutnet_id);
+    }
+
+    public function keyOf(BackendUser $user) {
+        return $this->credentials()->where('backend_user_id', $user->id)->first()->auth_key;
+    }
+
 }

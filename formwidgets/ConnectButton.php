@@ -38,10 +38,20 @@ class ConnectButton extends FormWidgetBase
         $this->addCss('css/connectbutton.css', 'zoomyboy.scoutnet');
     }
 
-    public function onGetForm() {
-        return $this->makePartial('form', [
+    public function onGetLoginForm() {
+        return $this->makePartial('login_form', [
             'id' => Input::get('formId'),
             'action' => Plugin::$loginUrl
+        ]);
+    }
+
+    public function onGetLogoutForm() {
+        preg_match('/[0-9]$/', request()->url(), $matches);
+        $id = $matches[0];
+
+        return $this->makePartial('logout_form', [
+            'id' => Input::get('formId'),
+            'action' => Backend::url('zoomyboy/scoutnet/calendar/logout/'.$id)
         ]);
     }
 

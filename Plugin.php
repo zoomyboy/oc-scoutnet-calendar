@@ -4,6 +4,7 @@ use Input;
 use Backend;
 use System\Classes\PluginBase;
 use Zoomyboy\Scoutnet\Models\Setting;
+use Zoomyboy\Scoutnet\Models\Calendar;
 use Zoomyboy\Scoutnet\Classes\IcalGenerator;
 use Zoomyboy\Scoutnet\Classes\EventRepository;
 use Zoomyboy\Scoutnet\FormWidgets\ConnectButton;
@@ -14,6 +15,7 @@ use Zoomyboy\Scoutnet\FormWidgets\ConnectButton;
  */
 class Plugin extends PluginBase
 {
+    public static $jsonUrl = 'https://www.scoutnet.de/jsonrpc/server.php';
     public static $loginUrl = 'https://www.scoutnet.de/community/scoutnetconnect.html';
 
     /**
@@ -48,6 +50,30 @@ class Plugin extends PluginBase
         });
         $this->app->bind('scoutnet.events', function() {
             return new EventRepository();
+        });
+
+        $this->app->bind('scoutnet.api', function() {
+            return new class(static::$jsonUrl, static::$loginUrl) {
+                public $jsonUrl;
+                public $loginUrl;
+
+                public function __construct($jsonUrl, $loginUrl) {
+                    $this->jsonUrl = $jsonUrl;
+                    $this->loginUrl = $loginUrl;
+                }
+
+                public function group($group) {
+                    $group = Calendar::where('scoutnet_id', $group)->firstOrFail();
+
+                    return new \ScoutNet\Api\ScoutnetApi(
+                        $this->jsonUrl,
+                        $this->loginUrl,
+                        $group->provider,
+                        $group->aes_key,
+                        $group->aes_iv
+                    );
+                }
+            };
         });
     }
 
