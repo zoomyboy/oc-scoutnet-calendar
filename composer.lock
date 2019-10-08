@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c2dcc388d073d4c5a9fde087e44e190c",
+    "content-hash": "4da5435f16d1c255242837ed9fc061fa",
     "packages": [
         {
             "name": "kylekatarnls/update-helper",
@@ -114,16 +114,16 @@
         },
         {
             "name": "scoutnet/sn-webservice",
-            "version": "1.0.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scoutnet/plugins.sn_webservice.git",
-                "reference": "66d1519865c5f48c7df69ed27798ab7e6fc1d779"
+                "reference": "8aaa955c2536303ea29bfd561826358b780f538c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scoutnet/plugins.sn_webservice/zipball/66d1519865c5f48c7df69ed27798ab7e6fc1d779",
-                "reference": "66d1519865c5f48c7df69ed27798ab7e6fc1d779",
+                "url": "https://api.github.com/repos/scoutnet/plugins.sn_webservice/zipball/8aaa955c2536303ea29bfd561826358b780f538c",
+                "reference": "8aaa955c2536303ea29bfd561826358b780f538c",
                 "shasum": ""
             },
             "replace": {
@@ -160,7 +160,7 @@
                 "ScoutNet",
                 "ScoutNet API"
             ],
-            "time": "2017-10-25T19:04:40+00:00"
+            "time": "2018-01-02T12:34:41+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -356,9 +356,18 @@
         }
     ],
     "packages-dev": [],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "1.0.1",
+            "alias_normalized": "1.0.1.0",
+            "version": "9999999-dev",
+            "package": "scoutnet/sn-webservice"
+        }
+    ],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "scoutnet/sn-webservice": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

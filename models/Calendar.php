@@ -94,10 +94,6 @@ class Calendar extends Model
         $this->credentials()->where('backend_user_id', BackendAuth::getUser()->id)->delete();
     }
 
-    public function logout() {
-        $this->credentials()->where('backend_user_id', BackendAuth::getUser()->id)->delete();
-    }
-
     public function getIsConnectedAttribute() {
         return $this->currentCredential()->exists();
     }
