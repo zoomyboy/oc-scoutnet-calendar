@@ -9,6 +9,7 @@ use Backend\Models\User as BackendUser;
 use October\Rain\Database\Traits\Sortable;
 use Zoomyboy\Scoutnet\Classes\ScoutnetSync;
 use \October\Rain\Database\Traits\Validation;
+use \October\Rain\Database\Traits\Sluggable;
 
 /**
  * Calendar Model
@@ -16,8 +17,10 @@ use \October\Rain\Database\Traits\Validation;
 class Calendar extends Model
 {
     use Sortable;
+    use Sluggable;
     use Validation;
 
+    protected $slugs = ['slug' => 'title'];
     public static $icon = 'oc-icon-calendar';
     public static $tabTitle = 'zoomyboy.scoutnet::lang.newCalendar';
 

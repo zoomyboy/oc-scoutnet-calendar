@@ -11,7 +11,8 @@ class CreateCalendarsTable extends Migration
         Schema::create('zoomyboy_scoutnet_calendars', function(Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('id');
-            $table->string('title')->nullable();
+            $table->string('title');
+            $table->string('slug');
             $table->integer('sort_order')->default(0);
             $table->integer('scoutnet_id')->unique();
             $table->string('provider')->nullable();

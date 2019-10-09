@@ -1,12 +1,18 @@
 <?php namespace Zoomyboy\Scoutnet;
 
+use Str;
+use URL;
+use Event;
 use Input;
 use Backend;
+use Cms\Classes\Theme;
 use System\Classes\PluginBase;
+use Cms\Classes\Page as CmsPage;
 use Zoomyboy\Scoutnet\Models\Setting;
 use Zoomyboy\Scoutnet\Models\Calendar;
 use Zoomyboy\Scoutnet\Classes\IcalGenerator;
 use Zoomyboy\Scoutnet\Classes\EventRepository;
+use October\Rain\Router\Helper as RouterHelper;
 use Zoomyboy\Scoutnet\FormWidgets\ConnectButton;
 
 
@@ -88,6 +94,41 @@ class Plugin extends PluginBase
      */
     public function boot()
     {
+        Event::listen('pages.menuitem.listTypes', function() {
+            return [
+                'zoomyboy-scoutnet-single-calendar' => 'Single Calendar'
+            ];
+        });
+        Event::listen('pages.menuitem.getTypeInfo', function($type) {
+            if ($type != 'zoomyboy-scoutnet-single-calendar') { return; }
+
+            $calendars = Calendar::get()->pluck('title', 'slug')->toArray();
+            $theme = Theme::getActiveTheme();
+
+            return [
+                'dynamicItems' => false,
+                'nesting' => false,
+                'references' => $calendars,
+                'cmsPages' => CmsPage::listInTheme($theme, true)->filter(function($page) {
+                    return $page->hasComponent('singleCalendar');
+                })
+            ];
+        });
+        Event::listen('pages.menuitem.resolveItem', function($type, $item, $url, $theme) {
+            if ($type != 'zoomyboy-scoutnet-single-calendar') { return; }
+
+            $page = CmsPage::loadCached($theme, $item->cmsPage);
+
+            if (!$page) return;
+
+            $itemUrl = CmsPage::url($page->getBaseFileName(), ['slug' => $item->reference]);
+            $isActive = $url == $itemUrl;
+
+            return [
+                'isActive' => $isActive,
+                'url' => $itemUrl
+            ];
+        });
     }
 
     /**
