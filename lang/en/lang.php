@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'activeCalendar' => 'Active calendar',
     'permissions' => [
         'settings' => 'Manage Setting',
         'calendar' => 'Manage Calendars',

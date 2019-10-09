@@ -64,7 +64,17 @@ class SingleCalendar extends ComponentBase {
     }
 
     public function defineProperties() {
-        return [];
+        return [
+            'activeCalendar' => [
+                'type' => 'dropdown',
+                'required' => true,
+                'label' => 'zoomyboy.scoutnet::lang.activeCalendar'
+            ]
+        ];
+    }
+
+    public function getActiveCalendarOptions() {
+        return Calendar::get()->pluck('title', 'id')->toArray();
     }
 }
 
