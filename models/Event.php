@@ -164,6 +164,7 @@ class Event extends Model
     public static function boot() {
         parent::boot();
 
+        /* @todo push this only when changed via backend 
         static::saved(function($event) {
             if (!$event->calendar->hasCredentials || !$event->calendar->isConnected) {
                 return;
@@ -174,5 +175,6 @@ class Event extends Model
                 'credential_id' => $event->calendar->currentCredential->id
             ]);
         });
+         */
     }
 }
