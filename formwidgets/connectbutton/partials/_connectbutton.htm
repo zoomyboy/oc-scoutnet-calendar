@@ -1,4 +1,4 @@
-<?php if ($this->model->hasCredentials): ?>
+<?php if ($this->model->hasCredentials('scoutnet')): ?>
     <button
         data-js-request="<?= $this->getEventHandler($this->model->isConnected ? 'onGetLogoutForm' : 'onGetLoginForm') ?>"
         type="button"

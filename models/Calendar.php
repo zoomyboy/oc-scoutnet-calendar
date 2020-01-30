@@ -72,12 +72,16 @@ class Calendar extends Model
         });
     }
 
-    public function getHasCredentialsAttribute() {
-        return $this->provider && $this->aes_key && $this->aes_iv;
+    public function hasCredentials($connection) {
+        if ($connection == 'scoutnet') {
+            return $this->provider && $this->aes_key && $this->aes_iv;
+        }
     }
 
-    public function getApiReturnUrlAttribute() {
-        return Backend::url('zoomyboy/scoutnet/calendar/callback/'.$this->id);
+    public function apiReturnUrl($connection) {
+        if($connection == 'scoutnet_connect') {
+            return Backend::url('zoomyboy/scoutnet/calendar/callback/'.$this->id);
+        }
     }
 
     public function setLogin($key) {

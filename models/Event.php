@@ -166,7 +166,7 @@ class Event extends Model
 
         /* @todo push this only when changed via backend 
         static::saved(function($event) {
-            if (!$event->calendar->hasCredentials || !$event->calendar->isConnected) {
+            if (!$event->calendar->hasCredentials('scoutnet') || !$event->calendar->isConnected) {
                 return;
             }
 
