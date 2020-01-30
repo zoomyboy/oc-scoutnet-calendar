@@ -1,9 +1,6 @@
 <?php
 
 return [
-    'noCredentialsError' => 'Please define provider and keys first before you connect to soutnet.',
-    'connect' => 'Connect to ScoutnetConnect',
-    'connected' => 'Connected with ScoutnetConnect',
     'permissions' => [
         'settings' => 'Manage Setting',
         'calendar' => 'Manage Calendars',

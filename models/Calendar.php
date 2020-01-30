@@ -98,8 +98,8 @@ class Calendar extends Model
         return $this->currentCredential()->exists();
     }
 
-    public function getButtonTextAttribute() {
-        return $this->isConnected ? 'zoomyboy.scoutnet::lang.connected' : 'zoomyboy.scoutnet::lang.connect';
+    public function buttonText($connection) {
+        return $this->isConnected ? 'zoomyboy.scoutnet::api.'.$connection.'.connected' : 'zoomyboy.scoutnet::api.'.$connection.'.connect';
     }
 
     public function getApi() {

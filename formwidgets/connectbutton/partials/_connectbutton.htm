@@ -5,8 +5,8 @@
         class="<?php if ($this->model->isConnected): ?> btn-scoutnet-connected <?php endif; ?> btn btn-scoutnet"
         data-scoutnet-connect-button
     >
-        <?= e(trans($this->model->buttonText)) ?>
+        <?= e(trans($this->model->buttonText('scoutnet_connect'))) ?>
     </button>
 <?php else: ?>
-    <p class="flash-message static info"><?= e(trans('zoomyboy.scoutnet::lang.noCredentialsError')) ?></p>
+    <p class="flash-message static info"><?= e(trans('zoomyboy.scoutnet::api.scoutnet_connect.noCredentialsError')) ?></p>
 <?php endif; ?>
