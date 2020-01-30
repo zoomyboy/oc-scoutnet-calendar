@@ -50,6 +50,10 @@ tabs:
             type: zoomyboy_scoutnet_connect_button
             connection: google_calendar
 
+        _google_calendar:
+            tab: Google
+            type: dropdown
+            label: Google Kalender
 secondaryTabs:
     stretch: true
     fields:

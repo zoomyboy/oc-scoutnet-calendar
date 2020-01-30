@@ -7,10 +7,6 @@
     >
         <?= e(trans($this->service->buttonText())) ?>
     </button>
-
-    <?php if ($this->service->isConnected()): ?>
-    aaaa
-    <?php endif; ?>
 <?php else: ?>
 <p class="flash-message static info"><?= e(trans('zoomyboy.scoutnet::api.'.$this->connection.'.noCredentialsError')) ?></p>
 <?php endif; ?>

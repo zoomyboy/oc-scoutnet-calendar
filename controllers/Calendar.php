@@ -34,6 +34,15 @@ class Calendar extends Controller
         CalendarModel::findOrFail($recordId)->pullEvents();
     }
 
+    public function formBeforeSave($model) {
+        $model->connectionService('google_calendar')->storeCalendar(request()->input('Calendar._google_calendar'));
+    }
+
+    public function formExtendModel($model) {
+        $model->setAttribute('_google_calendar', $model->connectionService('google_calendar')->currentCalendar());
+        return $model;
+    }
+
     public function onGetTitle() {
         try {
             $group = ScoutnetSync::fromGroup(Input::get('Calendar.scoutnet_id'));

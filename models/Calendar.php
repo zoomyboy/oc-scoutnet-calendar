@@ -75,4 +75,8 @@ class Calendar extends Model
         $cls = '\\Zoomyboy\\Scoutnet\\Classes\\'.studly_case($connection);
         return $cls::fromCalendar($this);
     }
+
+    public function getGoogleCalendarOptions() {
+        return $this->connectionService('google_calendar')->getCalendars();
+    }
 }

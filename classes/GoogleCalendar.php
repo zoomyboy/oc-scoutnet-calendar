@@ -53,7 +53,7 @@ class GoogleCalendar extends Connection {
 
     public function getAuthParams() {
         return [
-            'scope' => 'https://www.googleapis.com/auth/calendar.events',
+            'scope' => 'https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/calendar',
             'access_type' => 'offline',
             'include_granted_scopes' => 'true',
             'response_type' => 'code',
@@ -65,6 +65,28 @@ class GoogleCalendar extends Connection {
 
     public function apiReturnUrl() {
         return Backend::url('zoomyboy/scoutnet/calendar/callback/'.static::key());
+    }
+
+    public function getCalendars() {
+        if (!$this->isConnected()) { return []; }
+
+        $client = new Client(['base_uri' => 'https://www.googleapis.com']);
+        $response = $client->get('/calendar/v3/users/me/calendarList', [
+            'headers' => [ 'Authorization' => 'Bearer '.$this->getCredential()->data['access_token'] ]
+        ]);
+
+        $response = json_decode((string) $response->getBody());
+        return collect($response->items)->pluck('summary', 'id')->toArray();
+    }
+
+    public function storeCalendar($calendar) {
+        $data = $this->getCredential()->data;
+        $data['calendar'] = $calendar;
+        $this->getCredential()->update(['data' => $data]);
+    }
+
+    public function currentCalendar() {
+        return $this->getCredential()->data['calendar'] ?? '';
     }
 }
 

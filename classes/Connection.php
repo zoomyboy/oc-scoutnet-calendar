@@ -36,6 +36,10 @@ class Connection {
     }
 
     public function logout() {
-        $this->calendar->credentials()->where('backend_user_id', BackendAuth::getUser()->id)->where('connection', static::key())->delete();
+        $this->getCredential()->delete();
+    }
+
+    public function getCredential() {
+        return $this->calendar->credentials()->where('backend_user_id', BackendAuth::getUser()->id)->where('connection', static::key())->first();
     }
 }
