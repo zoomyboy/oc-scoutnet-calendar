@@ -1,5 +1,5 @@
 <form method="POST" target="_SELF" action="<?= $action ?>" id="<?= $id ?>">
-    <input type="hidden" name="redirect_url" value="<?= $this->model->apiReturnUrl('scoutnet_connect') ?>" />
+    <input type="hidden" name="redirect_url" value="<?= $this->model->connectionService('scoutnet_connect')->apiReturnUrl() ?>" />
     <input type="hidden" name="lang" value="de" />
     <input type="hidden" name="provider" value="<?= $this->model->provider ?>" />
     <input type="hidden" name="createApiKey" value="1" />

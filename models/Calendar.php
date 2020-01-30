@@ -2,7 +2,6 @@
 
 use BackendAuth;
 use Model;
-use Backend;
 use Zoomyboy\Scoutnet\Models\Event;
 use ScoutNet\Api\ScoutnetException;
 use ScoutNet\Api\ScoutnetApi;
@@ -72,46 +71,8 @@ class Calendar extends Model
         });
     }
 
-    public function hasCredentials($connection) {
-        if ($connection == 'scoutnet') {
-            return $this->provider && $this->aes_key && $this->aes_iv;
-        }
+    public function connectionService($connection) {
+        $cls = '\\Zoomyboy\\Scoutnet\\Classes\\'.studly_case($connection);
+        return $cls::fromCalendar($this);
     }
-
-    public function apiReturnUrl($connection) {
-        if($connection == 'scoutnet_connect') {
-            return Backend::url('zoomyboy/scoutnet/calendar/callback/'.$this->id);
-        }
-    }
-
-    public function setLogin($key) {
-        $api = $this->getApi();
-
-        $data = $api->getApiKeyFromData();
-
-        $this->credentials()->updateOrCreate(['backend_user_id' => BackendAuth::getUser()->id], array_merge([
-            'backend_user_id' => BackendAuth::getUser()->id,
-        ], array_only($data, ['api_key', 'user', 'time', 'firstname', 'surname'])));
-    }
-
-    public function logout() {
-        $this->credentials()->where('backend_user_id', BackendAuth::getUser()->id)->delete();
-    }
-
-    public function getIsConnectedAttribute() {
-        return $this->currentCredential()->exists();
-    }
-
-    public function buttonText($connection) {
-        return $this->isConnected ? 'zoomyboy.scoutnet::api.'.$connection.'.connected' : 'zoomyboy.scoutnet::api.'.$connection.'.connect';
-    }
-
-    public function getApi() {
-        return app('scoutnet.api')->group($this->scoutnet_id);
-    }
-
-    public function keyOf(BackendUser $user) {
-        return $this->credentials()->where('backend_user_id', $user->id)->first()->auth_key;
-    }
-
 }

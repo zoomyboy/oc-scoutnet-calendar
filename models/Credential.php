@@ -20,7 +20,9 @@ class Credential extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = ['backend_user_id', 'api_key', 'user', 'time', 'firstname', 'surname'];
+    protected $fillable = ['backend_user_id', 'data', 'calendar_id', 'connection'];
+
+    public $jsonable = ['data'];
 
     /**
      * @var array Relations

@@ -166,13 +166,13 @@ class Event extends Model
 
         /* @todo push this only when changed via backend 
         static::saved(function($event) {
-            if (!$event->calendar->hasCredentials('scoutnet') || !$event->calendar->isConnected) {
+            if (!$event->calendar->connectionService('scoutnet_connect')->hasCredentials() || !$event->calendar->connectionService('scoutnet_connect')->isConnected()) {
                 return;
             }
 
             Queue::push(PushToApi::class, [
                 'event_id' => $event->id,
-                'credential_id' => $event->calendar->currentCredential->id
+                'credential_id' => $event->calendar->getCurrentCredential('scoutnet')->id
             ]);
         });
          */

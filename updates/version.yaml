@@ -16,3 +16,6 @@
 1.0.6:
     - Create Credentials
     - create_credentials_table.php
+1.0.7:
+    - Create Calendar Google Columns
+    - create_calendar_google_columns.php

@@ -44,14 +44,13 @@ class Calendar extends Controller
         }
     }
 
-    public function callback($recordId = null) {
+    public function callback($connection, $recordId = null) {
         $model = $this->formFindModelObject($recordId);
-
-        if (!$model || !Request::filled('auth') || Request::input('logintype') != 'login') {
+        if (!$model) {
             throw new ApplicationException('Login fehlgeschlagen.');
         }
 
-        $model->setLogin(Request::get('auth'));
+        $model->connectionService($connection)->setLogin();
 
         return redirect()->to(Backend::url('zoomyboy/scoutnet/calendar/update/'.$recordId));
     }

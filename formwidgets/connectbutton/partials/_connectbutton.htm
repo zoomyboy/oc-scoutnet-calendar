@@ -1,11 +1,11 @@
-<?php if ($this->model->hasCredentials('scoutnet')): ?>
+<?php if ($this->model->connectionService('scoutnet_connect')->hasCredentials()): ?>
     <button
-        data-js-request="<?= $this->getEventHandler($this->model->isConnected ? 'onGetLogoutForm' : 'onGetLoginForm') ?>"
+        data-js-request="<?= $this->getEventHandler($this->model->connectionService('scoutnet_connect')->isConnected() ? 'onGetLogoutForm' : 'onGetLoginForm') ?>"
         type="button"
-        class="<?php if ($this->model->isConnected): ?> btn-scoutnet-connected <?php endif; ?> btn btn-scoutnet"
+        class="<?php if ($this->model->connectionService('scoutnet_connect')->isConnected()): ?> btn-scoutnet-connected <?php endif; ?> btn btn-scoutnet"
         data-scoutnet-connect-button
     >
-        <?= e(trans($this->model->buttonText('scoutnet_connect'))) ?>
+        <?= e(trans($this->model->connectionService('scoutnet_connect')->buttonText())) ?>
     </button>
 <?php else: ?>
     <p class="flash-message static info"><?= e(trans('zoomyboy.scoutnet::api.scoutnet_connect.noCredentialsError')) ?></p>
