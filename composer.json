@@ -11,7 +11,9 @@
     ],
     "require": {
         "nesbot/carbon": "^1.21",
-        "scoutnet/sn-webservice": "dev-master as 1.0.1"
+        "scoutnet/sn-webservice": "dev-master as 1.0.1",
+        "google/apiclient": "^2.0",
+        "guzzlehttp/guzzle": "^6.5"
     },
     "authors": [
         {

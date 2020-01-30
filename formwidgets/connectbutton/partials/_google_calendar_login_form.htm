@@ -1,0 +1,5 @@
+<form method="POST" target="_SELF" action="<?= $action ?>" id="<?= $id ?>">
+    <?php foreach ($params as $name => $value): ?>
+    <input type="hidden" name="<?php echo $name; ?>" value="<?php echo $value; ?>" />
+    <?php endforeach; ?>
+</form>

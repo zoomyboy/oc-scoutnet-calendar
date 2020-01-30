@@ -2,7 +2,6 @@
 
 use Input;
 use Backend;
-use Zoomyboy\Scoutnet\Plugin;
 use Backend\Classes\FormWidgetBase;
 use Zoomyboy\Scoutnet\Models\Setting;
 use Backend\Classes\FormField;
@@ -16,13 +15,20 @@ class ConnectButton extends FormWidgetBase
      * @inheritDoc
      */
     protected $defaultAlias = 'zoomyboy_scoutnet_connect_button';
+    public $connection;
+    public $service;
+    public $btnClass;
 
     /**
      * @inheritDoc
      */
     public function init()
     {
+        $this->fillFromConfig(['connection']);
+    }
 
+    public function getService() {
+        $this->service = $this->model->connectionService($this->connection);
     }
 
     /**
@@ -30,6 +36,13 @@ class ConnectButton extends FormWidgetBase
      */
     public function render()
     {
+        $this->getService();
+
+        $this->btnClass = 'btn-'.$this->connection;
+        if ($this->service->isConnected()) {
+            $this->btnClass .= ' '.$this->btnClass.'-connected';
+        }
+
         return $this->makePartial('connectbutton');
     }
 
@@ -39,9 +52,12 @@ class ConnectButton extends FormWidgetBase
     }
 
     public function onGetLoginForm() {
-        return $this->makePartial('login_form', [
+        $this->getService();
+
+        return $this->makePartial($this->connection.'_login_form', [
             'id' => Input::get('formId'),
-            'action' => Plugin::$loginUrl
+            'action' => $this->service->getAuthUrl(),
+            'params' => $this->service->getAuthParams()
         ]);
     }
 
@@ -51,7 +67,7 @@ class ConnectButton extends FormWidgetBase
 
         return $this->makePartial('logout_form', [
             'id' => Input::get('formId'),
-            'action' => Backend::url('zoomyboy/scoutnet/calendar/logout/'.$id)
+            'action' => Backend::url('zoomyboy/scoutnet/calendar/logout/'.$this->connection.'/'.$id)
         ]);
     }
 

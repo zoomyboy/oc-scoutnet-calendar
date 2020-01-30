@@ -44,21 +44,21 @@ class Calendar extends Controller
         }
     }
 
-    public function callback($connection, $recordId = null) {
+    public function callback($connection, ...$params) {
+        $service = get_class($this->formCreateModelObject()->connectionService($connection));
+        $record = $service::fromRedirectUri($params, url()->current());
+        $record->connectionService($connection)->setLogin();
+
+        return redirect()->to(Backend::url('zoomyboy/scoutnet/calendar/update/'.$record->id));
+    }
+
+    public function logout($connection, $recordId = null) {
         $model = $this->formFindModelObject($recordId);
         if (!$model) {
             throw new ApplicationException('Login fehlgeschlagen.');
         }
 
-        $model->connectionService($connection)->setLogin();
-
-        return redirect()->to(Backend::url('zoomyboy/scoutnet/calendar/update/'.$recordId));
-    }
-
-    public function logout($recordId = null) {
-        $model = $this->formFindModelObject($recordId);
-
-        $model->logout();
+        $model->connectionService($connection)->logout();
 
         return redirect()->to(Backend::url('zoomyboy/scoutnet/calendar/update/'.$recordId));
     }

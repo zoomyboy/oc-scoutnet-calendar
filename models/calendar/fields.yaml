@@ -28,18 +28,27 @@ tabs:
         provider:
             tab: ScoutnetConnect
             label: Provider
-
         aes_key:
             tab: ScoutnetConnect
             label: AES Key
-
         aes_iv:
             tab: ScoutnetConnect
             label: AES IV
-
         api_key:
             tab: ScoutnetConnect
             type: zoomyboy_scoutnet_connect_button
+            connection: scoutnet_connect
+
+        google_client_id:
+            tab: Google
+            label: Client ID
+        google_client_secret:
+            tab: Google
+            label: Client Secret
+        google_api_key:        
+            tab: Google
+            type: zoomyboy_scoutnet_connect_button
+            connection: google_calendar
 
 secondaryTabs:
     stretch: true

@@ -13,12 +13,13 @@
     ScoutnetConnect.prototype.constructor = ScoutnetConnect
 
     ScoutnetConnect.prototype.init = function(tabPane, formGetUrl) {
-        var $button = $(tabPane).find('[data-scoutnet-connect-button]');
+        var $button = $(tabPane).find('[data-connect-button]');
 
         $button.on('click', function(e) {
             e.preventDefault();
 
             var formId = 'u-'+Math.random().toString().replace('.', '');
+                console.log($button);
 
             $(this).request($(this).data('js-request'), {
                 url: formGetUrl,

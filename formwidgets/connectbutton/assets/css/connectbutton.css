@@ -1,9 +1,4 @@
-/*
- * This is a sample StyleSheet file used by {{ name }}
- *
- * You can delete this file if you want
- */
-.btn.btn-scoutnet {
+.btn.btn-scoutnet_connect {
     border-radius: 10px;
     border-image: url(https://www.scoutnet.de/fileadmin/templates/img/stiches-black.png) 30 30 round;
     border-image-outset: 3px;
@@ -18,10 +13,10 @@
     display: flex;
     align-items: center;
 }
-.btn.btn-scoutnet:hover {
+.btn.btn-scoutnet_connect:hover {
     background-color: hsla(36, 17%, 60%, 1);
 }
-.btn.btn-scoutnet:before {
+.btn.btn-scoutnet_connect:before {
     content: "";
     background: url(https://www.scoutnet.de/fileadmin/templates/img/logo.png) no-repeat center;
     width: 40px;
@@ -30,6 +25,18 @@
     background-size: cover;
     z-index: 10;
 }
-.btn.btn-scoutnet.btn-scoutnet-connected {
+.btn.btn-scoutnet_connect.btn-scoutnet_connect-connected {
     background-color: hsl(101, 16.7%, 52%);
+}
+
+.btn.btn-google_calendar {
+    color: #fff;
+    background: #1a73e8;
+    line-height: 36px;
+    height: 36px;
+    border-bottom: 0;
+    box-shadow: none;
+    display: flex;
+    padding: 0 35px;
+    font: 500 14px/36px Google Sans,Noto Sans,Noto Sans JP,Noto Sans KR,Noto Naskh Arabic,Noto Sans Thai,Noto Sans Hebrew,Noto Sans Bengali,sans-serif;
 }
