@@ -118,6 +118,21 @@ class Event extends Model
         .(!empty($this->ends_at) ? ' - '.$this->ends_at->format('d.m.Y H:i') : '');
     }
 
+    public function scopeWithIsOneDay($q) {
+        $q->select('*');
+        $oneDayQuery = 'DATE_FORMAT(starts_at, "%T") = "00:00:00" AND (ends_at is NULL OR starts_at = ends_at)';
+        $q->selectSub($oneDayQuery, 'isOneDay');
+    }
+
+    public function scopeWithIsAllDay($q) {
+        $q->select('*');
+        $allDayQuery = '
+            (DATE_FORMAT(starts_at, "%T") = "00:00:00" AND ends_at is NULL)
+            OR (ends_at is not NULL AND DATE_FORMAT(starts_at, "%T") = "00:00:00" AND DATE_FORMAT(ends_at, "%T") = "00:00:00")
+        ';
+        $q->selectSub($allDayQuery, 'isOneDay');
+    }
+
     public function getIcalStartAttribute() {
         return $this->starts_at;
     }
