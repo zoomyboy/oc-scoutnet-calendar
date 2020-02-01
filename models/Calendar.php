@@ -59,16 +59,8 @@ class Calendar extends Model
     public $attachOne = [];
     public $attachMany = [];
 
-    public function pullEvents() {
-        $group = ScoutnetSync::fromGroup($this->scoutnet_id);
-        $this->update(['title' => $group->getName()]);
-
-        $events = $group->events()->ofYears(range(date('Y')-1, date('Y')+1))
-            ->get();
-
-        $events->each(function($event) {
-            Event::createFromScoutnet($event);
-        });
+    public function scoutnetSync() {
+        return ScoutnetSync::fromGroup($this->scoutnet_id, $this);
     }
 
     public function connectionService($connection) {

@@ -27,16 +27,8 @@ class ScoutnetSync extends Command
      */
     public function handle()
     {
-        $client = new Client(['base_uri' => 'http://www.scoutnet.de/api/0.2/group/']);
-        $lastYear = Carbon::now()->subYear(1)->startOfYear()->format('Y-m-d');
-
-        Calendar::get()->each(function($calendar) use ($client, $lastYear) {
-            $response = $client->get("{$calendar->scoutnet_id}/events/?json=[\"start_date >= '".$lastYear."'\"]");
-            $response = json_decode((string) $response->getBody());
-
-            foreach($response->elements as $event) {
-                Event::createFromScoutnet($event);
-            }
+        Calendar::get()->each(function($calendar) {
+            $calendar->scoutnetSync()->sync();
         });
 
         $this->info('Events synchronisiert');

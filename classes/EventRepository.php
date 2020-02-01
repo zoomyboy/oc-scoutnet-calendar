@@ -40,6 +40,7 @@ class EventRepository {
         return $this;
     }
 
+    // @todo get this as a column from mySQL
     public function group() {
         return $this->query->get()->groupBy(function($e) {
             return $this->months[Carbon::parse($e->starts_at)->format('n')]

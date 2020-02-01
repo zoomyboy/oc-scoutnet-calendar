@@ -31,7 +31,8 @@ class Calendar extends Controller
     }
 
     public function update_onSync($recordId = null) {
-        CalendarModel::findOrFail($recordId)->pullEvents();
+        $calendar = CalendarModel::findOrFail($recordId);
+        $calendar->scoutnetSync()->sync();
     }
 
     public function formBeforeSave($model) {
@@ -45,7 +46,7 @@ class Calendar extends Controller
 
     public function onGetTitle() {
         try {
-            $group = ScoutnetSync::fromGroup(Input::get('Calendar.scoutnet_id'));
+            $group = ScoutnetSync::fromGroup(Input::get('Calendar.scoutnet_id'), null);
 
             return response($group->getName());
         } catch(Exception $e) {

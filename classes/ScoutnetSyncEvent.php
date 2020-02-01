@@ -3,69 +3,75 @@
 namespace Zoomyboy\Scoutnet\Classes;
 
 use Carbon\Carbon;
+use Zoomyboy\Scoutnet\Models\Calendar;
+use Zoomyboy\Scoutnet\Models\Event;
+use Zoomyboy\Scoutnet\Models\Keyword;
 
 class ScoutnetSyncEvent {
-	private $event;
 
-	private $shortFormat = '%d %b %y';
+    private $event;
+    private $calendar;
 
-	private $props = [
-		'title', 'whenShort', 'location', 'targetgroup', 'url', 'urlText'
-	];
+    public static function sync($event, $calendar) {
+        $self = new static($event, $calendar);
+        $self->handle();
+    }
 
-	public function __construct($event) {
-		$this->event = $event;
-	}
+    private function __construct($event, $calendar) {
+        $this->event = $event;
+        $this->calendar = $calendar;
+    }
 
-	public function getTitleAttribute() {
-		return $this->event->title;
-	}
+    private function getStart() {
+        if (!$this->event->start_date) { return null; }
+        $start = $this->event->start_date.($this->event->start_time ? ' '.$this->event->start_time : ' 00:00:00');
 
-	public function getTargetgroupAttribute() {
-		return $this->event->target_group;
-	}
+        return Carbon::parse($start);
+    }
 
-	public function getUrlAttribute() {
-		return $this->event->url;
-	}
+    public function getEnd() {
+        if (!$this->event->end_date && !$this->event->end_time) {
+            // Event hat kene Endzeit und kein Enddatum. Es wird eine Stunde Dauer angenommen oder ein Tagesevent
+            return $this->getStart()->format('H:i:s') == '00:00:00'
+                ? $this->getStart()
+                : $this->getStart()->addHours(1);
+        }
 
-	public function getUrlTextAttribute() {
-		return $this->event->url_text;
-	}
+        if ($this->event->end_date && !$this->event->end_time) {
+            return Carbon::parse($this->event->end_date.' '.$this->getStart()->format('H:i:s'));
+        }
 
-	/**
-	 * Localization of month string is broken due to an issue in
-	 * october. The Carbon package doesnt recognize the app.locale
-	 * setting, so we set this manually and doesnt use carbon at all...
-	 */
-	public function getWhenShortAttribute() {
-		setlocale(LC_TIME, 'de_DE.UTF-8');
+        if (!$this->event->end_date && $this->event->end_time) {
+            return Carbon::parse($this->getStart()->format('Y-m-d').' '.$this->event->end_time);
+        }
 
-		$string = strftime($this->shortFormat, Carbon::parse($this->event->start_date)->timestamp);
+        return Carbon::parse($this->event->end_date.' '.$this->event->end_time);
+    }
 
-		if (!$this->isOnlyOneDay()) {
-			$string .= ' - '.strftime($this->shortFormat, Carbon::parse($this->event->end_date)->timestamp);
-		}
+    private function handle() {
+        $local = Event::updateOrCreate(['scoutnet_id' => $this->event->id], [
+            'calendar_id' => $this->calendar->id,
+            'title' => $this->event->title,
+            'location' => $this->event->location && $this->event->location !== 'NULL'
+                ? $this->event->location
+                : null,
+            'starts_at' => $this->getStart(),
+            'ends_at' => $this->getEnd(),
+            'organizer' => $this->event->organizer ?: null,
+            'target' => $this->event->target_group ?: null,
+            'url' => $this->event->url ?: null,
+            'url_text' => $this->event->url_text ?: null,
+            'description' => $this->event->description ?: null,
+            'scoutnet_id' => $this->event->id
+        ]);
 
-		return $string;
-	}
-
-	public function __get($var) {
-		$method = 'get'.ucfirst($var).'Attribute';
-		return $this->{$method}();
-	}
-
-	public function __isset($var) {
-		return in_array ($var, $this->props);
-	}
-
-	public function getLocationAttribute() {
-		return $this->event->location;
-	}
-
-	private function isOnlyOneDay() {
-		return is_null($this->event->end_date)
-			|| Carbon::parse($this->event->start_date)
-			->eq(Carbon::parse($this->event->end_date));
-	}
+        $keywords = collect([]);
+        foreach($this->event->keywords as $keywordId => $keyword) {
+            $keywords->push(Keyword::updateOrCreate(['scoutnet_id' => $keywordId], [
+                'scoutnet_id' => $keywordId,
+                'title' => $keyword
+            ]));
+        }
+        $local->keywords()->sync($keywords->pluck('id')->toArray());
+    }
 }
