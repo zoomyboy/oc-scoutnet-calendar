@@ -106,7 +106,15 @@ class Event extends Model
     public static function boot() {
         parent::boot();
 
-        static::saving(function($event) {
+        static::created(function($event) {
+            Queue::push(PushToApi::class, [
+                'event_id' => $event->id,
+                'original' => $event->getOriginal(),
+                'user_id' => null
+            ]);
+        });
+
+        static::updated(function($event) {
             Queue::push(PushToApi::class, [
                 'event_id' => $event->id,
                 'original' => $event->getOriginal(),

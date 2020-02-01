@@ -49,8 +49,18 @@ class ScoutnetSyncEvent {
         return Carbon::parse($this->event->end_date.' '.$this->event->end_time);
     }
 
+    public function updateOrCreate($wheres, $attributes) {
+        if (Event::where($wheres)->exists()) {
+            return tap(Event::where($wheres)->first(), function($event) use ($attributes) {
+                $event->update($attributes);
+            });
+        } else {
+            return Event::create($attributes);
+        }
+    }
+
     private function handle() {
-        $local = Event::updateOrCreate(['scoutnet_id' => $this->event->id], [
+        $local = $this->updateOrCreate(['scoutnet_id' => $this->event->id], [
             'calendar_id' => $this->calendar->id,
             'title' => $this->event->title,
             'location' => $this->event->location && $this->event->location !== 'NULL'
