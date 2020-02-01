@@ -66,72 +66,32 @@ class Event extends Model
      * @todo über mysql holen mit DATETIME_FORMAT
      */
     public function getDisplayDateAttribute() {
-        $startDate = $this->starts_at->format('d.m.Y');
+        $start = $this->starts_at->format('d.m.Y');
+        $start .= $this->starts_at->startOfDay()->notEqualTo($this->ends_at->startOfDay())
+            ? ' - '.$this->ends_at->format('d.m.Y')
+            : '';
 
-        $endDate = $this->ends_at
-            ? $this->ends_at->format('d.m.Y')
-            : null;
-
-        if ($endDate && $startDate == $endDate) {
-            return $startDate;
-        }
-
-        if (!$endDate && $startDate) {
-            return $startDate;
-        }
-
-        if ($startDate !== $endDate) {
-            return $startDate.' - '.$endDate;
-        }
-
-        return $this->starts_at->format('d.m.Y H:i:s')
-        .(!empty($this->ends_at) ? ' - '.$this->ends_at->format('d.m.Y H:i') : '');
+        return $start;
     }
 
     /**
      * @todo über mysql holen mit DATETIME_FORMAT
      */
     public function getDisplayTimeAttribute() {
-        $startTime = $this->starts_at->format('H:i') !== '00:00'
-            ? $this->starts_at->format('H:i')
-            : null;
-
-        $endTime = $this->ends_at && $this->ends_at->format('H:i') !== '00:00'
-            ? $this->ends_at->format('H:i')
-            : null;
-
-        if ($endTime && $startTime == $endTime) {
-            return $startTime;
-        }
-
-        if (!$endTime && $startTime) {
-            return $startTime;
-        }
-
-        if (!$endTime && !$startTime) {
-            return null;
-        }
-
-        if ($startTime !== $endTime) {
-            return $startTime.' - '.$endTime;
-        }
-
-        return $this->starts_at->format('d.m.Y H:i')
-        .(!empty($this->ends_at) ? ' - '.$this->ends_at->format('d.m.Y H:i') : '');
+        return $this->starts_at->format('H:i:s') != '00:00:00' || $this->ends_at->format('H:i:s') != '00:00:00'
+            ? $this->starts_at->format('H:i').' - '.$this->ends_at->format('H:i')
+            : '';
     }
 
     public function scopeWithIsOneDay($q) {
         $q->select('*');
-        $oneDayQuery = 'DATE_FORMAT(starts_at, "%T") = "00:00:00" AND (ends_at is NULL OR starts_at = ends_at)';
+        $oneDayQuery = 'DATE_FORMAT(starts_at, "%d%m%Y") = DATE_FORMAT(ends_at, "%d%m%Y")';
         $q->selectSub($oneDayQuery, 'is_one_day');
     }
 
     public function scopeWithIsAllDay($q) {
         $q->select('*');
-        $allDayQuery = '
-            (DATE_FORMAT(starts_at, "%T") = "00:00:00" AND ends_at is NULL)
-            OR (ends_at is not NULL AND DATE_FORMAT(starts_at, "%T") = "00:00:00" AND DATE_FORMAT(ends_at, "%T") = "00:00:00")
-        ';
+        $allDayQuery = 'DATE_FORMAT(starts_at, "%T") = DATE_FORMAT(ends_at, "%T")';
         $q->selectSub($allDayQuery, 'is_all_day');
     }
 
