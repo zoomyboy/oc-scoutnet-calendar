@@ -30,6 +30,7 @@ class ScoutnetSyncEvent {
     }
 
     public function getEnd() {
+        if ($this->event->end_date == '0000-00-00') { $this->event->end_date = false; }
         if (!$this->event->end_date && !$this->event->end_time) {
             // Event hat kene Endzeit und kein Enddatum. Es wird eine Stunde Dauer angenommen oder ein Tagesevent
             return $this->getStart()->format('H:i:s') == '00:00:00'
