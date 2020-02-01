@@ -119,8 +119,7 @@ class GoogleCalendar extends Connection {
 
             $client = new Client([
                 'base_uri' => 'https://www.googleapis.com',
-                'headers' => [ 'Authorization' => 'Bearer '.$credential->data['access_token'] ],
-                'http_errors' => false
+                'headers' => [ 'Authorization' => 'Bearer '.$credential->data['access_token'] ]
             ]);
 
             $synch = DB::table('zoomyboy_google_events')
