@@ -24,6 +24,8 @@ class Event extends Model
         'calendar_id' => 'required|exists:zoomyboy_scoutnet_calendars,id'
     ];
 
+    public $casts = ['is_one_day' => 'boolean', 'is_all_day' => 'boolean'];
+
     /**
      * @var string The database table used by the model.
      */
@@ -121,7 +123,7 @@ class Event extends Model
     public function scopeWithIsOneDay($q) {
         $q->select('*');
         $oneDayQuery = 'DATE_FORMAT(starts_at, "%T") = "00:00:00" AND (ends_at is NULL OR starts_at = ends_at)';
-        $q->selectSub($oneDayQuery, 'isOneDay');
+        $q->selectSub($oneDayQuery, 'is_one_day');
     }
 
     public function scopeWithIsAllDay($q) {
@@ -130,7 +132,7 @@ class Event extends Model
             (DATE_FORMAT(starts_at, "%T") = "00:00:00" AND ends_at is NULL)
             OR (ends_at is not NULL AND DATE_FORMAT(starts_at, "%T") = "00:00:00" AND DATE_FORMAT(ends_at, "%T") = "00:00:00")
         ';
-        $q->selectSub($allDayQuery, 'isOneDay');
+        $q->selectSub($allDayQuery, 'is_all_day');
     }
 
     public function getIcalStartAttribute() {
