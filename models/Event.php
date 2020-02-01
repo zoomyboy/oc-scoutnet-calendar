@@ -169,7 +169,7 @@ class Event extends Model
         ]);
 
         $keywords = collect([]);
-        foreach($event->keywords as $keywordId => $keyword) {
+        foreach($event->keywords->elements as $keywordId => $keyword) {
             $keywords->push(Keyword::updateOrCreate(['scoutnet_id' => $keywordId], [
                 'scoutnet_id' => $keywordId,
                 'title' => $keyword
