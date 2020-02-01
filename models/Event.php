@@ -106,17 +106,12 @@ class Event extends Model
     public static function boot() {
         parent::boot();
 
-        /* @todo push this only when changed via backend 
-        static::saved(function($event) {
-            if (!$event->calendar->connectionService('scoutnet_connect')->hasCredentials() || !$event->calendar->connectionService('scoutnet_connect')->isConnected()) {
-                return;
-            }
-
+        static::saving(function($event) {
             Queue::push(PushToApi::class, [
                 'event_id' => $event->id,
-                'credential_id' => $event->calendar->getCurrentCredential('scoutnet')->id
+                'original' => $event->getOriginal(),
+                'user_id' => null
             ]);
         });
-         */
     }
 }

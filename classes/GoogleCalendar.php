@@ -2,6 +2,7 @@
 
 namespace Zoomyboy\Scoutnet\Classes;
 
+use DB;
 use Backend;
 use Request;
 use GuzzleHttp\Client;
@@ -18,33 +19,31 @@ class GoogleCalendar extends Connection {
         return Calendar::find(request()->input('state'));
     }
 
-    public function setLogin() {
+    private function postOauth($data) {
         $client = new Client(['base_uri' => 'https://oauth2.googleapis.com']);
         $response = $client->post('/token', [
-            'headers' => [
-                'Content-Type' => 'application/x-www-form-urlencoded'
-            ],
-            'form_params' => [
-                'code' => request()->code,
-                'client_id' => $this->calendar->google_client_id,
-                'client_secret' => $this->calendar->google_client_secret,
-                'redirect_uri' => $this->apiReturnUrl(),
-                'grant_type' => 'authorization_code'
-            ]
+            'headers' => [ 'Content-Type' => 'application/x-www-form-urlencoded' ],
+            'form_params' => $data
         ]);
 
-        $data = json_decode((string) $response->getBody());
+        return json_decode((string) $response->getBody());
+    }
 
+    public function setLogin() {
         $existing = [
             'backend_user_id' => BackendAuth::getUser()->id,
             'connection' => static::key()
         ];
 
-        $this->calendar->credentials()->updateOrCreate($existing, array_merge(compact('data'), $existing));
-    }
+        $data = $this->postOauth([
+            'code' => request()->code,
+            'client_id' => $this->calendar->google_client_id,
+            'client_secret' => $this->calendar->google_client_secret,
+            'redirect_uri' => $this->apiReturnUrl(),
+            'grant_type' => 'authorization_code'
+        ]);
 
-    public function getApi() {
-        return app('scoutnet.api')->group($this->calendar->scoutnet_id);
+        $this->calendar->credentials()->updateOrCreate($existing, array_merge(compact('data'), $existing));
     }
 
     public function getAuthUrl() {
@@ -87,6 +86,70 @@ class GoogleCalendar extends Connection {
 
     public function currentCalendar() {
         return $this->getCredential()->data['calendar'] ?? '';
+    }
+
+    private function formatDate($event, $d) {
+        if ($event->is_all_day) {
+            return ['date' => $event->{$d}->format('Y-m-d')];
+        }
+
+        return ['dateTime' => $event->{$d}->toRfc3339String()];
+    }
+
+    private function refresh($credential) {
+        if($credential->updated_at->addSeconds($credential->data['expires_in'] - 10)->isFuture()) {
+            return;
+        }
+
+        $response = $this->postOauth([
+            'client_id' => $this->calendar->google_client_id,
+            'client_secret' => $this->calendar->google_client_secret,
+            'refresh_token' => $credential->data['refresh_token'],
+            'grant_type' => 'refresh_token'
+        ]);
+
+        $data = $credential->data;
+        $data['access_token'] = $response->access_token;
+        $credential->update(['data' => $data]);
+    }
+
+    public function saveEvent($event, $user) {
+        foreach ($event->calendar->credentials()->where('connection', static::key())->get() as $credential) {
+            $this->refresh($credential);
+
+            $client = new Client([
+                'base_uri' => 'https://www.googleapis.com',
+                'headers' => [ 'Authorization' => 'Bearer '.$credential->data['access_token'] ],
+                'http_errors' => false
+            ]);
+
+            $synch = DB::table('zoomyboy_google_events')
+                ->where('event_id', $event->id)
+                ->where('credential_id', $credential->id)->first();
+
+            if (is_null($synch)) {
+                $response = $client->post('/calendar/v3/calendars/'.$credential->data['calendar'].'/events', [
+                    'json' => [
+                        'end' => $this->formatDate($event, 'ends_at'),
+                        'start' => $this->formatDate($event, 'starts_at'),
+                        'location' => $event->location ?: '',
+                        'summary' => $event->title
+                    ]
+                ]);
+
+                $response = json_decode((string) $response->getBody());
+                DB::table('zoomyboy_google_events')->insert(['event_id' => $event->id, 'credential_id' => $credential->id, 'google_id' => $response->id]);
+            } else {
+                $response = $client->put('/calendar/v3/calendars/'.$credential->data['calendar'].'/events/'.$synch->google_id, [
+                    'json' => [
+                        'end' => $this->formatDate($event, 'ends_at'),
+                        'start' => $this->formatDate($event, 'starts_at'),
+                        'location' => $event->location ?: '',
+                        'summary' => $event->title
+                    ]
+                ]);
+            }
+        }
     }
 }
 

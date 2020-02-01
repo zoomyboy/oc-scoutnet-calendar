@@ -11,25 +11,13 @@ class PushToApi {
     public $model;
 
     public function fire($job, $data) {
-        $this->credential = Credential::findOrFail($data['credential_id']);
+        $event = Event::where('id', $data['event_id'])->withIsAllDay()->first();
+        $user = BackendUser::find($data['user_id']);
 
-        if (array_has($data, 'event_id')) {
-            $this->model = Event::findOrFail($data['event_id']);
-            if ($this->model->scoutnet_id) {
-                $this->updateEvent();
-            }
-        }
+        if (is_null($event)) { return; }
+
+        $event->calendar->connectionService('scoutnet_connect')->saveEvent($event, $user);
+        $event->calendar->connectionService('google_calendar')->saveEvent($event, $user);
     }
 
-    public function updateEvent() {
-        $api = $this->model->calendar->getApi();
-        $this->credential->configure($api);
-
-        $events = $api->get_events_for_global_id_with_filter($this->model->calendar->scoutnet_id, [
-            'event_ids' => [$this->model->scoutnet_id]
-        ]);
-
-        $event = $events[0];
-        $api->write_event($event);
-    }
 }

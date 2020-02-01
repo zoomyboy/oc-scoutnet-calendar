@@ -52,4 +52,8 @@ class ScoutnetConnect extends Connection {
     public function apiReturnUrl() {
         return Backend::url('zoomyboy/scoutnet/calendar/callback/'.static::key().'/'.$this->calendar->id);
     }
+
+    public function saveEvent($event, $user) {
+        // @todo save event to scoutnet
+    }
 }
