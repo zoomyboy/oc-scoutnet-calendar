@@ -189,7 +189,7 @@ class Plugin extends PluginBase
     }
 
     public function registerSchedule($schedule) {
-        $schedule->command('scoutnet:sync')->hourly();
+        $schedule->command('scoutnet:sync')->everyFiveMinutes();
     }
 
     public function registerFormWidgets() {
