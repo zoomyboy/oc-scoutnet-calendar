@@ -44,6 +44,10 @@ class Plugin extends PluginBase
             'zoomyboy.scoutnetsync',
             \Zoomyboy\Scoutnet\Console\ScoutnetSync::class
         );
+        $this->registerConsoleCommand(
+            'zoomyboy.scoutnetgooglesync',
+            \Zoomyboy\Scoutnet\Console\ScoutnetGooglesync::class
+        );
 
         $this->app->bind('scoutnet.ical', function() {
             return new IcalGenerator();
