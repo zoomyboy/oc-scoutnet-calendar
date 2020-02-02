@@ -2,12 +2,12 @@
     <input type="hidden" name="filter[init]" value="true">
 
     <!-- Kalender -->
-    <div class="tw-p-2 tw-bg-grey-lighter">
+    <div class="p-2 bg-grey-lighter">
         <label for="allCalendars" class="
-            checkbox-red tw-flex tw-justify-between tw-items-center tw-cursor-pointer
-            tw-tracking-wide tw-text-sm tw-font-semibold tw-text-grey-dark
-            tw-uppercase
-            tw-my-0
+            checkbox-red flex justify-between items-center cursor-pointer
+            tracking-wide text-sm font-semibold text-grey-dark
+            uppercase
+            my-0
             "
         >
             <input type="checkbox" name="filter[allCalendars]"
@@ -21,9 +21,9 @@
             </span>
         </label>
     </div>
-    <div class="tw-p-2">
+    <div class="p-2">
         {% for calendar in calendars %}
-            <label for="calendar-{{ calendar.id }}" class="checkbox-red tw-flex tw-justify-between tw-items-center tw-cursor-pointer">
+            <label for="calendar-{{ calendar.id }}" class="checkbox-red flex justify-between items-center cursor-pointer">
                 <input type="checkbox" name="filter[calendars][]" value="{{ calendar.id }}"
                     id="calendar-{{ calendar.id }}"
                     data-request="onFilter"
@@ -35,7 +35,7 @@
 
                     {% if calendar.id in filter.calendars %} checked {% endif %}
                 >
-                <span class="tw-pr-7 tw-text-sm tw-font-hairline">
+                <span class="pr-7 text-sm font-hairline">
                     {{ calendar.title }}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
                 </span>
@@ -44,12 +44,12 @@
     </div>
 
     <!-- Kategorien -->
-    <div class="tw-p-2 tw-bg-grey-lighter">
+    <div class="p-2 bg-grey-lighter">
         <label for="allCategories" class="
-            checkbox-red tw-flex tw-justify-between tw-items-center tw-cursor-pointer
-            tw-tracking-wide tw-text-sm tw-font-semibold tw-text-grey-dark
-            tw-uppercase
-            tw-my-0
+            checkbox-red flex justify-between items-center cursor-pointer
+            tracking-wide text-sm font-semibold text-grey-dark
+            uppercase
+            my-0
             "
         >
             <input type="checkbox" name="filter[allCategories]"
@@ -63,9 +63,9 @@
             </span>
         </label>
     </div>
-    <div class="tw-p-2">
+    <div class="p-2">
         {% for category in categories %}
-            <label for="category-{{ category.id }}" class="checkbox-red tw-flex tw-justify-between tw-items-center tw-cursor-pointer">
+            <label for="category-{{ category.id }}" class="checkbox-red flex justify-between items-center cursor-pointer">
                 <input type="checkbox" name="filter[categories][]" value="{{ category.id }}"
                     id="category-{{ category.id }}"
                     data-request="onFilter"
@@ -76,7 +76,7 @@
                     "
                     {% if category.id in filter.categories %} checked {% endif %}
                 >
-                <span class="tw-pr-7 tw-text-sm tw-font-hairline">
+                <span class="pr-7 text-sm font-hairline">
                     {{ category.title }}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
                 </span>
@@ -85,13 +85,13 @@
     </div>
 
     <!-- Optionen -->
-    <div class="tw-p-2 tw-bg-grey-lighter">
-        <div class="tw-flex tw-tracking-wide tw-text-sm tw-font-semibold tw-text-grey-dark tw-uppercase">
+    <div class="p-2 bg-grey-lighter">
+        <div class="flex tracking-wide text-sm font-semibold text-grey-dark uppercase">
             Optionen
         </div>
     </div>
-    <div class="tw-p-2">
-        <label for="showPast" class="checkbox-red tw-flex tw-justify-between tw-items-center tw-cursor-pointer">
+    <div class="p-2">
+        <label for="showPast" class="checkbox-red flex justify-between items-center cursor-pointer">
             <input type="checkbox" name="filter[showPast]" value="true"
                 id="showPast"
                 data-request="onFilter"
@@ -102,7 +102,7 @@
                 "
                 {% if filter.showPast %} checked {% endif %}
             >
-            <span class="tw-pr-7 tw-text-sm tw-font-hairline">
+            <span class="pr-7 text-sm font-hairline">
                 Vergangene Termine anzeigen
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z"/></svg>
             </span>
