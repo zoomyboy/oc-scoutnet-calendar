@@ -25,3 +25,6 @@
 1.0.9:
     - Event end date is not nullable
     - change_ends_at_events_column.php
+1.0.10:
+    - Create Calendar slugs
+    - change_slug_calendars_table.php
