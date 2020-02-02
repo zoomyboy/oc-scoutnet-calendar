@@ -68,6 +68,7 @@ class GoogleCalendar extends Connection {
 
     public function getCalendars() {
         if (!$this->isConnected()) { return []; }
+        $this->refresh($this->getCredential());
 
         $client = new Client(['base_uri' => 'https://www.googleapis.com']);
         $response = $client->get('/calendar/v3/users/me/calendarList', [

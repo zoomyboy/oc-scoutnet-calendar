@@ -36,11 +36,15 @@ class Calendar extends Controller
     }
 
     public function formBeforeSave($model) {
-        $model->connectionService('google_calendar')->storeCalendar(request()->input('Calendar._google_calendar'));
+        if(request()->input('Calendar._google_calendar') != null) {
+            $model->connectionService('google_calendar')->storeCalendar(request()->input('Calendar._google_calendar'));
+        }
     }
 
     public function formExtendModel($model) {
-        $model->setAttribute('_google_calendar', $model->connectionService('google_calendar')->currentCalendar());
+        if($model->connectionService('google_calendar')->isConnected()) {
+            $model->setAttribute('_google_calendar', $model->connectionService('google_calendar')->currentCalendar());
+        }
         return $model;
     }
 
