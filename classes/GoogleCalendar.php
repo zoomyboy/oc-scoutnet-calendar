@@ -91,7 +91,11 @@ class GoogleCalendar extends Connection {
 
     private function formatDate($event, $d) {
         if ($event->is_all_day) {
-            return ['date' => $event->{$d}->format('Y-m-d')];
+            $date = $event->{$d};
+            if ($d == 'ends_at') {
+                $date = $date->addDay(1);
+            }
+            return ['date' => $date->format('Y-m-d')];
         }
 
         return ['dateTime' => $event->{$d}->toRfc3339String()];
