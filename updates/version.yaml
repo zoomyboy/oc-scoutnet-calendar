@@ -22,3 +22,6 @@
 1.0.8:
     - Create Google Events Table
     - create_google_events_table.php
+1.0.9:
+    - Event end date is not nullable
+    - change_ends_at_events_column.php
