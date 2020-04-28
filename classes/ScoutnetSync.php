@@ -36,7 +36,7 @@ class ScoutnetSync {
 
         $dateRange = [ date('Y') - 1, date('Y') + 1 ];
 
-        $events = collect($this->sn->events('start_date > "'.$dateRange[0].'-01-01" AND start_date < "'.$dateRange[1].'12-31"'))->each(function($event) {
+        $events = collect($this->sn->events('start_date > "'.$dateRange[0].'-01-01" AND start_date < "'.$dateRange[1].'-12-31"'))->each(function($event) {
             ScoutnetSyncEvent::sync($event, $this->calendar);
         });
     }
