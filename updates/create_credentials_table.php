@@ -12,12 +12,9 @@ class CreateCredentialsTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('id');
             $table->integer('calendar_id');
-            $table->string('api_key', 32);
-            $table->string('user');
-            $table->string('time');
-            $table->string('firstname');
-            $table->string('surname');
             $table->integer('backend_user_id');
+            $table->text('data');
+            $table->string('connection');
             $table->timestamps();
         });
     }
