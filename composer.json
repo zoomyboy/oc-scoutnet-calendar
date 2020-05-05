@@ -2,16 +2,9 @@
     "name": "zoomyboy/oc-scoutnet-plugin",
     "description": "This Plugin adds features to integrate Scoutnet features in October CMS",
     "type": "project",
-    "repositories": [
-        {
-            "type": "path",
-            "url": "./packages/sn-webservice",
-            "options": { "symlink": true }
-        }
-    ],
     "require": {
         "nesbot/carbon": "^1.21",
-        "scoutnet/sn-webservice": "dev-master as 1.0.1",
+        "scoutnet/sn-webservice": "1.0.1",
         "google/apiclient": "^2.0",
         "guzzlehttp/guzzle": "^6.5"
     },

@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'groupByLabel' => 'Group by',
+    'groupBy' => [
+        'nothing' => 'Nothing',
+        'month' => 'Month',
+        'year' => 'Year',
+    ],
     'activeCalendar' => 'Active calendar',
     'permissions' => [
         'settings' => 'Manage Setting',

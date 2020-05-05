@@ -50,11 +50,21 @@ class EventRepository {
     }
 
     // @todo get this as a column from mySQL
-    public function group() {
-        return $this->query->get()->groupBy(function($e) {
-            return $this->months[Carbon::parse($e->starts_at)->format('n')]
-            .' '.Carbon::parse($e->starts_at)->format('Y');
-        });
+    public function group($by) {
+        $groups = [
+            'month' => function($e) {
+                return $this->months[Carbon::parse($e->starts_at)->format('n')]
+                    .' '.Carbon::parse($e->starts_at)->format('Y');
+            },
+            'year' => function($e) {
+                return Carbon::parse($e->starts_at)->format('Y');
+            }
+        ];
+        $group = array_get($groups, $by, null);
+
+        $values = $this->query->get();
+
+        return $group ? $values->groupBy($group) : $values;
     }
 
     public function forIcal($filters = []) {

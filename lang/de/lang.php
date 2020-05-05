@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'groupByLabel' => 'Gruppieren nach',
+    'groupBy' => [
+        'nothing' => 'Nichts',
+        'month' => 'Monat',
+        'year' => 'Jahr',
+    ],
     'activeCalendar' => 'Aktiver Kalender',
     'permissions' => [
         'settings' => 'Einstellungen verwalten',

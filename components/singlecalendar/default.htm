@@ -9,5 +9,15 @@
 {% endput %}
 
 <div class="scoutnetcalendar" id="event-container">
-    {% partial __SELF__.alias ~ '::events.htm' events=events %}
+    {% if __SELF__.groupBy %}
+        <div class="flex flex-wrap -mx-2">
+        {% for group, groupEvents in __SELF__.events %}
+            <div class="w-full px-2 pt-4 pb-2 text-grey-darkest text-lg font-arvo">{{ groupEvents }}</div>
+            {% partial __SELF__.alias ~ '::events.htm' events=groupEvents %}
+        {% endfor %}
+    {% else %}
+        <div class="flex flex-wrap -mx-2">
+            {% partial __SELF__.alias ~ '::events.htm' events=groupEvents %}
+        </div>
+    {% endif %}
 </div>

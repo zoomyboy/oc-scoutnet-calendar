@@ -1,71 +1,66 @@
-<div class="flex flex-wrap -mx-2">
-{% for month, monthEvents in events %}
-    <div class="w-full px-2 pt-4 pb-2 text-grey-darkest text-lg font-arvo">{{ month }}</div>
-    {% for event in monthEvents %}
-        <div class="w-full sm_w-1/2 xl_w-1/3 px-2 mb-4 event-{{ event.id }}">
-            <div class="box h-full p-0">
-                <div class="bg-grey-lightest relative">
-                    <!-- URL -->
-                    {% if event.url %}
-                    <a href="{{ event.url }}" target="_BLANK" class="block absolute pin-r pin-t flex items-start justify-end mt-3 mr-3">
-                        <svg class="fill-current text-grey w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.26 13a2 2 0 0 1 .01-2.01A3 3 0 0 0 9 5H5a3 3 0 0 0 0 6h.08a6.06 6.06 0 0 0 0 2H5A5 5 0 0 1 5 3h4a5 5 0 0 1 .26 10zm1.48-6a2 2 0 0 1-.01 2.01A3 3 0 0 0 11 15h4a3 3 0 0 0 0-6h-.08a6.06 6.06 0 0 0 0-2H15a5 5 0 0 1 0 10h-4a5 5 0 0 1-.26-10z"/></svg>
-                    </a>
+{% for event in events %}
+    <div class="w-full sm_w-1/2 xl_w-1/3 px-2 mb-4 event-{{ event.id }}">
+        <div class="box h-full p-0">
+            <div class="bg-grey-lightest relative">
+                <!-- URL -->
+                {% if event.url %}
+                <a href="{{ event.url }}" target="_BLANK" class="block absolute pin-r pin-t flex items-start justify-end mt-3 mr-3">
+                    <svg class="fill-current text-grey w-5 h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.26 13a2 2 0 0 1 .01-2.01A3 3 0 0 0 9 5H5a3 3 0 0 0 0 6h.08a6.06 6.06 0 0 0 0 2H5A5 5 0 0 1 5 3h4a5 5 0 0 1 .26 10zm1.48-6a2 2 0 0 1-.01 2.01A3 3 0 0 0 11 15h4a3 3 0 0 0 0-6h-.08a6.06 6.06 0 0 0 0-2H15a5 5 0 0 1 0 10h-4a5 5 0 0 1-.26-10z"/></svg>
+                </a>
+                {% endif %}
+
+                <div class="font-arvo text-sm uppercase tracking-wide text-grey-darkest px-3 pt-3">{{ event.title }}</div>
+
+                <!-- Zeit -->
+                <div class="font-sm font-light p-3 flex items-center">
+                    <div class="flex items-center text-grey-darker font-semibold text-xs">
+                        <svg class="fill-current mr-2 text-grey w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z"/></svg>
+                        {{ event.displayDate }}
+                    </div>
+                    {% if event.displayTime %}
+                    <div class="flex items-center text-grey-darker font-semibold text-xs ml-2">
+                        <svg class="fill-current mr-2 text-grey w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-1-7.59V4h2v5.59l3.95 3.95-1.41 1.41L9 10.41z"/></svg>
+                        {{ event.displayTime }}
+                    </div>
                     {% endif %}
-
-                    <div class="font-arvo text-sm uppercase tracking-wide text-grey-darkest px-3 pt-3">{{ event.title }}</div>
-
-                    <!-- Zeit -->
-                    <div class="font-sm font-light p-3 flex items-center">
-                        <div class="flex items-center text-grey-darker font-semibold text-xs">
-                            <svg class="fill-current mr-2 text-grey w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z"/></svg>
-                            {{ event.displayDate }}
-                        </div>
-                        {% if event.displayTime %}
-                        <div class="flex items-center text-grey-darker font-semibold text-xs ml-2">
-                            <svg class="fill-current mr-2 text-grey w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-1-7.59V4h2v5.59l3.95 3.95-1.41 1.41L9 10.41z"/></svg>
-                            {{ event.displayTime }}
-                        </div>
-                        {% endif %}
-                    </div>
                 </div>
-
-                <!-- Ort -->
-                {% if event.location %}
-                <div class="font-sm font-light p-3 py-1">
-                    <div class="flex items-center pb-1 text-grey-darker font-semibold text-sm">
-                        <svg class="fill-current mr-2 text-grey w-5 h-5 flex-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M8 20H3V10H0L10 0l10 10h-3v10h-5v-6H8v6z"/></svg>
-                        <div class="text-xs text-grey-darker px-3 py-1">
-                        {{ event.location }}
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-                <!-- Zielgruppe -->
-                {% if event.target %}
-                <div class="font-sm font-light p-3 py-1">
-                    <div class="flex items-center pb-1 text-grey-darker font-semibold text-sm">
-                        <svg class="fill-current mr-2 text-grey w-5 h-5 flex-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M7 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1c2.15 0 4.2.4 6.1 1.09L12 16h-1.25L10 20H4l-.75-4H2L.9 10.09A17.93 17.93 0 0 1 7 9zm8.31.17c1.32.18 2.59.48 3.8.92L18 16h-1.25L16 20h-3.96l.37-2h1.25l1.65-8.83zM13 0a4 4 0 1 1-1.33 7.76 5.96 5.96 0 0 0 0-7.52C12.1.1 12.53 0 13 0z"/></svg>
-                        <div class="text-xs text-grey-darker px-3 py-1">
-                        {{ event.target }}
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
-
-                <!-- Tags -->
-                {% if event.keywordList %}
-                <div class="font-sm font-light p-3 py-1">
-                    <div class="flex items-center pb-1 text-grey-darker font-semibold text-sm">
-                        <svg class="fill-current mr-2 text-grey w-5 h-5 flex-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 10V2l2-2h8l10 10-10 10L0 10zm4.5-4a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
-                        <div class="text-xs text-grey-darker px-3 py-1">
-                        {{ event.keywordList }}
-                        </div>
-                    </div>
-                </div>
-                {% endif %}
             </div>
+
+            <!-- Ort -->
+            {% if event.location %}
+            <div class="font-sm font-light p-3 py-1">
+                <div class="flex items-center pb-1 text-grey-darker font-semibold text-sm">
+                    <svg class="fill-current mr-2 text-grey w-5 h-5 flex-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M8 20H3V10H0L10 0l10 10h-3v10h-5v-6H8v6z"/></svg>
+                    <div class="text-xs text-grey-darker px-3 py-1">
+                    {{ event.location }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Zielgruppe -->
+            {% if event.target %}
+            <div class="font-sm font-light p-3 py-1">
+                <div class="flex items-center pb-1 text-grey-darker font-semibold text-sm">
+                    <svg class="fill-current mr-2 text-grey w-5 h-5 flex-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M7 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0 1c2.15 0 4.2.4 6.1 1.09L12 16h-1.25L10 20H4l-.75-4H2L.9 10.09A17.93 17.93 0 0 1 7 9zm8.31.17c1.32.18 2.59.48 3.8.92L18 16h-1.25L16 20h-3.96l.37-2h1.25l1.65-8.83zM13 0a4 4 0 1 1-1.33 7.76 5.96 5.96 0 0 0 0-7.52C12.1.1 12.53 0 13 0z"/></svg>
+                    <div class="text-xs text-grey-darker px-3 py-1">
+                    {{ event.target }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Tags -->
+            {% if event.keywordList %}
+            <div class="font-sm font-light p-3 py-1">
+                <div class="flex items-center pb-1 text-grey-darker font-semibold text-sm">
+                    <svg class="fill-current mr-2 text-grey w-5 h-5 flex-none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M0 10V2l2-2h8l10 10-10 10L0 10zm4.5-4a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+                    <div class="text-xs text-grey-darker px-3 py-1">
+                    {{ event.keywordList }}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
-    {% endfor %}
+    </div>
 {% endfor %}
-</div>
