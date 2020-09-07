@@ -20,6 +20,8 @@ class SingleCalendar extends ComponentBase implements Gutenbergable {
     public $events;
     public $columns;
 
+    public $serializable = ['activeCalendar', 'categories'];
+
     /**
      * @todo configure filter
      */
@@ -34,9 +36,9 @@ class SingleCalendar extends ComponentBase implements Gutenbergable {
     public function defineProperties()
     {
         return [
-            'category' => [
-                'type' => 'dropdown',
-                'label' => 'Kategorie',
+            'categories' => [
+                'type' => 'checkboxlist',
+                'label' => 'Kategorien',
                 'required' => true,
             ],
             'layout' => [
@@ -50,7 +52,7 @@ class SingleCalendar extends ComponentBase implements Gutenbergable {
                 'type' => 'dropdown',
             ],
             'activeCalendar' => [
-                'type' => 'dropdown',
+                'type' => 'checkboxlist',
                 'required' => true,
                 'label' => 'zoomyboy.scoutnet::lang.activeCalendar'
             ],
@@ -98,7 +100,10 @@ class SingleCalendar extends ComponentBase implements Gutenbergable {
         $this->page['calendars'] = Calendar::orderBy('title')->get();
         $this->page['categories'] = Tag::orderBy('title')->get();
         $this->groupBy = $this->property('groupBy', null);
-        $this->events = $this->getEvents();
+        $this->events = $this->getEvents([
+            'calendars' => $this->property('activeCalendar'),
+            'categories' => $this->property('categories')
+        ]);
         $this->page['filter'] = $this->defaultFilter();
         $this->page['href'] = $this->generateExportLink();
         $this->columns = $this->property('columns', 1);
@@ -124,7 +129,7 @@ class SingleCalendar extends ComponentBase implements Gutenbergable {
         return Calendar::get()->pluck('title', 'id')->toArray();
     }
 
-    public function getCategoryOptions() {
+    public function getCategoriesOptions() {
         return Tag::get()->pluck('title', 'id')->toArray();
     }
 }
