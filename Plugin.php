@@ -1,14 +1,15 @@
 <?php namespace Zoomyboy\Scoutnet;
 
-use Input;
 use Backend;
+use Input;
 use System\Classes\PluginBase;
-use Zoomyboy\Scoutnet\Models\Setting;
-use Zoomyboy\Scoutnet\Models\Calendar;
-use Zoomyboy\Scoutnet\Classes\IcalGenerator;
 use Zoomyboy\Scoutnet\Classes\EventRepository;
+use Zoomyboy\Scoutnet\Classes\IcalGenerator;
+use Zoomyboy\Scoutnet\Components\EventList;
+use Zoomyboy\Scoutnet\Components\SingleCalendar;
 use Zoomyboy\Scoutnet\FormWidgets\ConnectButton;
-
+use Zoomyboy\Scoutnet\Models\Calendar;
+use Zoomyboy\Scoutnet\Models\Setting;
 
 /**
  * scoutnet Plugin Information File
@@ -98,7 +99,8 @@ class Plugin extends PluginBase
     public function registerComponents()
     {
         return [
-            'Zoomyboy\Scoutnet\Components\SingleCalendar' => 'singleCalendar',
+            SingleCalendar::class => 'singleCalendar',
+            EventList::class => 'scoutnet_event_list',
         ];
     }
 

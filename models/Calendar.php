@@ -1,14 +1,14 @@
 <?php namespace Zoomyboy\Scoutnet\Models;
 
+use \October\Rain\Database\Traits\Validation;
+use Backend\Models\User as BackendUser;
 use BackendAuth;
 use Model;
-use Zoomyboy\Scoutnet\Models\Event;
-use ScoutNet\Api\ScoutnetException;
-use ScoutNet\Api\ScoutnetApi;
-use Backend\Models\User as BackendUser;
 use October\Rain\Database\Traits\Sortable;
+use ScoutNet\Api\ScoutnetApi;
+use ScoutNet\Api\ScoutnetException;
 use Zoomyboy\Scoutnet\Classes\ScoutnetSync;
-use \October\Rain\Database\Traits\Validation;
+use Zoomyboy\Scoutnet\Models\Event;
 
 /**
  * Calendar Model
@@ -61,6 +61,11 @@ class Calendar extends Model
 
     public function scoutnetSync() {
         return ScoutnetSync::fromGroup($this->scoutnet_id, $this);
+    }
+
+    public static function forSelect(): array
+    {
+        return self::pluck('title', 'id')->toArray();
     }
 
     public function connectionService($connection) {
