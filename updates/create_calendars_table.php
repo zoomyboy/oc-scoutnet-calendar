@@ -1,8 +1,8 @@
 <?php namespace Zoomyboy\Scoutnet\Updates;
 
-use Schema;
 use October\Rain\Database\Schema\Blueprint;
 use October\Rain\Database\Updates\Migration;
+use Schema;
 
 class CreateCalendarsTable extends Migration
 {
@@ -18,6 +18,8 @@ class CreateCalendarsTable extends Migration
             $table->string('aes_key')->nullable();
             $table->string('aes_iv')->nullable();
             $table->text('content');
+            $table->string('google_client_id')->nullable();
+            $table->string('google_client_secret')->nullable();
             $table->timestamps();
         });
     }
