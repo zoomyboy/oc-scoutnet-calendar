@@ -1,13 +1,14 @@
 <?php namespace Zoomyboy\Scoutnet\Models;
 
-use Queue;
-use Model;
+use \October\Rain\Database\Traits\Validation;
 use BackendAuth;
 use Carbon\Carbon;
-use Zoomyboy\Scoutnet\Models\Keyword;
-use Zoomyboy\Scoutnet\Models\Calendar;
+use Model;
+use Queue;
 use Zoomyboy\Scoutnet\Classes\PushToApi;
-use \October\Rain\Database\Traits\Validation;
+use Zoomyboy\Scoutnet\Models\Calendar;
+use Zoomyboy\Scoutnet\Models\Keyword;
+
 /**
  * Calendar Model
  */

@@ -12,9 +12,9 @@ class EventRepository {
     public $months = ['', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
 
     public function forFrontend($filter = []) {
-        $minDate = empty($filter['showPast'])
-            ? Carbon::now()
-            : Carbon::now()->startOfYear()->subYears(1);
+        $minDate = data_get($filter, 'showPast')
+            ? Carbon::now()->startOfYear()->subYears(1)
+            : Carbon::now();
 
         $query = (new Event())->newQuery()
             ->with(['keywords'])

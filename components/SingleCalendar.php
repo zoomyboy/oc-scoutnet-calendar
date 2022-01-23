@@ -2,30 +2,23 @@
 
 namespace Zoomyboy\Scoutnet\Components;
 
-use Input;
-use Carbon\Carbon;
 use \Cms\Classes\ComponentBase;
-use Zoomyboy\Scoutnet\Models\Tag;
+use Carbon\Carbon;
+use Input;
+use October\Rain\Database\Collection;
+use Zoomyboy\Scoutnet\Classes\ScoutnetSync;
+use Zoomyboy\Scoutnet\Models\Calendar;
 use Zoomyboy\Scoutnet\Models\Event;
 use Zoomyboy\Scoutnet\Models\Keyword;
-use Zoomyboy\Scoutnet\Models\Calendar;
-use Zoomyboy\Scoutnet\Classes\ScoutnetSync;
+use Zoomyboy\Scoutnet\Models\Tag;
 
 class SingleCalendar extends ComponentBase {
-    private $calendar = false;
-    public $calendarYear;
-    public $yearList;
 
-    /**
-     * @todo configure filter
-     */
-    public function defaultFilter() {
-        return [
-            'calendars' => [1],
-            'categories' => [],
-            'showPast' => false
-        ];
-    }
+    public array $calendars;
+    public array $categories;
+    public Collection $events;
+    public array $filter;
+    public string $href;
 
     public function componentDetails() {
         return [
@@ -34,37 +27,54 @@ class SingleCalendar extends ComponentBase {
         ];
     }
 
-    public function events($filter = []) {
-        $filter = array_merge($this->defaultFilter(), $filter);
-        return app('scoutnet.events')->forFrontend($filter)->group();
+    public function events(): Collection {
+        return app('scoutnet.events')->forFrontend($this->filter)->group();
     }
 
-    public function onRun() {
-        $this->page['calendars'] = Calendar::orderBy('title')->get();
-        $this->page['categories'] = Tag::orderBy('title')->get();
-        $this->page['events'] = $this->events();
-        $this->page['filter'] = $this->defaultFilter();
-        $this->page['href'] = $this->generateExportLink();
+    public function onRender() {
+        $this->categories = Tag::orderBy('title')->get()->toArray();
+        $this->filter = [
+            'calendars' => [$this->property('calendar_id')],
+            'categories' => $this->categories,
+            'showPast' => false
+        ];
+        $this->calendars = Calendar::orderBy('title')->get()->toArray();
+        $this->href = $this->generateExportLink();
+        $this->events = $this->events();
     }
 
-    public function generateExportLink($filter = []) {
-        $filter = array_merge($this->defaultFilter(), $filter);
-        return '/scoutnet-export/ical/calendar.ical?'.http_build_query(['filter' => $filter]);
+    public function generateExportLink() {
+        return '/scoutnet-export/ical/calendar.ical?'.http_build_query(['filter' => $this->filter]);
     }
 
     public function onFilter() {
+        $this->filter = Input::get('filter');
         return [
             $this->alias.'::events' => $this->renderPartial($this->alias.'::events', [
-                'events' => $this->events(Input::get('filter'))
+                'events' => $this->events()
             ]),
             $this->alias.'::export-button' => $this->renderPartial($this->alias.'::export-button', [
-                'href' => $this->generateExportLink(Input::get('filter'))
+                'href' => $this->generateExportLink()
             ])
         ];
     }
 
     public function defineProperties() {
-        return [];
+        return [
+            'calendar_id' => [
+                'label' => 'Kalender',
+            ]
+        ];
+    }
+
+    public function getCalendarIdOptions(): array
+    {
+        return static::staticGetCalendarOptions();
+    }
+
+    public static function staticGetCalendarOptions(): array
+    {
+        return Calendar::pluck('title', 'id')->toArray();
     }
 }
 
