@@ -20,6 +20,7 @@ class CreateCalendarsTable extends Migration
             $table->text('content');
             $table->string('google_client_id')->nullable();
             $table->string('google_client_secret')->nullable();
+            $table->string('color')->nullable();
             $table->timestamps();
         });
     }

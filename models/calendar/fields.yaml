@@ -50,6 +50,16 @@ tabs:
             type: zoomyboy_scoutnet_connect_button
             connection: google_calendar
 
+        color:
+            type: dropdown
+            label: Farbe
+            tab: Sonstiges
+            emptyOption: --keine--
+            options:
+                blue: Blau
+                red: Rot
+                green: Grün
+
         _google_calendar:
             tab: Google
             type: dropdown

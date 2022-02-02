@@ -6,6 +6,8 @@ use \Cms\Classes\ComponentBase;
 use Carbon\Carbon;
 use Input;
 use October\Rain\Database\Collection;
+use Response;
+use Zoomyboy\Scoutnet\Classes\EventRepository;
 use Zoomyboy\Scoutnet\Classes\ScoutnetSync;
 use Zoomyboy\Scoutnet\Models\Calendar;
 use Zoomyboy\Scoutnet\Models\Event;
@@ -14,11 +16,10 @@ use Zoomyboy\Scoutnet\Models\Tag;
 
 class SingleCalendar extends ComponentBase {
 
-    public array $calendars;
-    public array $categories;
+    public Collection $calendars;
+    public Collection $tags;
     public Collection $events;
-    public array $filter;
-    public string $href;
+    public array $filter = [];
 
     public function componentDetails() {
         return [
@@ -27,36 +28,33 @@ class SingleCalendar extends ComponentBase {
         ];
     }
 
-    public function events(): Collection {
-        return app('scoutnet.events')->forFrontend($this->filter)->group();
+    public function onRun(): void
+    {
+        $this->page['bodyTag'] .= ' data-scoutnet ';
     }
 
     public function onRender() {
-        $this->categories = Tag::orderBy('title')->get()->toArray();
+        $this->tags = Tag::select('title', 'id')->orderBy('title')->get();
+        $this->calendars = Calendar::select('title', 'color', 'id')->orderBy('title')->get();
         $this->filter = [
             'calendars' => [$this->property('calendar_id')],
-            'categories' => $this->categories,
+            'tags' => $this->tags->pluck('id')->toArray(),
             'showPast' => false
         ];
-        $this->calendars = Calendar::orderBy('title')->get()->toArray();
-        $this->href = $this->generateExportLink();
         $this->events = $this->events();
     }
 
-    public function generateExportLink() {
-        return '/scoutnet-export/ical/calendar.ical?'.http_build_query(['filter' => $this->filter]);
+    public function events(): Collection {
+        return app(EventRepository::class)->forFrontend($this->filter)->group();
     }
 
     public function onFilter() {
-        $this->filter = Input::get('filter');
-        return [
-            $this->alias.'::events' => $this->renderPartial($this->alias.'::events', [
-                'events' => $this->events()
-            ]),
-            $this->alias.'::export-button' => $this->renderPartial($this->alias.'::export-button', [
-                'href' => $this->generateExportLink()
-            ])
-        ];
+        $this->filter = Input::all();
+
+        return Response::make(
+            $this->renderPartial($this->alias.'::events', ['events' => $this->events()]),
+            200
+        );
     }
 
     public function defineProperties() {

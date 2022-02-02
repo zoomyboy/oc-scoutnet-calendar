@@ -3,7 +3,6 @@
 use Backend;
 use Input;
 use System\Classes\PluginBase;
-use Zoomyboy\Scoutnet\Classes\EventRepository;
 use Zoomyboy\Scoutnet\Classes\IcalGenerator;
 use Zoomyboy\Scoutnet\Components\EventList;
 use Zoomyboy\Scoutnet\Components\SingleCalendar;
@@ -52,9 +51,6 @@ class Plugin extends PluginBase
 
         $this->app->bind('scoutnet.ical', function() {
             return new IcalGenerator();
-        });
-        $this->app->bind('scoutnet.events', function() {
-            return new EventRepository();
         });
 
         $this->app->bind('scoutnet.api', function() {

@@ -20,6 +20,7 @@ class EventRepository {
             ->with(['keywords'])
             ->select('title', 'calendar_id', 'organizer', 'starts_at', 'ends_at', 'location', 'target', 'id', 'url')
             ->selectRaw('(SELECT GROUP_CONCAT(zoomyboy_scoutnet_keywords.title SEPARATOR \', \') from zoomyboy_scoutnet_keywords WHERE zoomyboy_scoutnet_keywords.id IN (SELECT zoomyboy_scoutnet_event_keyword.keyword_id FROM zoomyboy_scoutnet_event_keyword WHERE zoomyboy_scoutnet_event_keyword.event_id=zoomyboy_scoutnet_events.id)) AS keywordList')
+            ->selectRaw('(SELECT color from zoomyboy_scoutnet_calendars WHERE id=zoomyboy_scoutnet_events.calendar_id) AS color')
             ->where('starts_at', '>=', $minDate)
             ->orderBy('starts_at');
 
