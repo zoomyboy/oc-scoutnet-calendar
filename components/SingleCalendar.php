@@ -38,7 +38,7 @@ class SingleCalendar extends ComponentBase {
         $this->calendars = Calendar::select('title', 'color', 'id')->orderBy('title')->get();
         $this->filter = [
             'calendars' => [$this->property('calendar_id')],
-            'tags' => $this->tags->pluck('id')->toArray(),
+            'tags' => [],
             'showPast' => false
         ];
         $this->events = $this->events();

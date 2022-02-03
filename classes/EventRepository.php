@@ -28,10 +28,10 @@ class EventRepository {
             $query->whereIn('calendar_id', $filter['calendars']);
         }
 
-        if (!empty($filter['categories'])) {
+        if (!empty($filter['tags'])) {
             $query->whereHas('keywords', function($k) use ($filter) {
                 return $k->whereHas('tags', function($t) use ($filter) {
-                    return $t->whereIn('id', $filter['categories']);
+                    return $t->whereIn('id', $filter['tags']);
                 });
             });
         }
