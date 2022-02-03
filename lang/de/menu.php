@@ -4,5 +4,5 @@ return [
     'scoutnet' => 'Scoutnet',
     'calendar' => 'Kalender',
     'keyword' => 'Stichwörter',
-    'tag' => 'Tags',
+    'tag' => 'Kategorien',
 ];
