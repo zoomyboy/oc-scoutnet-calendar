@@ -59,6 +59,9 @@ tabs:
                 blue: Blau
                 red: Rot
                 green: Grün
+        group:
+            label: Gruppe
+            tab: Sonstiges
 
         _google_calendar:
             tab: Google

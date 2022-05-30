@@ -19,3 +19,6 @@
 1.0.8:
     - Create Google Events Table
     - create_google_events_table.php
+1.0.9:
+    - Create Calendars Group Column
+    - create_calendars_group_column.php

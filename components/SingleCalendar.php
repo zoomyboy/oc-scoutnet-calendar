@@ -35,7 +35,7 @@ class SingleCalendar extends ComponentBase {
 
     public function onRender() {
         $this->tags = Tag::select('title', 'id')->orderBy('title')->get();
-        $this->calendars = Calendar::select('title', 'color', 'id')->orderBy('title')->get();
+        $this->calendars = Calendar::select('group', 'color')->selectRaw('GROUP_CONCAT(id) AS ids')->groupBy('group', 'color')->get();
         $this->filter = [
             'calendars' => [$this->property('calendar_id')],
             'tags' => [],

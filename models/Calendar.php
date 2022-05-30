@@ -39,7 +39,7 @@ class Calendar extends Model
     /**
      * @var array Fillable fields
      */
-    protected $fillable = ['scoutnet_id', 'title'];
+    protected $fillable = ['scoutnet_id', 'title', 'group'];
 
     /**
      * @var array Relations
