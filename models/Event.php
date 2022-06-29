@@ -1,16 +1,14 @@
-<?php namespace Zoomyboy\Scoutnet\Models;
+<?php
 
-use \October\Rain\Database\Traits\Validation;
-use BackendAuth;
-use Carbon\Carbon;
+namespace Zoomyboy\Scoutnet\Models;
+
 use Model;
+use October\Rain\Database\Traits\Validation;
 use Queue;
 use Zoomyboy\Scoutnet\Classes\PushToApi;
-use Zoomyboy\Scoutnet\Models\Calendar;
-use Zoomyboy\Scoutnet\Models\Keyword;
 
 /**
- * Calendar Model
+ * Calendar Model.
  */
 class Event extends Model
 {
@@ -22,13 +20,13 @@ class Event extends Model
     public $rules = [
         'title' => 'required',
         'starts_at' => 'required|date',
-        'calendar_id' => 'required|exists:zoomyboy_scoutnet_calendars,id'
+        'calendar_id' => 'required|exists:zoomyboy_scoutnet_calendars,id',
     ];
 
     public $casts = ['is_one_day' => 'boolean', 'is_all_day' => 'boolean'];
 
     /**
-     * @var string The database table used by the model.
+     * @var string the database table used by the model
      */
     public $table = 'zoomyboy_scoutnet_events';
 
@@ -50,23 +48,24 @@ class Event extends Model
     public $hasOne = [];
     public $hasMany = [];
     public $belongsTo = [
-        'calendar' => Calendar::class
+        'calendar' => Calendar::class,
     ];
     public $belongsToMany = [
-        'keywords' => [Keyword::class, 'table' => 'zoomyboy_scoutnet_event_keyword']
+        'keywords' => [Keyword::class, 'table' => 'zoomyboy_scoutnet_event_keyword'],
     ];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [
-        'images' => \System\Models\File::class
+        'images' => \System\Models\File::class,
     ];
 
     /**
      * @todo über mysql holen mit DATETIME_FORMAT
      */
-    public function getDisplayDateAttribute() {
+    public function getDisplayDateAttribute()
+    {
         $start = $this->starts_at->format('d.m.Y');
         $start .= $this->starts_at->startOfDay()->notEqualTo($this->ends_at->startOfDay())
             ? ' - '.$this->ends_at->format('d.m.Y')
@@ -78,49 +77,55 @@ class Event extends Model
     /**
      * @todo über mysql holen mit DATETIME_FORMAT
      */
-    public function getDisplayTimeAttribute() {
-        return $this->starts_at->format('H:i:s') != '00:00:00' || $this->ends_at->format('H:i:s') != '00:00:00'
+    public function getDisplayTimeAttribute()
+    {
+        return '00:00:00' != $this->starts_at->format('H:i:s') || '00:00:00' != $this->ends_at->format('H:i:s')
             ? $this->starts_at->format('H:i').' - '.$this->ends_at->format('H:i')
             : '';
     }
 
-    public function scopeWithIsOneDay($q) {
+    public function scopeWithIsOneDay($q)
+    {
         $q->select('*');
         $oneDayQuery = 'DATE_FORMAT(starts_at, "%d%m%Y") = DATE_FORMAT(ends_at, "%d%m%Y")';
         $q->selectSub($oneDayQuery, 'is_one_day');
     }
 
-    public function scopeWithIsAllDay($q) {
+    public function scopeWithIsAllDay($q)
+    {
         $q->select('*');
         $allDayQuery = 'DATE_FORMAT(starts_at, "%T") = DATE_FORMAT(ends_at, "%T")';
         $q->selectSub($allDayQuery, 'is_all_day');
     }
 
-    public function getIcalStartAttribute() {
+    public function getIcalStartAttribute()
+    {
         return $this->starts_at;
     }
 
-    public function getIcalEndAttribute() {
+    public function getIcalEndAttribute()
+    {
         return $this->ends_at ?: $this->starts_at->addMinutes(15);
     }
 
-    public static function boot() {
+    public static function boot()
+    {
         parent::boot();
 
-        static::created(function($event) {
-            Queue::push(PushToApi::class, [
-                'event_id' => $event->id,
-                'original' => $event->getOriginal(),
-                'user_id' => null
-            ]);
+        static::created(function ($event) {
+            // Queue::push(PushToApi::class, [
+            //     'event_id' => $event->id,
+            //     'original' => $event->getOriginal(),
+            //     'user_id' => null
+            // ]);
         });
 
-        static::updated(function($event) {
-            Queue::push(PushToApi::class, [
-                'event_id' => $event->id,
-                'original' => $event->getOriginal(),
-                'user_id' => null
-            ]);
+        static::updated(function ($event) {
+            // Queue::push(PushToApi::class, [
+            //     'event_id' => $event->id,
+            //     'original' => $event->getOriginal(),
+            //     'user_id' => null
+            // ]);
         });
     }
 }
