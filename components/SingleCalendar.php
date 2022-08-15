@@ -39,6 +39,7 @@ class SingleCalendar extends ComponentBase {
         $this->filter = [
             'calendars' => [$this->property('calendar_id')],
             'tags' => [],
+            'keywords' => [],
             'showPast' => false
         ];
         $this->events = $this->events();

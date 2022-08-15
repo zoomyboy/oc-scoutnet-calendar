@@ -5,6 +5,7 @@ use Input;
 use System\Classes\PluginBase;
 use Zoomyboy\Scoutnet\Classes\IcalGenerator;
 use Zoomyboy\Scoutnet\Components\EventList;
+use Zoomyboy\Scoutnet\Components\EventSlider;
 use Zoomyboy\Scoutnet\Components\SingleCalendar;
 use Zoomyboy\Scoutnet\FormWidgets\ConnectButton;
 use Zoomyboy\Scoutnet\Models\Calendar;
@@ -96,6 +97,7 @@ class Plugin extends PluginBase
     {
         return [
             SingleCalendar::class => 'singleCalendar',
+            EventSlider::class => 'scoutnet_event_slider',
             EventList::class => 'scoutnet_event_list',
         ];
     }
