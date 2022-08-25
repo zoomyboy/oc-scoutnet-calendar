@@ -2,29 +2,26 @@
 
 namespace Zoomyboy\Scoutnet\Components;
 
-use \Cms\Classes\ComponentBase;
-use Carbon\Carbon;
+use Cms\Classes\ComponentBase;
 use Input;
 use October\Rain\Database\Collection;
 use Response;
 use Zoomyboy\Scoutnet\Classes\EventRepository;
-use Zoomyboy\Scoutnet\Classes\ScoutnetSync;
 use Zoomyboy\Scoutnet\Models\Calendar;
-use Zoomyboy\Scoutnet\Models\Event;
-use Zoomyboy\Scoutnet\Models\Keyword;
 use Zoomyboy\Scoutnet\Models\Tag;
 
-class SingleCalendar extends ComponentBase {
-
+class SingleCalendar extends ComponentBase
+{
     public Collection $calendars;
     public Collection $tags;
     public Collection $events;
     public array $filter = [];
 
-    public function componentDetails() {
+    public function componentDetails()
+    {
         return [
-            'name' => "Single",
-            'description' => "Display a single Calendar"
+            'name' => 'Single',
+            'description' => 'Display a single Calendar',
         ];
     }
 
@@ -33,23 +30,26 @@ class SingleCalendar extends ComponentBase {
         $this->page['bodyTag'] .= ' data-scoutnet ';
     }
 
-    public function onRender() {
+    public function onRender()
+    {
         $this->tags = Tag::select('title', 'id')->orderBy('title')->get();
         $this->calendars = Calendar::select('group', 'color')->selectRaw('GROUP_CONCAT(id) AS ids')->groupBy('group', 'color')->get();
         $this->filter = [
             'calendars' => [$this->property('calendar_id')],
             'tags' => [],
             'keywords' => [],
-            'showPast' => false
+            'showPast' => false,
         ];
         $this->events = $this->events();
     }
 
-    public function events(): Collection {
+    public function events(): Collection
+    {
         return app(EventRepository::class)->forFrontend($this->filter)->group();
     }
 
-    public function onFilter() {
+    public function onFilter()
+    {
         $this->filter = Input::all();
 
         return Response::make(
@@ -58,11 +58,12 @@ class SingleCalendar extends ComponentBase {
         );
     }
 
-    public function defineProperties() {
+    public function defineProperties()
+    {
         return [
             'calendar_id' => [
                 'label' => 'Kalender',
-            ]
+            ],
         ];
     }
 
@@ -76,4 +77,3 @@ class SingleCalendar extends ComponentBase {
         return Calendar::pluck('title', 'id')->toArray();
     }
 }
-

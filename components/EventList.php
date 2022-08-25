@@ -8,18 +8,17 @@ use Zoomyboy\Scoutnet\Models\Calendar;
 use Zoomyboy\Scoutnet\Models\Event;
 
 /**
- * EventList Component
+ * EventList Component.
  */
 class EventList extends ComponentBase
 {
-
     public Collection $events;
 
     public function componentDetails()
     {
         return [
             'name' => 'EventList',
-            'description' => 'Zeigt eine Liste von Terminen an'
+            'description' => 'Zeigt eine Liste von Terminen an',
         ];
     }
 
@@ -30,7 +29,7 @@ class EventList extends ComponentBase
                 'type' => 'dropdown',
                 'title' => 'Kalender',
                 'required' => true,
-            ]
+            ],
         ];
     }
 
