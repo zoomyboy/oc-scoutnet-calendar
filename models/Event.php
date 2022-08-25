@@ -2,6 +2,7 @@
 
 namespace Zoomyboy\Scoutnet\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Model;
 use October\Rain\Database\Traits\Validation;
 use Queue;
@@ -96,6 +97,14 @@ class Event extends Model
         $q->select('*');
         $allDayQuery = 'DATE_FORMAT(starts_at, "%T") = DATE_FORMAT(ends_at, "%T")';
         $q->selectSub($allDayQuery, 'is_all_day');
+    }
+
+    public function scopeRelevant(Builder $query): Builder
+    {
+        return $query
+            ->whereBetween('starts_at', [now()->subYear()->startOfYear(), now()->addYear()->endOfYear()])
+            ->whereHas('calendar', fn ($query) => $query->where('is_main', true))
+            ->orderBy('starts_at');
     }
 
     public function getIcalStartAttribute()
