@@ -22,3 +22,5 @@
 1.0.9:
     - Create Calendars Group Column
     - create_calendars_group_column.php
+1.0.10:
+    - create_calendars_is_main_column.php
