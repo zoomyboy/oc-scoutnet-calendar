@@ -4,6 +4,7 @@ namespace Zoomyboy\Scoutnet\Components;
 
 use Cms\Classes\ComponentBase;
 use Illuminate\Support\Collection;
+use Zoomyboy\Scoutnet\Classes\EventRepository;
 use Zoomyboy\Scoutnet\Models\Calendar;
 use Zoomyboy\Scoutnet\Models\Event;
 
@@ -35,11 +36,14 @@ class EventList extends ComponentBase
 
     public function onRender(): void
     {
-        $this->events = Event::where('calendar_id', $this->property('calendar'))
+        $query = Event::select('*')->where('calendar_id', $this->property('calendar'))
             ->orderBy('starts_at')
             ->where('starts_at', '>=', now())
-            ->limit(5)
-            ->get();
+            ->limit(5);
+
+        EventRepository::runExtensions($query);
+
+        $this->events = $query->get();
     }
 
     public function getCalendarOptions()

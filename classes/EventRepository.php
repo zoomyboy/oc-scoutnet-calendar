@@ -52,9 +52,7 @@ class EventRepository
             });
         }
 
-        foreach (static::$queryCallbacks as $queryCallback) {
-            $queryCallback($query);
-        }
+        static::runExtensions($query);
 
         $this->query = $query;
 
@@ -89,5 +87,15 @@ class EventRepository
     public static function extendQuery(callable $query): void
     {
         static::$queryCallbacks[] = $query;
+    }
+
+    /**
+     * @param Builder<Event> $query
+     */
+    public static function runExtensions($query): void
+    {
+        foreach (static::$queryCallbacks as $queryCallback) {
+            $queryCallback($query);
+        }
     }
 }
