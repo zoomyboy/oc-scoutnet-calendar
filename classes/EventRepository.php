@@ -3,15 +3,25 @@
 namespace Zoomyboy\Scoutnet\Classes;
 
 use Carbon\Carbon;
+use Illuminate\Database\Query\Builder;
 use Zoomyboy\Scoutnet\Models\Event;
 
-class EventRepository {
-
+class EventRepository
+{
     public $query;
 
-    public $months = ['', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+    /**
+     * @var array<int, callable(Builder<Event>): void>
+     */
+    public static array $queryCallbacks = [];
 
-    public function forFrontend($filter = []) {
+    /**
+     * @param array<int, string>
+     */
+    public array $months = ['', 'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+
+    public function forFrontend($filter = [])
+    {
         $minDate = data_get($filter, 'showPast')
             ? Carbon::now()->startOfYear()->subYears(1)
             : Carbon::now();
@@ -30,9 +40,9 @@ class EventRepository {
         }
 
         if (!empty($filter['tags']) || !empty($filter['keywords'])) {
-            $query->whereHas('keywords', function($k) use ($filter) {
+            $query->whereHas('keywords', function ($k) use ($filter) {
                 if (!empty($filter['tags'])) {
-                    $k->whereHas('tags', function($t) use ($filter) {
+                    $k->whereHas('tags', function ($t) use ($filter) {
                         return $t->whereIn('id', $filter['tags']);
                     });
                 }
@@ -42,27 +52,42 @@ class EventRepository {
             });
         }
 
+        foreach (static::$queryCallbacks as $queryCallback) {
+            $queryCallback($query);
+        }
+
         $this->query = $query;
 
         return $this;
     }
 
     // @todo get this as a column from mySQL
-    public function group() {
-        return $this->query->get()->groupBy(function($e) {
+    public function group()
+    {
+        return $this->query->get()->groupBy(function ($e) {
             return $this->months[Carbon::parse($e->starts_at)->format('n')]
             .' '.Carbon::parse($e->starts_at)->format('Y');
         });
     }
 
-    public function forIcal($filters = []) {
+    public function forIcal($filters = [])
+    {
         $this->forFrontend($filters);
         $this->query->addSelect('description');
 
         return $this;
     }
 
-    public function get() {
+    public function get()
+    {
         return $this->query->get();
+    }
+
+    /**
+     * @param callable(Builder<Event> $query): void
+     */
+    public static function extendQuery(callable $query): void
+    {
+        static::$queryCallbacks[] = $query;
     }
 }
