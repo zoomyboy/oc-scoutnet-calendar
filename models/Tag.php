@@ -1,15 +1,16 @@
-<?php namespace Zoomyboy\Scoutnet\Models;
+<?php
+
+namespace Zoomyboy\Scoutnet\Models;
 
 use Model;
-use Zoomyboy\Scoutnet\Models\Keyword;
 
 /**
- * Tag Model
+ * Tag Model.
  */
 class Tag extends Model
 {
     /**
-     * @var string The database table used by the model.
+     * @var string the database table used by the model
      */
     public $table = 'zoomyboy_scoutnet_tags';
 
@@ -30,11 +31,16 @@ class Tag extends Model
     public $hasMany = [];
     public $belongsTo = [];
     public $belongsToMany = [
-        'keywords' => [Keyword::class, 'table' => 'zoomyboy_scoutnet_keyword_tag']
+        'keywords' => [Keyword::class, 'table' => 'zoomyboy_scoutnet_keyword_tag'],
     ];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [];
+
+    public static function select(): array
+    {
+        return static::pluck('title', 'id')->toArray();
+    }
 }

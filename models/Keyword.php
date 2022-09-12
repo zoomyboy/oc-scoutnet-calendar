@@ -1,15 +1,16 @@
-<?php namespace Zoomyboy\Scoutnet\Models;
+<?php
+
+namespace Zoomyboy\Scoutnet\Models;
 
 use Model;
-use Zoomyboy\Scoutnet\Models\Tag;
-use Zoomyboy\Scoutnet\Models\Event;
+
 /**
- * Calendar Model
+ * Calendar Model.
  */
 class Keyword extends Model
 {
     /**
-     * @var string The database table used by the model.
+     * @var string the database table used by the model
      */
     public $table = 'zoomyboy_scoutnet_keywords';
 
@@ -29,17 +30,17 @@ class Keyword extends Model
     public $hasOne = [];
     public $hasMany = [];
     public $belongsTo = [
-        'calendar' => Calendar::class
+        'calendar' => Calendar::class,
     ];
     public $belongsToMany = [
         'events' => [Event::class, 'table' => 'zoomyboy_scoutnet_event_keyword'],
-        'tags' => [Tag::class, 'table' => 'zoomyboy_scoutnet_keyword_tag']
+        'tags' => [Tag::class, 'table' => 'zoomyboy_scoutnet_keyword_tag'],
     ];
     public $morphTo = [];
     public $morphOne = [];
     public $morphMany = [];
     public $attachOne = [];
     public $attachMany = [
-        'images' => \System\Models\File::class
+        'images' => \System\Models\File::class,
     ];
 }
