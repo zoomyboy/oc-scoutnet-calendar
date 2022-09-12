@@ -39,7 +39,7 @@ class Tag extends Model
     public $attachOne = [];
     public $attachMany = [];
 
-    public static function select(): array
+    public static function forSelect(): array
     {
         return static::pluck('title', 'id')->toArray();
     }
