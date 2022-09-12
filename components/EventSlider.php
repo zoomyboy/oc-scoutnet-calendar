@@ -1,12 +1,14 @@
-<?php namespace Zoomyboy\Scoutnet\Components;
+<?php
 
-use Illuminate\Support\Collection;
-use Zoomyboy\Scoutnet\Models\Calendar;
-use Zoomyboy\Scoutnet\Classes\EventRepository;
+namespace Zoomyboy\Scoutnet\Components;
+
 use Cms\Classes\ComponentBase;
+use Illuminate\Support\Collection;
+use Zoomyboy\Scoutnet\Classes\EventRepository;
+use Zoomyboy\Scoutnet\Models\Calendar;
 
 /**
- * EventSlider Component
+ * EventSlider Component.
  */
 class EventSlider extends ComponentBase
 {
@@ -16,7 +18,7 @@ class EventSlider extends ComponentBase
     {
         return [
             'name' => 'EventSlider Component',
-            'description' => 'No description provided yet...'
+            'description' => 'No description provided yet...',
         ];
     }
 
@@ -26,7 +28,7 @@ class EventSlider extends ComponentBase
             'calendars' => [$this->property('calendar')],
             'tags' => [],
             'keywords' => [$this->property('keyword')],
-            'showPast' => false
+            'showPast' => false,
         ])->get();
     }
 
@@ -44,7 +46,7 @@ class EventSlider extends ComponentBase
             ],
             'keyword' => [
                 'label' => 'Keyword',
-            ]
+            ],
         ];
     }
 }
